@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">JoinTheMeeting</string>
+    <string name="app_title">Join The Meeting</string>
+    <string name="pref_config">JoinTheMeeting</string>
+    <string name="pref_config_setting_summary">JoinTheMeeting</string>
+    <string name="pref_config_setting">JoinTheMeeting</string>
+
+</resources>
