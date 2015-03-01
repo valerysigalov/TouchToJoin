@@ -6,5 +6,11 @@
     <string name="pref_config">JoinTheMeeting</string>
     <string name="pref_config_setting_summary">JoinTheMeeting</string>
     <string name="pref_config_setting">JoinTheMeeting</string>
+    <string name="apply">Apply</string>
+    <string name="date_range">Select the calendar dates range</string>
+    <string name="start_date">Set Start Date</string>
+    <string name="end_date">Set End Date</string>
+    <string name="conf_list">Select the conference from the list</string>
+    <string name="dial">Dial</string>
 
 </resources>

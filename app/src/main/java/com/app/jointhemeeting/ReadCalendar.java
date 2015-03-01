@@ -28,6 +28,12 @@ import android.net.Uri;
 import android.provider.CalendarContract;
 import android.support.v4.app.NotificationCompat;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+
 class ReadCalendar {
 
     private static String savedTime = null;
@@ -61,11 +67,15 @@ class ReadCalendar {
                     title = cursor.getString(cursor.getColumnIndex(
                             CalendarContract.CalendarAlerts.TITLE));
                     DebugLog.writeLog("Title: " + title);
-                    String location = cursor.getString(cursor.getColumnIndex(
-                            CalendarContract.CalendarAlerts.EVENT_LOCATION));
-                    DebugLog.writeLog("Location: " + location);
-                    phoneNumber = PhoneNumber.findNumber(location);
-                    pinCode = PhoneNumber.findPinCode(location);
+                    phoneNumber = PhoneNumber.findNumber(title);
+                    pinCode = PhoneNumber.findPinCode(title);
+                    if (phoneNumber == null || pinCode == null) {
+                        String location = cursor.getString(cursor.getColumnIndex(
+                                CalendarContract.CalendarAlerts.EVENT_LOCATION));
+                        DebugLog.writeLog("Location: " + location);
+                        phoneNumber = PhoneNumber.findNumber(location);
+                        pinCode = PhoneNumber.findPinCode(location);
+                    }
                     if (phoneNumber == null || pinCode == null) {
                         String description = cursor.getString(cursor.getColumnIndex(
                                 CalendarContract.CalendarAlerts.DESCRIPTION));
@@ -88,12 +98,72 @@ class ReadCalendar {
         }
     }
 
+    public static void getEventsByDateRange(Context context, List<String> arrayList,
+                int startYear, int startMonth, int startDay,
+                int endYear, int endMonth, int endDay) {
+
+        String[] projection = new String[] { CalendarContract.CalendarAlerts.EVENT_LOCATION,
+                CalendarContract.CalendarAlerts.DESCRIPTION,
+                CalendarContract.CalendarAlerts.TITLE,
+                CalendarContract.Events.DTSTART,
+                CalendarContract.Events.DTEND};
+
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(startYear, startMonth, startDay);
+
+        Calendar endTime= Calendar.getInstance();
+        endTime.set(endYear, endMonth, endDay);
+
+        String selection = "(( " + CalendarContract.Events.DTSTART + " >= " + startTime.getTimeInMillis() + " ) AND ( " + CalendarContract.Events.DTSTART + " <= " + endTime.getTimeInMillis() + " ))";
+
+        Cursor cursor = context.getContentResolver().query( CalendarContract.Events.CONTENT_URI, projection, selection, null, null );
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                String phoneNumber;
+                String pinCode;
+                String title;
+                HashSet hashSet = new HashSet();
+                do {
+                    title = cursor.getString(cursor.getColumnIndex(
+                            CalendarContract.CalendarAlerts.TITLE));
+                    phoneNumber = PhoneNumber.findNumber(title);
+                    pinCode = PhoneNumber.findPinCode(title);
+                    if (phoneNumber == null || pinCode == null) {
+                        String location = cursor.getString(cursor.getColumnIndex(
+                                CalendarContract.CalendarAlerts.EVENT_LOCATION));
+                        phoneNumber = PhoneNumber.findNumber(location);
+                        pinCode = PhoneNumber.findPinCode(location);
+                    }
+                    if (phoneNumber == null || pinCode == null) {
+                        String description = cursor.getString(cursor.getColumnIndex(
+                                CalendarContract.CalendarAlerts.DESCRIPTION));
+                        phoneNumber = PhoneNumber.findNumber(description);
+                        pinCode = PhoneNumber.findPinCode(description);
+                    }
+                    if (phoneNumber != null && pinCode != null) {
+                        long start = cursor.getLong(cursor.getColumnIndex(
+                                CalendarContract.CalendarAlerts.DTSTART));
+                        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                        String date = formatter.format(new Date(start));
+                        if (hashSet.add(title.trim() + " " + phoneNumber.trim() + " " + pinCode.trim())) {
+                            arrayList.add(date.trim() + " " + title.trim() + " tel:" + phoneNumber.trim() + ",,," + pinCode.trim() + "#");
+                            DebugLog.writeLog(date.trim() + " " + title.trim() + " tel:" + phoneNumber.trim() + ",,," + pinCode.trim() + "#");
+                        }
+                    }
+
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+    }
+
     private static void sendNotification(Context context, String phoneNumber, String pinCode, String title) {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setDefaults(0)
-                        .setAutoCancel(true)
+                        //.setAutoCancel(true)
                         .setSmallIcon(android.R.drawable.ic_menu_call)
                         .setContentTitle("Join The Meeting")
                         .setContentText("Touch to join the conference " + title)
