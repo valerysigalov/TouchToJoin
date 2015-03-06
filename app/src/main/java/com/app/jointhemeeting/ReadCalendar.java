@@ -25,6 +25,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.v4.app.NotificationCompat;
 
@@ -94,7 +95,14 @@ class ReadCalendar {
         else {
             DebugLog.writeLog("The conference phone number is " + phoneNumber);
             DebugLog.writeLog("The conference PIN code is " + pinCode);
-            sendNotification(context, phoneNumber, pinCode, title);
+            DebugLog.writeLog("Start notification activity.");
+            Intent notification = new Intent(context, SendAlarm.class);
+            Bundle extras = new Bundle();
+            extras.putString("phoneNumber", phoneNumber);
+            extras.putString("pinCode", pinCode);
+            extras.putString("title", title);
+            notification.putExtras(extras);
+            context.sendBroadcast(notification);
         }
     }
 
@@ -156,33 +164,5 @@ class ReadCalendar {
             }
             cursor.close();
         }
-    }
-
-    private static void sendNotification(Context context, String phoneNumber, String pinCode, String title) {
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context)
-                        .setDefaults(0)
-                        //.setAutoCancel(true)
-                        .setSmallIcon(android.R.drawable.ic_menu_call)
-                        .setContentTitle("Join The Meeting")
-                        .setContentText("Touch to join the conference " + title)
-                        .setColor(Color.GREEN)
-                        .setPriority(2);
-
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        String number = "tel:" + phoneNumber.trim() + ",,," + pinCode.trim() + "#";
-        DebugLog.writeLog("Conference number is " + number);
-        intent.setData(Uri.parse(number));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
-                intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        mBuilder.setContentIntent(pendingIntent);
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        mNotificationManager.notify(0, mBuilder.build());
     }
 }

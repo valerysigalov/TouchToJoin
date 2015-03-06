@@ -116,9 +116,14 @@ public class MainActivity extends Activity implements DatePicker.DatePickerListe
 
         if (!wasRegistered) {
             DebugLog.writeLog("Register calendar events receiver.");
-            IntentFilter intentFilter = new IntentFilter(CalendarContract.ACTION_EVENT_REMINDER);
-            intentFilter.addDataScheme("content");
-            registerReceiver(new EventReceiver(), intentFilter);
+            IntentFilter eventFilter = new IntentFilter(CalendarContract.ACTION_EVENT_REMINDER);
+            eventFilter.addDataScheme("content");
+            registerReceiver(new EventReceiver(), eventFilter);
+
+            DebugLog.writeLog("Register alarm receiver.");
+            IntentFilter alarmFilter = new IntentFilter("com.app.JoinTheMeeting");
+            registerReceiver(new SendAlarm(), alarmFilter);
+
             wasRegistered = true;
         }
    }
