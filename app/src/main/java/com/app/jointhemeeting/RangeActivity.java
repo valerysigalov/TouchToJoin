@@ -20,10 +20,8 @@ package com.app.jointhemeeting;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -34,9 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class MainActivity extends Activity implements DatePicker.DatePickerListener {
-
-    private boolean wasRegistered = false;
+public class RangeActivity extends Activity implements DatePicker.DatePickerListener {
 
     private Button startButton;
     private Button endButton;
@@ -61,7 +57,7 @@ public class MainActivity extends Activity implements DatePicker.DatePickerListe
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meeting);
+        setContentView(R.layout.range_activity);
 
         setCurrentDate();
 
@@ -69,7 +65,7 @@ public class MainActivity extends Activity implements DatePicker.DatePickerListe
         startButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 btn = eButton.START;
-                DatePicker fragment = DatePicker.newInstance(MainActivity.this, startYear, startMonth, startDay);
+                DatePicker fragment = DatePicker.newInstance(RangeActivity.this, startYear, startMonth, startDay);
                 fragment.show(getFragmentManager(), "datePicker");
             }
         });
@@ -78,7 +74,7 @@ public class MainActivity extends Activity implements DatePicker.DatePickerListe
         endButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 btn = eButton.END;
-                DatePicker fragment = DatePicker.newInstance(MainActivity.this, endYear, endMonth, endDay);
+                DatePicker fragment = DatePicker.newInstance(RangeActivity.this, endYear, endMonth, endDay);
                 fragment.show(getFragmentManager(), "datePicker");
             }
         });
@@ -89,8 +85,12 @@ public class MainActivity extends Activity implements DatePicker.DatePickerListe
         applyButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 List<String> arrayList = new ArrayList<>();
+                Calendar startTime = Calendar.getInstance();
+                startTime.set(startYear, startMonth, startDay);
+                Calendar endTime= Calendar.getInstance();
+                endTime.set(endYear, endMonth, endDay);
                 ReadCalendar.getEventsByDateRange(getBaseContext(), arrayList,
-                        startYear, startMonth, startDay, endYear, endMonth, endDay);
+                        startTime.getTimeInMillis(), endTime.getTimeInMillis());
                 ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                         getBaseContext(), android.R.layout.simple_list_item_single_choice, arrayList);
                 listView.setAdapter(arrayAdapter);
@@ -113,19 +113,6 @@ public class MainActivity extends Activity implements DatePicker.DatePickerListe
                 }
             }
         });
-
-        if (!wasRegistered) {
-            DebugLog.writeLog("Register calendar events receiver.");
-            IntentFilter eventFilter = new IntentFilter(CalendarContract.ACTION_EVENT_REMINDER);
-            eventFilter.addDataScheme("content");
-            registerReceiver(new EventReceiver(), eventFilter);
-
-            DebugLog.writeLog("Register alarm receiver.");
-            IntentFilter alarmFilter = new IntentFilter("com.app.JoinTheMeeting");
-            registerReceiver(new SendAlarm(), alarmFilter);
-
-            wasRegistered = true;
-        }
    }
 
     @Override
@@ -149,16 +136,6 @@ public class MainActivity extends Activity implements DatePicker.DatePickerListe
                      .append(endMonth + 1).append("-").append(endDay).append("-")
                      .append(endYear).append(" "));
         }
-    }
-
-    @Override
-    public void onBackPressed()
-    {
-        DebugLog.writeLog("Minimize main activity.");
-        Intent startMain = new Intent(Intent.ACTION_MAIN);
-        startMain.addCategory(Intent.CATEGORY_HOME);
-        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(startMain);
     }
 
     // Initialize current date for both start and end dates.

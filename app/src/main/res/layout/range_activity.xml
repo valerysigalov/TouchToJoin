@@ -9,15 +9,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/app_title"
-        android:id="@+id/textView"
-        android:textSize="@dimen/abc_text_size_medium_material"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="@string/date_range"
         android:id="@+id/textView2"
         android:layout_marginTop="10dp"
@@ -68,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/conf_list"
-        android:id="@+id/textView5"
+        android:id="@+id/textView3"
         android:layout_marginTop="10dp"
         android:textSize="@dimen/abc_text_size_medium_material"
         android:layout_gravity="center_horizontal" />

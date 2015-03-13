@@ -28,6 +28,7 @@ import android.os.Bundle;
 import android.text.format.DateUtils;
 
 public class SnoozeAlarm extends Activity {
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 

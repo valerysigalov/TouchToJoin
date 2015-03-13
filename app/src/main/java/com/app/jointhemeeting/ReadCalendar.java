@@ -51,7 +51,8 @@ class ReadCalendar {
 
         String[] projection = new String[] { CalendarContract.CalendarAlerts.EVENT_LOCATION,
                 CalendarContract.CalendarAlerts.DESCRIPTION,
-                CalendarContract.CalendarAlerts.TITLE };
+                CalendarContract.CalendarAlerts.TITLE,
+                CalendarContract.Events.DTSTART};
 
         String selection = CalendarContract.CalendarAlerts.ALARM_TIME + "=?";
 
@@ -62,9 +63,14 @@ class ReadCalendar {
         String phoneNumber = null;
         String pinCode = null;
         String title = "call";
+        String date = "now";
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
+                    long start = cursor.getLong(cursor.getColumnIndex(
+                            CalendarContract.CalendarAlerts.DTSTART));
+                    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                    date = formatter.format(new Date(start));
                     title = cursor.getString(cursor.getColumnIndex(
                             CalendarContract.CalendarAlerts.TITLE));
                     DebugLog.writeLog("Title: " + title);
@@ -101,14 +107,14 @@ class ReadCalendar {
             extras.putString("phoneNumber", phoneNumber);
             extras.putString("pinCode", pinCode);
             extras.putString("title", title);
+            extras.putString("date", date);
             notification.putExtras(extras);
             context.sendBroadcast(notification);
         }
     }
 
     public static void getEventsByDateRange(Context context, List<String> arrayList,
-                int startYear, int startMonth, int startDay,
-                int endYear, int endMonth, int endDay) {
+                long startTimeInMillis, long endTimeInMillis) {
 
         String[] projection = new String[] { CalendarContract.CalendarAlerts.EVENT_LOCATION,
                 CalendarContract.CalendarAlerts.DESCRIPTION,
@@ -116,13 +122,7 @@ class ReadCalendar {
                 CalendarContract.Events.DTSTART,
                 CalendarContract.Events.DTEND};
 
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(startYear, startMonth, startDay);
-
-        Calendar endTime= Calendar.getInstance();
-        endTime.set(endYear, endMonth, endDay);
-
-        String selection = "(( " + CalendarContract.Events.DTSTART + " >= " + startTime.getTimeInMillis() + " ) AND ( " + CalendarContract.Events.DTSTART + " <= " + endTime.getTimeInMillis() + " ))";
+        String selection = "(( " + CalendarContract.Events.DTSTART + " >= " + startTimeInMillis + " ) AND ( " + CalendarContract.Events.DTSTART + " <= " + endTimeInMillis + " ))";
 
         Cursor cursor = context.getContentResolver().query( CalendarContract.Events.CONTENT_URI, projection, selection, null, null );
 

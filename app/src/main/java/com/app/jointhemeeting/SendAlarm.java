@@ -36,17 +36,16 @@ public class SendAlarm extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         notificationId = notificationId + 1;
-        DebugLog.writeLog("Send notification with Id " + notificationId);
+        DebugLog.writeLog("SendAlarm: send notification with Id " + notificationId);
 
         Bundle extras = intent.getExtras();
+        String date = extras.getString("date");
         String title = extras.getString("title");
         String phoneNumber = extras.getString("phoneNumber");
         String pinCode = extras.getString("pinCode");
 
-        Intent join = new Intent(Intent.ACTION_CALL);
-        String number = "tel:" + phoneNumber.trim() + ",,," + pinCode.trim() + "#";
-        DebugLog.writeLog("Conference number is " + number);
-        join.setData(Uri.parse(number));
+        Intent join = new Intent(context, JoinActivity.class);
+        join.putExtras(extras);
         join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
         PendingIntent pJoin = PendingIntent.getActivity(context, 0,
@@ -60,15 +59,20 @@ public class SendAlarm extends BroadcastReceiver {
         PendingIntent pSnooze = PendingIntent.getActivity(context, 0,
                 snooze, PendingIntent.FLAG_CANCEL_CURRENT);
 
+        String conf = date.trim() + " " + title.trim();
+        String number = "tel:" + phoneNumber.trim() + ",,," + pinCode.trim() + "#";
+        DebugLog.writeLog("SendAlarm: conference title is " + conf);
+        DebugLog.writeLog("SendAlarm: conference number is " + number);
+
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
                         .setDefaults(0)
                         .addAction(R.drawable.ic_action_call, "Join", pJoin)
                         .addAction(R.drawable.ic_action_alarms, "Snooze", pSnooze)
                         .setSmallIcon(R.drawable.ic_action_call)
-                        .setContentTitle("Touch to join")
-                        .setContentText(title)
-                        .setColor(Color.LTGRAY)
+                        .setContentTitle(conf)
+                        .setContentText(number)
+                        .setColor(Color.WHITE)
                         .setPriority(2);
 
         NotificationManager mNotificationManager =
