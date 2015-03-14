@@ -9,7 +9,7 @@
     <item android:title="@string/settings"
         android:id="@+id/settings"
         android:icon="@drawable/ic_action_settings"/>
-    <item android:title="@string/settings"
+    <item android:title="@string/feedback"
         android:id="@+id/feedback"
         android:icon="@drawable/ic_action_email"/>
     <item android:title="@string/help"

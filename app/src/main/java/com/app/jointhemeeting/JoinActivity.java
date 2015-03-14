@@ -23,8 +23,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
-import java.util.ArrayList;
-
 public class JoinActivity extends Activity {
 
     @Override
@@ -33,23 +31,12 @@ public class JoinActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Bundle extras = getIntent().getExtras();
-        String date = extras.getString("date");
-        String title = extras.getString("title");
-        String phoneNumber = extras.getString("phoneNumber");
-        String pinCode = extras.getString("pinCode");
-
-        String conf = date.trim() + " " + title.trim();
-        String number = "tel:" + phoneNumber.trim() + ",,," + pinCode.trim() + "#";
-        DebugLog.writeLog("JoinActivity: conference title is " + conf);
+        String title = extras.getString("title").trim();
+        String number = extras.getString("number").trim();
+        DebugLog.writeLog("JoinActivity: conference title is " + title);
         DebugLog.writeLog("JoinActivity: conference number is " + number);
 
-        String fileName = System.getProperty("java.io.tmpdir") + "/history.log";
-        ArrayList<String> arrayList = StreamIO.ReadFile(getBaseContext(), fileName);
-        if (arrayList == null) {
-            arrayList = new ArrayList<>();
-        }
-        arrayList.add(conf + number);
-        StreamIO.WriteFile(getBaseContext(), fileName, arrayList);
+        FileIO.Write(title + " " + number);
 
         Intent join = new Intent(Intent.ACTION_CALL);
         join.setData(Uri.parse(number));

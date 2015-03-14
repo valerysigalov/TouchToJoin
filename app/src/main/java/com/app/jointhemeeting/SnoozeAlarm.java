@@ -36,7 +36,9 @@ public class SnoozeAlarm extends Activity {
 
         Bundle extras = getIntent().getExtras();
         int notificationId = extras.getInt("notificationId");
-        DebugLog.writeLog("Snooze notification with Id " + notificationId + " for 5 minutes.");
+        String snooze = SettingsActivity.getValue("snooze");
+        int minutes = Integer.parseInt(snooze);
+        DebugLog.writeLog("SnoozeAlarm: snooze notification with Id " + notificationId + " for " + minutes + " minutes.");
 
         NotificationManager mNotificationManager =
                 (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -48,7 +50,6 @@ public class SnoozeAlarm extends Activity {
                 intent, PendingIntent.FLAG_ONE_SHOT);
 
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10000/*5*DateUtils.MINUTE_IN_MILLIS*/, pendingIntent);
-        finish();
+        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10000/*minutes*DateUtils.MINUTE_IN_MILLIS*/, pendingIntent);
     }
 }

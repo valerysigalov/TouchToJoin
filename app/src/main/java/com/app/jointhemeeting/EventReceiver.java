@@ -28,7 +28,7 @@ public class EventReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equalsIgnoreCase(CalendarContract.ACTION_EVENT_REMINDER)) {
-            DebugLog.writeLog("Received calendar event notification.");
+            DebugLog.writeLog("EventReceiver: received calendar event notification.");
             ReadCalendar.getEventByTime(context, intent);
         }
     }

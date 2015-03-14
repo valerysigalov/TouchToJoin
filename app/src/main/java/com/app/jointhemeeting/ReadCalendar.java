@@ -39,12 +39,24 @@ class ReadCalendar {
 
     private static String savedTime = null;
 
+    private static String setDelay() {
+
+        String delay = SettingsActivity.getValue("delay");
+        int comma = Integer.parseInt(delay);
+        delay = "";
+        for (int i = 0; i < comma; i++) {
+            delay += ",";
+        }
+
+        return delay;
+    }
+
     public static void getEventByTime(Context context, Intent intent) {
 
         String alarmTime = intent.getData().getLastPathSegment();
 
         if (savedTime != null && alarmTime.equals(savedTime)) {
-            DebugLog.writeLog("The event was already processed.");
+            DebugLog.writeLog("ReadCalendar: the event was already processed.");
             return;
         }
         savedTime = alarmTime;
@@ -73,20 +85,20 @@ class ReadCalendar {
                     date = formatter.format(new Date(start));
                     title = cursor.getString(cursor.getColumnIndex(
                             CalendarContract.CalendarAlerts.TITLE));
-                    DebugLog.writeLog("Title: " + title);
+                    DebugLog.writeLog("ReadCalendar: title " + title);
                     phoneNumber = PhoneNumber.findNumber(title);
                     pinCode = PhoneNumber.findPinCode(title);
                     if (phoneNumber == null || pinCode == null) {
                         String location = cursor.getString(cursor.getColumnIndex(
                                 CalendarContract.CalendarAlerts.EVENT_LOCATION));
-                        DebugLog.writeLog("Location: " + location);
+                        DebugLog.writeLog("ReadCalendar: location " + location);
                         phoneNumber = PhoneNumber.findNumber(location);
                         pinCode = PhoneNumber.findPinCode(location);
                     }
                     if (phoneNumber == null || pinCode == null) {
                         String description = cursor.getString(cursor.getColumnIndex(
                                 CalendarContract.CalendarAlerts.DESCRIPTION));
-                        DebugLog.writeLog("Description: " + description);
+                        DebugLog.writeLog("ReadCalendar: description " + description);
                         phoneNumber = PhoneNumber.findNumber(description);
                         pinCode = PhoneNumber.findPinCode(description);
                     }
@@ -96,18 +108,16 @@ class ReadCalendar {
         }
 
         if (phoneNumber == null || pinCode == null) {
-            DebugLog.writeLog("Failed to find valid phone number and PIN code in calendar event.");
+            DebugLog.writeLog("ReadCalendar: failed to find valid phone number and PIN code in calendar event.");
         }
         else {
-            DebugLog.writeLog("The conference phone number is " + phoneNumber);
-            DebugLog.writeLog("The conference PIN code is " + pinCode);
-            DebugLog.writeLog("Start notification activity.");
+            DebugLog.writeLog("ReadCalendar: the conference phone number is " + phoneNumber);
+            DebugLog.writeLog("ReadCalendar: the conference PIN code is " + pinCode);
+            DebugLog.writeLog("ReadCalendar: start notification activity.");
             Intent notification = new Intent(context, SendAlarm.class);
             Bundle extras = new Bundle();
-            extras.putString("phoneNumber", phoneNumber);
-            extras.putString("pinCode", pinCode);
-            extras.putString("title", title);
-            extras.putString("date", date);
+            extras.putString("title", date.trim() + " " + title.trim());
+            extras.putString("number", "tel:" + phoneNumber.trim() + setDelay() + pinCode.trim() + "#");
             notification.putExtras(extras);
             context.sendBroadcast(notification);
         }
@@ -155,8 +165,8 @@ class ReadCalendar {
                         SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                         String date = formatter.format(new Date(start));
                         if (hashSet.add(title.trim() + " " + phoneNumber.trim() + " " + pinCode.trim())) {
-                            arrayList.add(date.trim() + " " + title.trim() + " tel:" + phoneNumber.trim() + ",,," + pinCode.trim() + "#");
-                            DebugLog.writeLog(date.trim() + " " + title.trim() + " tel:" + phoneNumber.trim() + ",,," + pinCode.trim() + "#");
+                            arrayList.add(date.trim() + " " + title.trim() + " tel:" + phoneNumber.trim() + setDelay() + pinCode.trim() + "#");
+                            DebugLog.writeLog("ReadCalendar: " + date.trim() + " " + title.trim() + " tel:" + phoneNumber.trim() + setDelay() + pinCode.trim() + "#");
                         }
                     }
 

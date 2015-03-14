@@ -104,11 +104,15 @@ public class RangeActivity extends Activity implements DatePicker.DatePickerList
                 int pos = listView.getCheckedItemPosition();
                 if (pos != AdapterView.INVALID_POSITION) {
                     String selected = listView.getAdapter().getItem(pos).toString();
+                    String title = selected.substring(0, selected.indexOf("tel:"));
                     String number = selected.substring(selected.indexOf("tel:"), selected.length());
-                    DebugLog.writeLog(number);
-                    Intent intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse(number));
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    DebugLog.writeLog("RangeActivity: title " + title);
+                    DebugLog.writeLog("RangeActivity: number " + number);
+                    Intent intent = new Intent(RangeActivity.this, JoinActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("title", title);
+                    extras.putString("number", number);
+                    intent.putExtras(extras);
                     startActivity(intent);
                 }
             }
@@ -117,7 +121,7 @@ public class RangeActivity extends Activity implements DatePicker.DatePickerList
 
     @Override
     public void onDateSet(int year, int month, int day) {
-        DebugLog.writeLog("Main date: " + month + "-" + day + "-" + year);
+        DebugLog.writeLog("RangeActivity: date " + month + "-" + day + "-" + year);
         if(btn == eButton.START) {
             startYear = year;
             startMonth = month;

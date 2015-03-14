@@ -21,7 +21,6 @@ package com.app.jointhemeeting;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.Menu;
@@ -52,16 +51,10 @@ public class UpcomingActivity extends Activity {
 
         listView = (ListView) findViewById(R.id.listView2);
 
-        List<String> arrayList = new ArrayList<>();
-        long currentTimeMillis = System.currentTimeMillis();
-        long startTimeMillis = currentTimeMillis - TimeUnit.HOURS.toMillis(2);
-        long endTimeMillis = currentTimeMillis + TimeUnit.HOURS.toMillis(22);
-        ReadCalendar.getEventsByDateRange(getBaseContext(), arrayList,
-                startTimeMillis, endTimeMillis);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                getBaseContext(), android.R.layout.simple_list_item_single_choice, arrayList);
-        listView.setAdapter(arrayAdapter);
-        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        DebugLog.writeLog("UpcomingActivity: set default settings.");
+        SettingsActivity.setDefaults(this);
+
+        upcomingEvents();
 
         Button dialButton = (Button) findViewById(R.id.buttonDial2);
         dialButton.setOnClickListener(new View.OnClickListener() {
@@ -69,23 +62,27 @@ public class UpcomingActivity extends Activity {
                 int pos = listView.getCheckedItemPosition();
                 if (pos != AdapterView.INVALID_POSITION) {
                     String selected = listView.getAdapter().getItem(pos).toString();
+                    String title = selected.substring(0, selected.indexOf("tel:"));
                     String number = selected.substring(selected.indexOf("tel:"), selected.length());
-                    DebugLog.writeLog(number);
-                    Intent intent = new Intent(Intent.ACTION_CALL);
-                    intent.setData(Uri.parse(number));
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    DebugLog.writeLog("UpcomingActivity: title " + title);
+                    DebugLog.writeLog("UpcomingActivity: number " + number);
+                    Intent intent = new Intent(UpcomingActivity.this, JoinActivity.class);
+                    Bundle extras = new Bundle();
+                    extras.putString("title", title);
+                    extras.putString("number", number);
+                    intent.putExtras(extras);
                     startActivity(intent);
                 }
             }
         });
 
         if (!wasRegistered) {
-            DebugLog.writeLog("Register calendar events receiver.");
+            DebugLog.writeLog("UpcomingActivity: register calendar events receiver.");
             IntentFilter eventFilter = new IntentFilter(CalendarContract.ACTION_EVENT_REMINDER);
             eventFilter.addDataScheme("content");
             registerReceiver(new EventReceiver(), eventFilter);
 
-            DebugLog.writeLog("Register alarm receiver.");
+            DebugLog.writeLog("UpcomingActivity: register alarm receiver.");
             IntentFilter alarmFilter = new IntentFilter("com.app.JoinTheMeeting");
             registerReceiver(new SendAlarm(), alarmFilter);
 
@@ -94,8 +91,17 @@ public class UpcomingActivity extends Activity {
     }
 
     @Override
+    public void onResume() {
+
+        DebugLog.writeLog("UpcomingActivity: resume upcoming activity.");
+        super.onResume();
+        upcomingEvents();
+    }
+
+    @Override
     public void onBackPressed() {
-        DebugLog.writeLog("Minimize upcoming activity.");
+
+        DebugLog.writeLog("UpcomingActivity: minimize upcoming activity.");
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -104,14 +110,14 @@ public class UpcomingActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        DebugLog.writeLog("Create menu.");
+        DebugLog.writeLog("UpcomingActivity: create menu.");
         getMenuInflater().inflate(R.menu.upcoming_menu, menu);
         return true;
     }
 
     @Override
-    public boolean onMenuOpened(int featureId, Menu menu)
-    {
+    public boolean onMenuOpened(int featureId, Menu menu) {
+
         if(featureId == Window.FEATURE_ACTION_BAR && menu != null){
             if(menu.getClass().getSimpleName().equals("MenuBuilder")){
                 try{
@@ -130,35 +136,50 @@ public class UpcomingActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.history:
-                DebugLog.writeLog("Selected history option.");
+                DebugLog.writeLog("UpcomingActivity: selected history option.");
                 Intent history = new Intent(UpcomingActivity.this,
                         HistoryActivity.class);
                 startActivity(history);
                 break;
             case R.id.search:
-                DebugLog.writeLog("Selected search option.");
+                DebugLog.writeLog("UpcomingActivity: selected search option.");
                 Intent search = new Intent(UpcomingActivity.this,
                         RangeActivity.class);
                 startActivity(search);
                 break;
             case R.id.settings:
-                DebugLog.writeLog("Selected settings option.");
+                DebugLog.writeLog("UpcomingActivity: selected settings option.");
                 break;
             case R.id.feedback:
-                DebugLog.writeLog("Selected feedback option.");
+                DebugLog.writeLog("UpcomingActivity: selected feedback option.");
                 break;
             case R.id.help:
-                DebugLog.writeLog("Selected help option.");
+                DebugLog.writeLog("UpcomingActivity: selected help option.");
                 break;
             case R.id.about:
-                DebugLog.writeLog("Selected about option.");
+                DebugLog.writeLog("UpcomingActivity: selected about option.");
                 break;
             default:
                 break;
         }
 
         return true;
+    }
+
+    private void upcomingEvents() {
+
+        List<String> arrayList = new ArrayList<>();
+        long currentTimeMillis = System.currentTimeMillis();
+        long startTimeMillis = currentTimeMillis - TimeUnit.HOURS.toMillis(2);
+        long endTimeMillis = currentTimeMillis + TimeUnit.HOURS.toMillis(22);
+        ReadCalendar.getEventsByDateRange(getBaseContext(), arrayList,
+                startTimeMillis, endTimeMillis);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+                getBaseContext(), android.R.layout.simple_list_item_single_choice, arrayList);
+        listView.setAdapter(arrayAdapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 }
