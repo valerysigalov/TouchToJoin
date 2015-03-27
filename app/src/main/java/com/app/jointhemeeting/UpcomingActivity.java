@@ -25,16 +25,11 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class UpcomingActivity extends Activity {
@@ -49,32 +44,14 @@ public class UpcomingActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.upcoming_activity);
 
+        getActionBar().setTitle(getString(R.string.upcoming));
+
         listView = (ListView) findViewById(R.id.listView2);
 
         DebugLog.writeLog("UpcomingActivity: set default settings.");
         SettingsActivity.setDefaults(this);
 
         upcomingEvents();
-
-        Button dialButton = (Button) findViewById(R.id.buttonDial2);
-        dialButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int pos = listView.getCheckedItemPosition();
-                if (pos != AdapterView.INVALID_POSITION) {
-                    String selected = listView.getAdapter().getItem(pos).toString();
-                    String title = selected.substring(0, selected.indexOf("tel:"));
-                    String number = selected.substring(selected.indexOf("tel:"), selected.length());
-                    DebugLog.writeLog("UpcomingActivity: title " + title);
-                    DebugLog.writeLog("UpcomingActivity: number " + number);
-                    Intent intent = new Intent(UpcomingActivity.this, JoinActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putString("title", title);
-                    extras.putString("number", number);
-                    intent.putExtras(extras);
-                    startActivity(intent);
-                }
-            }
-        });
 
         if (!wasRegistered) {
             DebugLog.writeLog("UpcomingActivity: register calendar events receiver.");
@@ -152,6 +129,9 @@ public class UpcomingActivity extends Activity {
                 break;
             case R.id.settings:
                 DebugLog.writeLog("UpcomingActivity: selected settings option.");
+                Intent settings = new Intent(UpcomingActivity.this,
+                        SettingsActivity.class);
+                startActivity(settings);
                 break;
             case R.id.feedback:
                 DebugLog.writeLog("UpcomingActivity: selected feedback option.");
@@ -171,14 +151,14 @@ public class UpcomingActivity extends Activity {
 
     private void upcomingEvents() {
 
-        List<String> arrayList = new ArrayList<>();
+        ArrayList<String> arrayList = new ArrayList<>();
         long currentTimeMillis = System.currentTimeMillis();
-        long startTimeMillis = currentTimeMillis - TimeUnit.HOURS.toMillis(2);
-        long endTimeMillis = currentTimeMillis + TimeUnit.HOURS.toMillis(22);
+        long startTimeMillis = currentTimeMillis - TimeUnit.HOURS.toMillis(3);
+        long endTimeMillis = currentTimeMillis + TimeUnit.DAYS.toMillis(7);
+        DebugLog.writeLog("UpcomingActivity: read calendar from " + startTimeMillis + " to " + endTimeMillis);
         ReadCalendar.getEventsByDateRange(getBaseContext(), arrayList,
                 startTimeMillis, endTimeMillis);
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                getBaseContext(), android.R.layout.simple_list_item_single_choice, arrayList);
+        ButtonAdapter arrayAdapter = new ButtonAdapter(arrayList, this);
         listView.setAdapter(arrayAdapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }

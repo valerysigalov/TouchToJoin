@@ -19,12 +19,7 @@
 package com.app.jointhemeeting;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -39,27 +34,9 @@ public class HistoryActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.history_activity);
 
-        historyLog();
+        getActionBar().setTitle(getString(R.string.history));
 
-        Button dialButton = (Button) findViewById(R.id.buttonDial3);
-        dialButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int pos = listView.getCheckedItemPosition();
-                if (pos != AdapterView.INVALID_POSITION) {
-                    String selected = listView.getAdapter().getItem(pos).toString();
-                    String title = selected.substring(0, selected.indexOf("tel:"));
-                    String number = selected.substring(selected.indexOf("tel:"), selected.length());
-                    DebugLog.writeLog("HistoryActivity: title " + title);
-                    DebugLog.writeLog("HistoryActivity: number " + number);
-                    Intent intent = new Intent(HistoryActivity.this, JoinActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putString("title", title);
-                    extras.putString("number", number);
-                    intent.putExtras(extras);
-                    startActivity(intent);
-                }
-            }
-        });
+        historyLog();
     }
 
     @Override
@@ -75,8 +52,7 @@ public class HistoryActivity extends Activity {
         ArrayList<String> arrayList = new ArrayList<>();
         if (FileIO.Read(arrayList)) {
             listView = (ListView) findViewById(R.id.listView3);
-            ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                    getBaseContext(), android.R.layout.simple_list_item_single_choice, arrayList);
+            ButtonAdapter arrayAdapter = new ButtonAdapter(arrayList, this);
             listView.setAdapter(arrayAdapter);
             listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }

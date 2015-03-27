@@ -51,6 +51,13 @@
             android:label="@string/app_title"
             android:theme="@style/Theme.ActionBar">
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/app_title"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/Theme.ActionBar">
+        </activity>
+
         <receiver
             android:name=".EventReceiver"
             android:label="@string/app_title" >

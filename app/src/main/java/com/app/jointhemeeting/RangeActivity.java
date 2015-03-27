@@ -19,20 +19,18 @@
 package com.app.jointhemeeting;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class RangeActivity extends Activity implements DatePicker.DatePickerListener {
+
+    private Activity activity;
 
     private Button startButton;
     private Button endButton;
@@ -59,7 +57,9 @@ public class RangeActivity extends Activity implements DatePicker.DatePickerList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.range_activity);
 
-        setCurrentDate();
+        activity = this;
+
+        getActionBar().setTitle(getString(R.string.search));
 
         startButton = (Button) findViewById(R.id.buttonStart);
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -81,40 +81,24 @@ public class RangeActivity extends Activity implements DatePicker.DatePickerList
 
         listView = (ListView) findViewById(R.id.listView);
 
+        setCurrentDate();
+
         Button applyButton = (Button) findViewById(R.id.buttonApply);
         applyButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                List<String> arrayList = new ArrayList<>();
+                ArrayList<String> arrayList = new ArrayList<>();
                 Calendar startTime = Calendar.getInstance();
-                startTime.set(startYear, startMonth, startDay);
+                startTime.set(startYear, startMonth, startDay, 0, 0);
+                long startTimeInMillis = startTime.getTimeInMillis();
                 Calendar endTime= Calendar.getInstance();
-                endTime.set(endYear, endMonth, endDay);
+                endTime.set(endYear, endMonth, endDay, 0, 0);
+                long endTimeInMillis = endTime.getTimeInMillis() + TimeUnit.DAYS.toMillis(1);
+                DebugLog.writeLog("RangeActivity: read calendar from " + startTimeInMillis + " to " + endTimeInMillis);
                 ReadCalendar.getEventsByDateRange(getBaseContext(), arrayList,
-                        startTime.getTimeInMillis(), endTime.getTimeInMillis());
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                        getBaseContext(), android.R.layout.simple_list_item_single_choice, arrayList);
+                        startTimeInMillis, endTimeInMillis);
+                ButtonAdapter arrayAdapter = new ButtonAdapter(arrayList, activity);
                 listView.setAdapter(arrayAdapter);
                 listView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            }
-        });
-
-        Button dialButton = (Button) findViewById(R.id.buttonDial);
-        dialButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                int pos = listView.getCheckedItemPosition();
-                if (pos != AdapterView.INVALID_POSITION) {
-                    String selected = listView.getAdapter().getItem(pos).toString();
-                    String title = selected.substring(0, selected.indexOf("tel:"));
-                    String number = selected.substring(selected.indexOf("tel:"), selected.length());
-                    DebugLog.writeLog("RangeActivity: title " + title);
-                    DebugLog.writeLog("RangeActivity: number " + number);
-                    Intent intent = new Intent(RangeActivity.this, JoinActivity.class);
-                    Bundle extras = new Bundle();
-                    extras.putString("title", title);
-                    extras.putString("number", number);
-                    intent.putExtras(extras);
-                    startActivity(intent);
-                }
             }
         });
    }
@@ -149,5 +133,13 @@ public class RangeActivity extends Activity implements DatePicker.DatePickerList
         startYear = endYear = calendar.get(Calendar.YEAR);
         startMonth = endMonth = calendar.get(Calendar.MONTH);
         startDay = endDay = calendar.get(Calendar.DAY_OF_MONTH);
+
+        startButton.setText(new StringBuilder()
+                .append(startMonth + 1).append("-").append(startDay).append("-")
+                .append(startYear).append(" "));
+
+        endButton.setText(new StringBuilder()
+                .append(endMonth + 1).append("-").append(endDay).append("-")
+                .append(endYear).append(" "));
     }
 }

@@ -21,6 +21,10 @@ package com.app.jointhemeeting;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,12 +34,34 @@ public class SettingsActivity extends Activity {
     private static Activity instance;
     private static Map<String, String> defaults;
 
+    private EditText editDelay;
+    private EditText editSnooze;
+    private EditText editHistory;
+    private CheckBox checkEvents;
+    private Button   applyButton;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         DebugLog.writeLog("SettingsActivity: call onCreate.");
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.upcoming_activity);
+        setContentView(R.layout.settings_activity);
+
+        getActionBar().setTitle(getString(R.string.settings));
+
+        editDelay = (EditText) findViewById(R.id.editText);
+        editSnooze = (EditText) findViewById(R.id.editText2);
+        editHistory = (EditText) findViewById(R.id.editText3);
+        checkEvents = (CheckBox) findViewById(R.id.checkBox);
+        applyButton = (Button) findViewById(R.id.button);
+
+        restoreSettings();
+
+        applyButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                saveSettings();
+            }
+        });
     }
 
     public static void setDefaults(Activity activity) {
@@ -45,24 +71,44 @@ public class SettingsActivity extends Activity {
         defaults.put("delay", "3");
         defaults.put("snooze", "5");
         defaults.put("history", "25");
+        defaults.put("events", "conf");
         instance = activity;
     }
 
     public void saveSettings() {
 
         DebugLog.writeLog("SettingsActivity: save settings.");
-        SharedPreferences.Editor edit = getPreferences(MODE_PRIVATE).edit();
-        edit.putString("", "");
+        SharedPreferences.Editor edit = instance.getPreferences(MODE_PRIVATE).edit();
+        edit.putString("delay", editDelay.getText().toString());
+        DebugLog.writeLog("SettingsActivity: save settings - delay = " + editDelay.getText().toString());
+        edit.putString("snooze", editSnooze.getText().toString());
+        DebugLog.writeLog("SettingsActivity: save settings - snooze = " + editSnooze.getText().toString());
+        edit.putString("history", editHistory.getText().toString());
+        DebugLog.writeLog("SettingsActivity: save settings - history = " + editHistory.getText().toString());
+        if (checkEvents.isChecked()) {
+            edit.putString("events", "all");
+            DebugLog.writeLog("SettingsActivity: save settings - events = all");
+        }
+        else {
+            edit.putString("events", "conf");
+            DebugLog.writeLog("SettingsActivity: save settings - events = conf");
+        }
         edit.commit();
     }
 
     public void restoreSettings() {
 
-        SharedPreferences pref = getPreferences(MODE_PRIVATE);
+        SharedPreferences pref = instance.getPreferences(MODE_PRIVATE);
         if (pref != null) {
-            DebugLog.writeLog("SettingsActivity: restore saved settings.");
-            String value;
-            value = pref.getString("history", null);
+            editDelay.setText(getValue("delay"));
+            editSnooze.setText(getValue("snooze"));
+            editHistory.setText(getValue("history"));
+            if (getValue("events").equals("all")) {
+                checkEvents.setChecked(true);
+            }
+            else {
+                checkEvents.setChecked(false);
+            }
         }
     }
 
@@ -72,9 +118,9 @@ public class SettingsActivity extends Activity {
         SharedPreferences pref = instance.getPreferences(MODE_PRIVATE);
         if (pref != null) {
             value = pref.getString(name, null);
-            if (value == null) {
-                value = defaults.get(name);
-            }
+        }
+        if (value == null) {
+            value = defaults.get(name);
         }
         DebugLog.writeLog("SettingsActivity: name " + name + ", value " + value);
         return value;
