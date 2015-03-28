@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.app.jointhemeeting;
+package com.app.touchtojoin;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -59,8 +59,7 @@ public class DIALog extends DialogFragment {
                             extras.putString("number", data.get(2));
                             if (size == 4) {
                                 extras.putString("pin", data.get(3));
-                            }
-                            else {
+                            } else {
                                 extras.putString("pin", "none");
                             }
                             intent.putExtras(extras);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.app.jointhemeeting" >
+    package="com.app.touchtojoin" >
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <application
@@ -8,14 +8,14 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_title">
         <receiver
-            android:name=".SendAlarm"
+            android:name="com.app.touchtojoin.SendAlarm"
             android:label="@string/app_title">
             <intent-filter>
                 <action android:name="com.app.JoinTheMeeting" />
             </intent-filter>
         </receiver>
         <activity
-            android:name=".SnoozeAlarm"
+            android:name="com.app.touchtojoin.SnoozeAlarm"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_title">
             <intent-filter>
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".JoinActivity"
+            android:name="com.app.touchtojoin.JoinActivity"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_title">
             <intent-filter>
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".UpcomingActivity"
+            android:name="com.app.touchtojoin.UpcomingActivity"
             android:label="@string/app_title"
             android:theme="@style/Theme.ActionBar">
             <intent-filter>
@@ -42,24 +42,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".HistoryActivity"
+            android:name="com.app.touchtojoin.HistoryActivity"
             android:label="@string/app_title"
             android:theme="@style/Theme.ActionBar">
         </activity>
         <activity
-            android:name=".RangeActivity"
+            android:name="com.app.touchtojoin.RangeActivity"
             android:label="@string/app_title"
             android:theme="@style/Theme.ActionBar">
         </activity>
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.app.touchtojoin.SettingsActivity"
             android:label="@string/app_title"
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/Theme.ActionBar">
         </activity>
 
         <receiver
-            android:name=".EventReceiver"
+            android:name="com.app.touchtojoin.EventReceiver"
             android:label="@string/app_title" >
             <intent-filter>
                 <action android:name="android.intent.action.EVENT_REMINDER" />

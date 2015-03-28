@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.app.jointhemeeting;
+package com.app.touchtojoin;
 
 import android.app.Notification;
 import android.app.NotificationManager;

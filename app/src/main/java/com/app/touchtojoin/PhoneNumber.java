@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.app.jointhemeeting;
+package com.app.touchtojoin;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

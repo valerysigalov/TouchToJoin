@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.app.jointhemeeting;
+package com.app.touchtojoin;
 
 import android.app.Activity;
 import android.os.Bundle;
