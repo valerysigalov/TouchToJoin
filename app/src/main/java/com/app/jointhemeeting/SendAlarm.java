@@ -39,10 +39,14 @@ public class SendAlarm extends BroadcastReceiver {
         DebugLog.writeLog("Send notification with Id " + notificationId);
 
         Bundle extras = intent.getExtras();
+        String date = extras.getString("date");
+        DebugLog.writeLog("SendAlarm: conference date is " + date);
         String title = extras.getString("title");
-        String number = extras.getString("number");
         DebugLog.writeLog("SendAlarm: conference title is " + title);
+        String number = extras.getString("number");
         DebugLog.writeLog("SendAlarm: conference number is " + number);
+        String pin = extras.getString("pin");
+        DebugLog.writeLog("SendAlarm: conference pin is " + pin);
 
         Intent join = new Intent(context, JoinActivity.class);
         join.putExtras(extras);
@@ -65,7 +69,7 @@ public class SendAlarm extends BroadcastReceiver {
                         .addAction(R.drawable.ic_action_alarms, "Snooze", pSnooze)
                         .setSmallIcon(R.drawable.ic_action_call)
                         .setContentTitle(title)
-                        .setContentText(number)
+                        .setContentText("Phone: " + number + ", PIN: " + pin)
                         .setColor(Color.WHITE)
                         .setWhen(0)
                         .setPriority(Notification.PRIORITY_MAX);

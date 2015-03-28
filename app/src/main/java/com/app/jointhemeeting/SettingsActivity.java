@@ -125,4 +125,16 @@ public class SettingsActivity extends Activity {
         DebugLog.writeLog("SettingsActivity: name " + name + ", value " + value);
         return value;
     }
+
+    public static String setDelay() {
+
+        String delay = getValue("delay");
+        int comma = Integer.parseInt(delay);
+        delay = "";
+        for (int i = 0; i < comma; i++) {
+            delay += ",";
+        }
+
+        return delay;
+    }
 }

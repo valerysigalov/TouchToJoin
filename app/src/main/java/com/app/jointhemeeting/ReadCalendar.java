@@ -36,18 +36,6 @@ class ReadCalendar {
 
     private static String savedTime = null;
 
-    private static String setDelay() {
-
-        String delay = SettingsActivity.getValue("delay");
-        int comma = Integer.parseInt(delay);
-        delay = "";
-        for (int i = 0; i < comma; i++) {
-            delay += ",";
-        }
-
-        return delay;
-    }
-
     public static void getEventByTime(Context context, Intent intent) {
 
         String alarmTime = intent.getData().getLastPathSegment();
@@ -80,6 +68,7 @@ class ReadCalendar {
                             CalendarContract.CalendarAlerts.DTSTART));
                     SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
                     date = formatter.format(new Date(start));
+                    DebugLog.writeLog("ReadCalendar: date " + date);
                     title = cursor.getString(cursor.getColumnIndex(
                             CalendarContract.CalendarAlerts.TITLE));
                     DebugLog.writeLog("ReadCalendar: title " + title);
@@ -113,8 +102,10 @@ class ReadCalendar {
             DebugLog.writeLog("ReadCalendar: start notification activity.");
             Intent notification = new Intent(context, SendAlarm.class);
             Bundle extras = new Bundle();
-            extras.putString("title", date.trim() + " " + title.trim());
-            extras.putString("number", "tel:" + phoneNumber.trim() + setDelay() + pinCode.trim() + "#");
+            extras.putString("date", date.trim());
+            extras.putString("title", title.trim());
+            extras.putString("number", phoneNumber.trim());
+            extras.putString("pin", pinCode.trim());
             notification.putExtras(extras);
             context.sendBroadcast(notification);
         }
@@ -143,7 +134,7 @@ class ReadCalendar {
                 HashSet hashSet = new HashSet();
                 do {
                     title = cursor.getString(cursor.getColumnIndex(
-                            CalendarContract.Instances.TITLE));
+                            CalendarContract.Instances.TITLE)).trim();
                     phoneNumber = PhoneNumber.findNumber(title);
                     pinCode = PhoneNumber.findPinCode(title);
                     if (phoneNumber == null || pinCode == null) {
@@ -156,27 +147,30 @@ class ReadCalendar {
                                     CalendarContract.Instances.DESCRIPTION));
                             phoneNumber = PhoneNumber.findNumber(description);
                             pinCode = PhoneNumber.findPinCode(description);
-                            SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-                            long start = cursor.getLong(cursor.getColumnIndex(
-                                    CalendarContract.Instances.BEGIN));
-                            String date = formatter.format(new Date(start));
-                            if (phoneNumber != null && pinCode != null) {
-                                if (hashSet.add(title.trim() + " " + phoneNumber.trim() + " " + pinCode.trim()) ||
-                                        SettingsActivity.getValue("events").equals("all")) {
-                                    arrayList.add(date.trim() + " " + title.trim() + " tel:" + phoneNumber.trim() + setDelay() + pinCode.trim() + "#");
-                                    DebugLog.writeLog("ReadCalendar: " + date.trim() + " " + title.trim() + " tel:" + phoneNumber.trim() + setDelay() + pinCode.trim() + "#");
-                                }
-                            }
-                            else if (SettingsActivity.getValue("events").equals("all")) {
-                                if (phoneNumber != null) {
-                                    arrayList.add(date.trim() + " " + title.trim() + " tel:" + phoneNumber.trim() + "#");
-                                    DebugLog.writeLog("ReadCalendar: " + date.trim() + " " + title.trim() + " tel:" + phoneNumber.trim() + "#");
-                                }
-                                else {
-                                    arrayList.add(date.trim() + " " + title.trim());
-                                    DebugLog.writeLog("ReadCalendar: " + date.trim() + " " + title.trim());
-                                }
-                            }
+                        }
+                    }
+                    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                    long start = cursor.getLong(cursor.getColumnIndex(
+                            CalendarContract.Instances.BEGIN));
+                    String date = formatter.format(new Date(start)).trim();
+                    if (phoneNumber != null && pinCode != null) {
+                        phoneNumber = phoneNumber.trim();
+                        pinCode = pinCode.trim();
+                        if (hashSet.add(title + " " + phoneNumber + " " + pinCode) ||
+                                SettingsActivity.getValue("events").equals("all")) {
+                            arrayList.add(date + " Subject: " + title + ", Phone: " + phoneNumber + ", PIN: " + pinCode);
+                            DebugLog.writeLog("ReadCalendar: " + date + " Subject: " + title + ", Phone: " + phoneNumber + ", PIN: " + pinCode);
+                        }
+                    }
+                    else if (SettingsActivity.getValue("events").equals("all")) {
+                        if (phoneNumber != null) {
+                            phoneNumber = phoneNumber.trim();
+                            arrayList.add(date + " Subject: " + title + ", Phone: " + phoneNumber);
+                            DebugLog.writeLog("ReadCalendar: " + date + " Subject: " + title + ", Phone: " + phoneNumber);
+                        }
+                        else {
+                            arrayList.add(date + " Subject: " + title);
+                            DebugLog.writeLog("ReadCalendar: " + date + " Subject: " + title);
                         }
                     }
                 } while (cursor.moveToNext());

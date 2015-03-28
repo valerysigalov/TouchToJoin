@@ -22,10 +22,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DIALog extends DialogFragment {
 
@@ -46,16 +49,20 @@ public class DIALog extends DialogFragment {
                 .setPositiveButton(R.string.dial, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface dialog, int id) {
-                        int index = dialogMessage.indexOf("tel:");
-                        if (index != -1) {
-                            String title = dialogMessage.substring(0, index);
-                            String number = dialogMessage.substring(index, dialogMessage.length());
-                            DebugLog.writeLog("DIALog: title " + title);
-                            DebugLog.writeLog("DIALog: number " + number);
+                        ArrayList<String> data = new ArrayList<>();
+                        int size = findPhone(data);
+                        if (size > 2) {
                             Intent intent = new Intent(dialogActivity, JoinActivity.class);
                             Bundle extras = new Bundle();
-                            extras.putString("title", title);
-                            extras.putString("number", number);
+                            extras.putString("date", data.get(0));
+                            extras.putString("title", data.get(1));
+                            extras.putString("number", data.get(2));
+                            if (size == 4) {
+                                extras.putString("pin", data.get(3));
+                            }
+                            else {
+                                extras.putString("pin", "none");
+                            }
                             intent.putExtras(extras);
                             startActivity(intent);
                         }
@@ -71,5 +78,36 @@ public class DIALog extends DialogFragment {
                 });
 
         return builder.create();
+    }
+
+    private int findPhone(ArrayList<String> data) {
+
+        final String subject = "(.*) Subject: (.*)";
+        String num = ", Phone: (.*)";
+        final String pin = ", PIN: (.*)";
+        final String reg_num = subject + num;
+        final String conf_num = subject + num + pin;
+
+        Matcher match_subj = Pattern.compile(subject, Pattern.CASE_INSENSITIVE).matcher(dialogMessage);
+        Matcher match_num = Pattern.compile(reg_num, Pattern.CASE_INSENSITIVE).matcher(dialogMessage);
+        Matcher match_conf = Pattern.compile(conf_num, Pattern.CASE_INSENSITIVE).matcher(dialogMessage);
+        if(match_conf.matches()) {
+            return fillArray(match_conf, data);
+        }
+        else if(match_num.matches()) {
+            return fillArray(match_num, data);
+        }
+        else if(match_subj.matches()) {
+            return fillArray(match_subj, data);
+        }
+        return 0;
+    }
+
+    private int fillArray(Matcher matcher, ArrayList<String> data) {
+
+        for (int index = 1; index <= matcher.groupCount(); index++) {
+            data.add(matcher.group(index));
+        }
+        return matcher.groupCount();
     }
 }
