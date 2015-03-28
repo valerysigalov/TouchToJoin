@@ -11,7 +11,7 @@
             android:name="com.app.touchtojoin.SendAlarm"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="com.app.JoinTheMeeting" />
+                <action android:name="com.app.touchtojoin" />
             </intent-filter>
         </receiver>
         <activity

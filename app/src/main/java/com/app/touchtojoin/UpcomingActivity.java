@@ -60,7 +60,7 @@ public class UpcomingActivity extends Activity {
             registerReceiver(new EventReceiver(), eventFilter);
 
             DebugLog.writeLog("UpcomingActivity: register alarm receiver.");
-            IntentFilter alarmFilter = new IntentFilter("com.app.JoinTheMeeting");
+            IntentFilter alarmFilter = new IntentFilter("com.app.touchtojoin");
             registerReceiver(new SendAlarm(), alarmFilter);
 
             wasRegistered = true;
