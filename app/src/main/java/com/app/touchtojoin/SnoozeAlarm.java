@@ -45,8 +45,8 @@ public class SnoozeAlarm extends Activity {
 
         Intent intent = new Intent(this, SendAlarm.class);
         intent.putExtras(extras);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0,
-                intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notificationId,
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10000/*minutes*DateUtils.MINUTE_IN_MILLIS*/, pendingIntent);

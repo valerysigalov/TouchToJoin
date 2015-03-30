@@ -21,7 +21,6 @@ package com.app.touchtojoin;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -53,15 +52,15 @@ public class SendAlarm extends BroadcastReceiver {
         join.putExtras(extras);
         join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-        PendingIntent pJoin = PendingIntent.getActivity(context, 0,
-                join, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pJoin = PendingIntent.getActivity(context, notificationId,
+                join, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Intent snooze = new Intent(context, SnoozeAlarm.class);
         extras.putInt("notificationId", notificationId);
         snooze.putExtras(extras);
 
-        PendingIntent pSnooze = PendingIntent.getActivity(context, 0,
-                snooze, PendingIntent.FLAG_CANCEL_CURRENT);
+        PendingIntent pSnooze = PendingIntent.getActivity(context, notificationId,
+                snooze, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context)
@@ -76,7 +75,7 @@ public class SendAlarm extends BroadcastReceiver {
                         .setPriority(Notification.PRIORITY_MAX);
 
         Intent main = new Intent(context, UpcomingActivity.class);
-        PendingIntent pMain = PendingIntent.getActivity(context, 0,
+        PendingIntent pMain = PendingIntent.getActivity(context, notificationId,
                 main, PendingIntent.FLAG_CANCEL_CURRENT);
         mBuilder.setContentIntent(pMain);
 
