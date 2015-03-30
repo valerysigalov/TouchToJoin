@@ -18,6 +18,8 @@
 
 package com.app.touchtojoin;
 
+import android.content.Context;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,9 +31,8 @@ import java.util.HashSet;
 
 class FileIO {
 
-    public static boolean Read(ArrayList<String> arrayList) {
+    public static boolean Read(String fileName, ArrayList<String> arrayList) {
 
-        String fileName = System.getProperty("java.io.tmpdir") + "/history.log";
         BufferedReader bufferedReader;
         String line;
         try {
@@ -48,11 +49,10 @@ class FileIO {
         }
     }
 
-    public static boolean Write(String line) {
+    public static boolean Write(String fileName, String line) {
 
-        String fileName = System.getProperty("java.io.tmpdir") + "/history.log";
         ArrayList<String> arrayList = new ArrayList<>();
-        Read(arrayList);
+        Read(fileName, arrayList);
         HashSet<String> hashSet = new HashSet<>();
         try {
             File file = new File(fileName);

@@ -34,8 +34,6 @@ import java.util.concurrent.TimeUnit;
 
 public class UpcomingActivity extends Activity {
 
-    private boolean wasRegistered = false;
-
     private ListView listView;
 
     @Override
@@ -53,17 +51,15 @@ public class UpcomingActivity extends Activity {
 
         upcomingEvents();
 
-        if (!wasRegistered) {
-            DebugLog.writeLog("UpcomingActivity: register calendar events receiver.");
-            IntentFilter eventFilter = new IntentFilter(CalendarContract.ACTION_EVENT_REMINDER);
-            eventFilter.addDataScheme("content");
-            registerReceiver(new EventReceiver(), eventFilter);
+        DebugLog.writeLog("UpcomingActivity: register broadcast receivers.");
+        RegisterReceiver.registerReceiver(UpcomingActivity.this);
 
-            DebugLog.writeLog("UpcomingActivity: register alarm receiver.");
-            IntentFilter alarmFilter = new IntentFilter("com.app.touchtojoin");
-            registerReceiver(new SendAlarm(), alarmFilter);
-
-            wasRegistered = true;
+        if (getIntent().hasExtra("minimize")) {
+            DebugLog.writeLog("UpcomingActivity: start minimized.");
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
         }
     }
 

@@ -3,6 +3,7 @@
     package="com.app.touchtojoin" >
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -65,6 +66,12 @@
                 <action android:name="android.intent.action.EVENT_REMINDER" />
                 <data android:scheme="content"/>
                 <data android:host="com.android.calendar"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </receiver>
     </application>

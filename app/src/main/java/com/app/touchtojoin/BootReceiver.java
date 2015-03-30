@@ -18,15 +18,22 @@
 
 package com.app.touchtojoin;
 
-import android.util.Log;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 
-class DebugLog {
+public class BootReceiver extends BroadcastReceiver {
 
-    private static final boolean debug = true;
+    @Override
+    public void onReceive(Context context, Intent intent) {
 
-    public static void writeLog(String msg) {
-        if (debug) {
-            Log.d("TouchToJoin", msg);
-        }
+        DebugLog.writeLog("BootReceiver: start activity minimized.");
+        Intent start = new Intent(context, UpcomingActivity.class);
+        Bundle extras = new Bundle();
+        extras.putString("minimize", "yes");
+        start.putExtras(extras);
+        start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(start);
     }
 }

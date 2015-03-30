@@ -41,11 +41,13 @@ public class JoinActivity extends Activity {
         DebugLog.writeLog("JoinActivity: conference pin is " + pin);
 
         if (pin.equals("none")) {
-            FileIO.Write(date + " Subject: " + title + ", Phone: " + number);
+            FileIO.Write(this.getFilesDir() + "/history.log",
+                    date + " Subject: " + title + ", Phone: " + number);
             number = "tel:" + number + "#";
         }
         else {
-            FileIO.Write(date + " Subject: " + title + ", Phone: " + number + ", PIN: " + pin);
+            FileIO.Write(this.getFilesDir() + "/history.log",
+                    date + " Subject: " + title + ", Phone: " + number + ", PIN: " + pin);
             number = "tel:" + number + SettingsActivity.setDelay() + pin + "#";
         }
 

@@ -26,13 +26,9 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class SettingsActivity extends Activity {
 
-    private static Activity instance;
-    private static Map<String, String> defaults;
+    private static Activity instance = null;
 
     private EditText editDelay;
     private EditText editSnooze;
@@ -66,12 +62,17 @@ public class SettingsActivity extends Activity {
 
     public static void setDefaults(Activity activity) {
 
-        DebugLog.writeLog("SettingsActivity: set default settings.");
-        defaults = new HashMap<>();
-        defaults.put("delay", "3");
-        defaults.put("snooze", "5");
-        defaults.put("history", "25");
-        defaults.put("events", "conf");
+        SharedPreferences pref = activity.getPreferences(MODE_PRIVATE);
+        if (pref.contains("delay") == false) {
+            DebugLog.writeLog("SettingsActivity: set default settings.");
+            SharedPreferences.Editor edit = pref.edit();
+            edit.clear();
+            edit.putString("delay", "3");
+            edit.putString("snooze", "5");
+            edit.putString("history", "25");
+            edit.putString("events", "conf");
+            edit.commit();
+        }
         instance = activity;
     }
 
@@ -79,6 +80,7 @@ public class SettingsActivity extends Activity {
 
         DebugLog.writeLog("SettingsActivity: save settings.");
         SharedPreferences.Editor edit = instance.getPreferences(MODE_PRIVATE).edit();
+        edit.clear();
         edit.putString("delay", editDelay.getText().toString());
         DebugLog.writeLog("SettingsActivity: save settings - delay = " + editDelay.getText().toString());
         edit.putString("snooze", editSnooze.getText().toString());
@@ -114,13 +116,12 @@ public class SettingsActivity extends Activity {
 
     public static String getValue(String name) {
 
-        String value = null;
-        SharedPreferences pref = instance.getPreferences(MODE_PRIVATE);
-        if (pref != null) {
-            value = pref.getString(name, null);
-        }
-        if (value == null) {
-            value = defaults.get(name);
+        String value = "";
+        if (instance != null) {
+            SharedPreferences pref = instance.getPreferences(MODE_PRIVATE);
+            if (pref != null) {
+                value = pref.getString(name, null);
+            }
         }
         DebugLog.writeLog("SettingsActivity: name " + name + ", value " + value);
         return value;

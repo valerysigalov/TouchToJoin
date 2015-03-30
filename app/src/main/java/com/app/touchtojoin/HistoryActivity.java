@@ -19,6 +19,7 @@
 package com.app.touchtojoin;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -50,7 +51,7 @@ public class HistoryActivity extends Activity {
     private void historyLog() {
 
         ArrayList<String> arrayList = new ArrayList<>();
-        if (FileIO.Read(arrayList)) {
+        if (FileIO.Read(this.getFilesDir() + "/history.log", arrayList)) {
             listView = (ListView) findViewById(R.id.listView3);
             ButtonAdapter arrayAdapter = new ButtonAdapter(arrayList, this);
             listView.setAdapter(arrayAdapter);
