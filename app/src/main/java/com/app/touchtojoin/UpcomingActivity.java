@@ -21,12 +21,16 @@ package com.app.touchtojoin;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -131,6 +135,7 @@ public class UpcomingActivity extends Activity {
                 break;
             case R.id.feedback:
                 DebugLog.writeLog("UpcomingActivity: selected feedback option.");
+                sendFeedback();
                 break;
             case R.id.help:
                 DebugLog.writeLog("UpcomingActivity: selected help option.");
@@ -143,6 +148,34 @@ public class UpcomingActivity extends Activity {
         }
 
         return true;
+    }
+
+    private void sendFeedback() {
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("message/rfc822");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"touch.to.join@gmail.com"});
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Touch to Join user feedback");
+        String appName = "Application Name: Touch to Join";
+        String appVersion = "Application Version: 1.0";
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            appVersion = "Application Version: " + pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            DebugLog.writeLog("UpcomingActivity: package not found.");
+        }
+        String device = "Device name: " + android.os.Build.MODEL;
+        String os = "OS version: " + Build.VERSION.RELEASE;
+        String invite = "Please tell us about your experience with Touch to Join application.";
+        String body = appName + "\n\n" + appVersion + "\n\n" + device + "\n\n" + os + "\n\n" + invite + "\n\n";
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+
+        try {
+            startActivity(Intent.createChooser(intent, "Send mail..."));
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(UpcomingActivity.this, "There are no email clients installed.",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void upcomingEvents() {

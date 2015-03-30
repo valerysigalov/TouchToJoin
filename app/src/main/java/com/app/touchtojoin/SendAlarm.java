@@ -21,6 +21,7 @@ package com.app.touchtojoin;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -73,6 +74,11 @@ public class SendAlarm extends BroadcastReceiver {
                         .setColor(Color.WHITE)
                         .setWhen(0)
                         .setPriority(Notification.PRIORITY_MAX);
+
+        Intent main = new Intent(context, UpcomingActivity.class);
+        PendingIntent pMain = PendingIntent.getActivity(context, 0,
+                main, PendingIntent.FLAG_CANCEL_CURRENT);
+        mBuilder.setContentIntent(pMain);
 
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
