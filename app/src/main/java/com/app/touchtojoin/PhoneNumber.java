@@ -60,6 +60,9 @@ class PhoneNumber {
     private static String matchNumber(String number, String text) {
 
         String phoneNumber = null;
+        if (text == null) {
+            return phoneNumber;
+        }
         Pattern pattern = Pattern.compile(number, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(text);
         if(matcher.find())
