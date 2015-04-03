@@ -49,7 +49,8 @@ class ReadCalendar {
         String[] projection = new String[] { CalendarContract.CalendarAlerts.EVENT_LOCATION,
                 CalendarContract.CalendarAlerts.DESCRIPTION,
                 CalendarContract.CalendarAlerts.TITLE,
-                CalendarContract.CalendarAlerts.DTSTART};
+                CalendarContract.CalendarAlerts.DTSTART,
+                CalendarContract.CalendarAlerts.DTEND};
 
         String selection = CalendarContract.CalendarAlerts.ALARM_TIME + "=?";
 
@@ -61,32 +62,44 @@ class ReadCalendar {
         String pinCode = null;
         String title = "call";
         String date = "now";
+        String begin, end;
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
-                    long start = cursor.getLong(cursor.getColumnIndex(
+                    long time = cursor.getLong(cursor.getColumnIndex(
                             CalendarContract.CalendarAlerts.DTSTART));
-                    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-                    date = formatter.format(new Date(start));
+                    SimpleDateFormat fmt_date = new SimpleDateFormat("MM/dd/yyyy");
+                    SimpleDateFormat fmt_time = new SimpleDateFormat("HH:mm");
+                    date = fmt_date.format(new Date(time));
+                    begin = fmt_time.format(new Date(time));
+                    time = cursor.getLong(cursor.getColumnIndex(
+                            CalendarContract.CalendarAlerts.DTEND));
+                    end = fmt_time.format(new Date(time));
+                    if (begin.equals(end)) {
+                        date = date + " " + begin;
+                    }
+                    else {
+                        date = date + " " + begin + " - " + end;
+                    }
                     DebugLog.writeLog("ReadCalendar: date " + date);
                     title = cursor.getString(cursor.getColumnIndex(
                             CalendarContract.CalendarAlerts.TITLE));
                     DebugLog.writeLog("ReadCalendar: title " + title);
                     phoneNumber = PhoneNumber.findNumber(title);
-                    pinCode = PhoneNumber.findPinCode(title);
+                    pinCode = PhoneNumber.findPinCode(title, phoneNumber);
                     if (phoneNumber == null || pinCode == null) {
                         String location = cursor.getString(cursor.getColumnIndex(
                                 CalendarContract.CalendarAlerts.EVENT_LOCATION));
                         DebugLog.writeLog("ReadCalendar: location " + location);
                         phoneNumber = PhoneNumber.findNumber(location);
-                        pinCode = PhoneNumber.findPinCode(location);
+                        pinCode = PhoneNumber.findPinCode(location, phoneNumber);
                     }
                     if (phoneNumber == null || pinCode == null) {
                         String description = cursor.getString(cursor.getColumnIndex(
                                 CalendarContract.CalendarAlerts.DESCRIPTION));
                         DebugLog.writeLog("ReadCalendar: description " + description);
                         phoneNumber = PhoneNumber.findNumber(description);
-                        pinCode = PhoneNumber.findPinCode(description);
+                        pinCode = PhoneNumber.findPinCode(description, phoneNumber);
                     }
                 } while (cursor.moveToNext());
             }
@@ -122,7 +135,8 @@ class ReadCalendar {
         String[] projection = new String[] { CalendarContract.Instances.EVENT_LOCATION,
                 CalendarContract.Instances.DESCRIPTION,
                 CalendarContract.Instances.TITLE,
-                CalendarContract.Instances.BEGIN};
+                CalendarContract.Instances.BEGIN,
+                CalendarContract.Instances.END};
 
         Cursor cursor = context.getContentResolver().query( eventsUri, projection, null, null, CalendarContract.Instances.BEGIN + " ASC" );
 
@@ -136,23 +150,34 @@ class ReadCalendar {
                     title = cursor.getString(cursor.getColumnIndex(
                             CalendarContract.Instances.TITLE)).trim();
                     phoneNumber = PhoneNumber.findNumber(title);
-                    pinCode = PhoneNumber.findPinCode(title);
+                    pinCode = PhoneNumber.findPinCode(title, phoneNumber);
                     if (phoneNumber == null || pinCode == null) {
                         String location = cursor.getString(cursor.getColumnIndex(
                                 CalendarContract.Instances.EVENT_LOCATION));
                         phoneNumber = PhoneNumber.findNumber(location);
-                        pinCode = PhoneNumber.findPinCode(location);
+                        pinCode = PhoneNumber.findPinCode(location, phoneNumber);
                         if (phoneNumber == null || pinCode == null) {
                             String description = cursor.getString(cursor.getColumnIndex(
                                     CalendarContract.Instances.DESCRIPTION));
                             phoneNumber = PhoneNumber.findNumber(description);
-                            pinCode = PhoneNumber.findPinCode(description);
+                            pinCode = PhoneNumber.findPinCode(description, phoneNumber);
                         }
                     }
-                    SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-                    long start = cursor.getLong(cursor.getColumnIndex(
+                    SimpleDateFormat fmt_date = new SimpleDateFormat("MM/dd/yyyy");
+                    SimpleDateFormat fmt_time = new SimpleDateFormat("HH:mm");
+                    long time = cursor.getLong(cursor.getColumnIndex(
                             CalendarContract.Instances.BEGIN));
-                    String date = formatter.format(new Date(start)).trim();
+                    String date = fmt_date.format(new Date(time)).trim();
+                    String begin = fmt_time.format(new Date(time)).trim();
+                    time = cursor.getLong(cursor.getColumnIndex(
+                            CalendarContract.Instances.END));
+                    String end = fmt_time.format(new Date(time)).trim();
+                    if (begin.equals(end)) {
+                        date = date + " " + begin;
+                    }
+                    else {
+                        date = date + " " + begin + " - " + end;
+                    }
                     if (phoneNumber != null && pinCode != null) {
                         phoneNumber = phoneNumber.trim();
                         pinCode = pinCode.trim();

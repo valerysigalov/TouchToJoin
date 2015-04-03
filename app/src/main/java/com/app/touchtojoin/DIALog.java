@@ -39,6 +39,8 @@ public class DIALog extends DialogFragment {
 
         dialogActivity = activity;
         dialogMessage = string;
+        dialogMessage = dialogMessage.replaceFirst(" Subject:", "\nSubject:");
+        dialogMessage = dialogMessage.replaceFirst(", Phone:", "\nPhone:");
     }
 
     @Override
@@ -81,8 +83,8 @@ public class DIALog extends DialogFragment {
 
     private int findPhone(ArrayList<String> data) {
 
-        final String subject = "(.*) Subject: (.*)";
-        String num = ", Phone: (.*)";
+        final String subject = "(.*)\nSubject: (.*)";
+        String num = "\nPhone: (.*)";
         final String pin = ", PIN: (.*)";
         final String reg_num = subject + num;
         final String conf_num = subject + num + pin;

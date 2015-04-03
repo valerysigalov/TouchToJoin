@@ -43,9 +43,15 @@ class PhoneNumber {
         return phoneNumber;
     }
 
-    public static String findPinCode(String text) {
+    public static String findPinCode(String text, String phoneNumber) {
 
         String pinCode;
+        if (phoneNumber != null) {
+            int index = text.indexOf(phoneNumber);
+            if (index != -1) {
+                text = text.substring(index);
+            }
+        }
         pinCode = matchNumber(pin_code, text);
 
         return pinCode;
