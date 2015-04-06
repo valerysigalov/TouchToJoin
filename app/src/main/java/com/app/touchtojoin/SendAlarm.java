@@ -55,11 +55,11 @@ public class SendAlarm extends BroadcastReceiver {
         PendingIntent pJoin = PendingIntent.getActivity(context, notificationId,
                 join, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Intent snooze = new Intent(context, SnoozeAlarm.class);
+        Intent snooze = new Intent(context, SnoozeReceiver.class);
         extras.putInt("notificationId", notificationId);
         snooze.putExtras(extras);
 
-        PendingIntent pSnooze = PendingIntent.getActivity(context, notificationId,
+        PendingIntent pSnooze = PendingIntent.getBroadcast(context, notificationId,
                 snooze, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder =
@@ -70,7 +70,7 @@ public class SendAlarm extends BroadcastReceiver {
                         .setSmallIcon(R.drawable.ic_action_call)
                         .setContentTitle(title)
                         .setContentText("Phone: " + number + ", PIN: " + pin)
-                        .setColor(Color.WHITE)
+                        .setColor(Color.rgb(51, 153, 255))
                         .setWhen(0)
                         .setPriority(Notification.PRIORITY_MAX);
 

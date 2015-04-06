@@ -37,6 +37,7 @@ public class SnoozeAlarm extends Activity {
         int notificationId = extras.getInt("notificationId");
         String snooze = SettingsActivity.getValue("snooze");
         int minutes = Integer.parseInt(snooze);
+        boolean isVisible = extras.getBoolean("visible");
         DebugLog.writeLog("SnoozeAlarm: snooze notification with Id " + notificationId + " for " + minutes + " minutes.");
 
         NotificationManager mNotificationManager =
@@ -50,5 +51,12 @@ public class SnoozeAlarm extends Activity {
 
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10000/*minutes*DateUtils.MINUTE_IN_MILLIS*/, pendingIntent);
+
+        if (isVisible == false) {
+            DebugLog.writeLog("SnoozeAlarm: return application to background");
+            moveTaskToBack(true);
+        }
+
+        finish();
     }
 }

@@ -15,6 +15,13 @@
                 <action android:name="com.app.touchtojoin" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name="com.app.touchtojoin.SnoozeReceiver"
+            android:label="@string/app_title">
+            <intent-filter>
+                <action android:name="com.app.touchtojoin" />
+            </intent-filter>
+        </receiver>
         <activity
             android:name="com.app.touchtojoin.SnoozeAlarm"
             android:theme="@style/Theme.Transparent"
@@ -58,7 +65,11 @@
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/Theme.ActionBar">
         </activity>
-
+        <application
+            android:name="com.app.touchtojoin.ActivityStatus"
+            android:theme="@style/Theme.Transparent"
+            android:label="@string/app_title">
+        </application>
         <receiver
             android:name="com.app.touchtojoin.EventReceiver"
             android:label="@string/app_title" >

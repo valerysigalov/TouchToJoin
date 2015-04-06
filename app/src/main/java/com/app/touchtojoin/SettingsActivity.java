@@ -60,6 +60,22 @@ public class SettingsActivity extends Activity {
         });
     }
 
+    @Override
+    public void onPause() {
+
+        DebugLog.writeLog("SettingsActivity: pause settings activity.");
+        ActivityStatus.Paused();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+
+        DebugLog.writeLog("SettingsActivity: resume settings activity.");
+        ActivityStatus.Resumed();
+        super.onPause();
+    }
+
     public static void setDefaults(Activity activity) {
 
         SharedPreferences pref = activity.getPreferences(MODE_PRIVATE);

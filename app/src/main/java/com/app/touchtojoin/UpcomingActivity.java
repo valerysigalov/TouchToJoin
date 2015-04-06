@@ -20,12 +20,10 @@ package com.app.touchtojoin;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.CalendarContract;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -68,9 +66,18 @@ public class UpcomingActivity extends Activity {
     }
 
     @Override
+    public void onPause() {
+
+        DebugLog.writeLog("UpcomingActivity: pause upcoming activity.");
+        ActivityStatus.Paused();
+        super.onPause();
+    }
+
+    @Override
     public void onResume() {
 
         DebugLog.writeLog("UpcomingActivity: resume upcoming activity.");
+        ActivityStatus.Resumed();
         super.onResume();
         upcomingEvents();
     }

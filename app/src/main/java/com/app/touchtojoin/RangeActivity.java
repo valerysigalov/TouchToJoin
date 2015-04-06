@@ -104,6 +104,22 @@ public class RangeActivity extends Activity implements DatePicker.DatePickerList
    }
 
     @Override
+    public void onPause() {
+
+        DebugLog.writeLog("RangeActivity: pause range activity.");
+        ActivityStatus.Paused();
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+
+        DebugLog.writeLog("RangeActivity: resume range activity.");
+        ActivityStatus.Resumed();
+        super.onPause();
+    }
+
+    @Override
     public void onDateSet(int year, int month, int day) {
         DebugLog.writeLog("RangeActivity: date " + month + "-" + day + "-" + year);
         if(btn == eButton.START) {

@@ -41,9 +41,18 @@ public class HistoryActivity extends Activity {
     }
 
     @Override
+    public void onPause() {
+
+        DebugLog.writeLog("HistoryActivity: pause history activity.");
+        ActivityStatus.Paused();
+        super.onResume();
+    }
+
+    @Override
     public void onResume() {
 
         DebugLog.writeLog("HistoryActivity: resume history activity.");
+        ActivityStatus.Resumed();
         super.onResume();
         historyLog();
     }

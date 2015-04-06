@@ -21,6 +21,10 @@ class RegisterReceiver extends Activity {
             IntentFilter alarmFilter = new IntentFilter("com.app.touchtojoin");
             context.getApplicationContext().registerReceiver(new SendAlarm(), alarmFilter);
 
+            DebugLog.writeLog("RegisterReceiver: register snooze receiver.");
+            IntentFilter snoozeFilter = new IntentFilter("com.app.touchtojoin");
+            context.getApplicationContext().registerReceiver(new SnoozeReceiver(), snoozeFilter);
+
             wasRegistered = true;
         }
     }
