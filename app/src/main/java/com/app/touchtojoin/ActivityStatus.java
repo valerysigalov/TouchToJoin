@@ -18,9 +18,7 @@
 
 package com.app.touchtojoin;
 
-import android.app.Application;
-
-public class ActivityStatus extends Application {
+class ActivityStatus {
 
     private static boolean isVisible;
 

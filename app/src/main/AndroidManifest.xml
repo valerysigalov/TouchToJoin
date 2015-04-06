@@ -65,11 +65,6 @@
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/Theme.ActionBar">
         </activity>
-        <application
-            android:name="com.app.touchtojoin.ActivityStatus"
-            android:theme="@style/Theme.Transparent"
-            android:label="@string/app_title">
-        </application>
         <receiver
             android:name="com.app.touchtojoin.EventReceiver"
             android:label="@string/app_title" >
