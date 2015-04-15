@@ -50,16 +50,17 @@ public class SendAlarm extends BroadcastReceiver {
 
         Intent join = new Intent(context, JoinActivity.class);
         join.putExtras(extras);
-        join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent pJoin = PendingIntent.getActivity(context, notificationId,
                 join, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Intent snooze = new Intent(context, SnoozeReceiver.class);
+        Intent snooze = new Intent(context, SnoozeAlarm.class);
         extras.putInt("notificationId", notificationId);
         snooze.putExtras(extras);
+        snooze.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        PendingIntent pSnooze = PendingIntent.getBroadcast(context, notificationId,
+        PendingIntent pSnooze = PendingIntent.getActivity(context, notificationId,
                 snooze, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder mBuilder =
@@ -74,10 +75,7 @@ public class SendAlarm extends BroadcastReceiver {
                         .setWhen(0)
                         .setPriority(Notification.PRIORITY_MAX);
 
-        Intent main = new Intent(context, UpcomingActivity.class);
-        PendingIntent pMain = PendingIntent.getActivity(context, notificationId,
-                main, PendingIntent.FLAG_CANCEL_CURRENT);
-        mBuilder.setContentIntent(pMain);
+        mBuilder.setContentIntent(pJoin);
 
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

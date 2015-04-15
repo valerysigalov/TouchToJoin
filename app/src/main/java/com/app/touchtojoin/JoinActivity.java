@@ -20,8 +20,10 @@ package com.app.touchtojoin;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 public class JoinActivity extends Activity {
 
@@ -41,20 +43,29 @@ public class JoinActivity extends Activity {
         DebugLog.writeLog("JoinActivity: conference pin is " + pin);
 
         if (pin.equals("none")) {
-            FileIO.Write(this.getFilesDir() + "/history.log",
-                    date + " Subject: " + title + ", Phone: " + number);
             number = "tel:" + number + "#";
-        }
-        else {
-            FileIO.Write(this.getFilesDir() + "/history.log",
-                    date + " Subject: " + title + ", Phone: " + number + ", PIN: " + pin);
-            number = "tel:" + number + SettingsActivity.setDelay() + pin + "#";
+        } else {
+            number = "tel:" + number + setDelay() + pin + "#";
         }
 
         Intent join = new Intent(Intent.ACTION_CALL);
         join.setData(Uri.parse(number));
-        join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(join);
+
         finish();
+    }
+
+    private String setDelay() {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String delay = sharedPreferences.getString("delay", null);
+        int comma = Integer.parseInt(delay);
+        delay = "";
+        for (int i = 0; i < comma; i++) {
+            delay += ",";
+        }
+
+        return delay;
     }
 }

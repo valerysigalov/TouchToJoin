@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory>
+
+        <EditTextPreference
+            android:title="@string/delay"
+            android:key="delay"
+            android:inputType="numberDecimal"
+            android:defaultValue="3"
+            android:summary="3">
+        </EditTextPreference>
+
+        <EditTextPreference
+            android:title="@string/snooze"
+            android:key="snooze"
+            android:inputType="numberDecimal"
+            android:defaultValue="5"
+            android:summary="5">
+        </EditTextPreference>
+
+        <PreferenceScreen
+            android:title="@string/feedback"
+            android:key="feedback"
+            android:summary="@string/subject">
+            <intent android:action="com.app.touchtojoin.Feedback"/>
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

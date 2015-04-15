@@ -21,19 +21,13 @@ package com.app.touchtojoin;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 
 public class BootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        DebugLog.writeLog("BootReceiver: start activity minimized.");
-        Intent start = new Intent(context, UpcomingActivity.class);
-        Bundle extras = new Bundle();
-        extras.putString("minimize", "yes");
-        start.putExtras(extras);
-        start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(start);
+        DebugLog.writeLog("BootReceiver: register broadcast receivers.");
+        RegisterReceiver.registerReceiver(context);
     }
 }

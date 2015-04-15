@@ -24,7 +24,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 public class SnoozeAlarm extends Activity {
 
@@ -35,9 +37,9 @@ public class SnoozeAlarm extends Activity {
 
         Bundle extras = getIntent().getExtras();
         int notificationId = extras.getInt("notificationId");
-        String snooze = SettingsActivity.getValue("snooze");
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        String snooze = sharedPreferences.getString("snooze", null);
         int minutes = Integer.parseInt(snooze);
-        boolean isVisible = extras.getBoolean("visible");
         DebugLog.writeLog("SnoozeAlarm: snooze notification with Id " + notificationId + " for " + minutes + " minutes.");
 
         NotificationManager mNotificationManager =
@@ -46,16 +48,12 @@ public class SnoozeAlarm extends Activity {
 
         Intent intent = new Intent(this, SendAlarm.class);
         intent.putExtras(extras);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notificationId,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10000/*minutes*DateUtils.MINUTE_IN_MILLIS*/, pendingIntent);
-
-        if (isVisible == false) {
-            DebugLog.writeLog("SnoozeAlarm: return application to background");
-            moveTaskToBack(true);
-        }
 
         finish();
     }

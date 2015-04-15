@@ -18,19 +18,14 @@
 
 package com.app.touchtojoin;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 
 class ReadCalendar {
 
@@ -121,87 +116,6 @@ class ReadCalendar {
             extras.putString("pin", pinCode.trim());
             notification.putExtras(extras);
             context.sendBroadcast(notification);
-        }
-    }
-
-    public static void getEventsByDateRange(Context context, List<String> arrayList,
-                long startTimeInMillis, long endTimeInMillis) {
-
-        Uri.Builder eventsUriBuilder = CalendarContract.Instances.CONTENT_URI.buildUpon();
-        ContentUris.appendId(eventsUriBuilder, startTimeInMillis);
-        ContentUris.appendId(eventsUriBuilder, endTimeInMillis);
-        Uri eventsUri = eventsUriBuilder.build();
-
-        String[] projection = new String[] { CalendarContract.Instances.EVENT_LOCATION,
-                CalendarContract.Instances.DESCRIPTION,
-                CalendarContract.Instances.TITLE,
-                CalendarContract.Instances.BEGIN,
-                CalendarContract.Instances.END};
-
-        Cursor cursor = context.getContentResolver().query( eventsUri, projection, null, null, CalendarContract.Instances.BEGIN + " ASC" );
-
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                String phoneNumber;
-                String pinCode;
-                String title;
-                HashSet hashSet = new HashSet();
-                do {
-                    title = cursor.getString(cursor.getColumnIndex(
-                            CalendarContract.Instances.TITLE)).trim();
-                    phoneNumber = PhoneNumber.findNumber(title);
-                    pinCode = PhoneNumber.findPinCode(title, phoneNumber);
-                    if (phoneNumber == null || pinCode == null) {
-                        String location = cursor.getString(cursor.getColumnIndex(
-                                CalendarContract.Instances.EVENT_LOCATION));
-                        phoneNumber = PhoneNumber.findNumber(location);
-                        pinCode = PhoneNumber.findPinCode(location, phoneNumber);
-                        if (phoneNumber == null || pinCode == null) {
-                            String description = cursor.getString(cursor.getColumnIndex(
-                                    CalendarContract.Instances.DESCRIPTION));
-                            phoneNumber = PhoneNumber.findNumber(description);
-                            pinCode = PhoneNumber.findPinCode(description, phoneNumber);
-                        }
-                    }
-                    SimpleDateFormat fmt_date = new SimpleDateFormat("MM/dd/yyyy");
-                    SimpleDateFormat fmt_time = new SimpleDateFormat("HH:mm");
-                    long time = cursor.getLong(cursor.getColumnIndex(
-                            CalendarContract.Instances.BEGIN));
-                    String date = fmt_date.format(new Date(time)).trim();
-                    String begin = fmt_time.format(new Date(time)).trim();
-                    time = cursor.getLong(cursor.getColumnIndex(
-                            CalendarContract.Instances.END));
-                    String end = fmt_time.format(new Date(time)).trim();
-                    if (begin.equals(end)) {
-                        date = date + " " + begin;
-                    }
-                    else {
-                        date = date + " " + begin + " - " + end;
-                    }
-                    if (phoneNumber != null && pinCode != null) {
-                        phoneNumber = phoneNumber.trim();
-                        pinCode = pinCode.trim();
-                        if (hashSet.add(title + " " + phoneNumber + " " + pinCode) ||
-                                SettingsActivity.getValue("events").equals("all")) {
-                            arrayList.add(date + " Subject: " + title + ", Phone: " + phoneNumber + ", PIN: " + pinCode);
-                            DebugLog.writeLog("ReadCalendar: " + date + " Subject: " + title + ", Phone: " + phoneNumber + ", PIN: " + pinCode);
-                        }
-                    }
-                    else if (SettingsActivity.getValue("events").equals("all")) {
-                        if (phoneNumber != null) {
-                            phoneNumber = phoneNumber.trim();
-                            arrayList.add(date + " Subject: " + title + ", Phone: " + phoneNumber);
-                            DebugLog.writeLog("ReadCalendar: " + date + " Subject: " + title + ", Phone: " + phoneNumber);
-                        }
-                        else {
-                            arrayList.add(date + " Subject: " + title);
-                            DebugLog.writeLog("ReadCalendar: " + date + " Subject: " + title);
-                        }
-                    }
-                } while (cursor.moveToNext());
-            }
-            Collections.sort(arrayList);
-            cursor.close();
         }
     }
 }
