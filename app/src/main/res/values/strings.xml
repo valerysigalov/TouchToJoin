@@ -4,8 +4,20 @@
     <string name="app_name">Application Name: Touch to Join</string>
     <string name="app_title">Touch to Join</string>
     <string name="app_ver">Application Version:</string>
-    <string name="delay">Set delay (one unit is two seconds)</string>
-    <string name="snooze">Set snooze alarm time in minutes</string>
+    <string name="history">Touch to Join the last conference call</string>
+    <string name="no_call">No conference calls had been made yet</string>
+    <string name="call_id">call</string>
+    <string name="pause_id">pause</string>
+    <string name="pause">Set pause in dialing Conference ID</string>
+    <string name="pause_def">6 seconds</string>
+    <string name="snooze_id">snooze</string>
+    <string name="snooze">Set snooze alarm time</string>
+    <string name="snooze_def">5 minutes</string>
+    <string name="remind_id">remind</string>
+    <string name="remind">Choose when to be reminded of the event</string>
+    <string name="remind_def">1 minutes</string>
+    <string name="minutes">minutes</string>
+    <string name="seconds">seconds</string>
     <string name="mailto">touch.to.join@gmail.com</string>
     <string name="send">Send mail...</string>
     <string name="type">message/rfc822</string>
@@ -15,5 +27,6 @@
     <string name="os">OS version:</string>
     <string name="experience">Please tell us about your experience with Touch to Join application.</string>
     <string name="noclients">There are no email clients installed.</string>
+    <string name="label">T2J</string>
 
 </resources>

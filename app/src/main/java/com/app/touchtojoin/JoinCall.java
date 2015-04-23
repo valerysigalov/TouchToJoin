@@ -25,7 +25,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
-public class JoinActivity extends Activity {
+public class JoinCall extends Activity {
+
+    private final String className = "JoinCall";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,21 +36,29 @@ public class JoinActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         String date = extras.getString("date").trim();
-        DebugLog.writeLog("JoinActivity: conference date is " + date);
+        DebugLog.writeLog(className, "conference date is " + date);
+        String begin = extras.getString("begin").trim();
+        DebugLog.writeLog(className, "conference begin time is " + begin);
+        String end = extras.getString("end").trim();
+        DebugLog.writeLog(className, "conference end time is " + end);
         String title = extras.getString("title").trim();
-        DebugLog.writeLog("JoinActivity: conference title is " + title);
+        DebugLog.writeLog(className, "conference title is " + title);
         String number = extras.getString("number").trim();
-        DebugLog.writeLog("JoinActivity: conference number is " + number);
+        DebugLog.writeLog(className, "conference number is " + number);
         String pin = extras.getString("pin").trim();
-        DebugLog.writeLog("JoinActivity: conference pin is " + pin);
+        DebugLog.writeLog(className, "conference pin is " + pin);
 
-        if (pin.equals("none")) {
-            number = "tel:" + number + "#";
-        } else {
-            number = "tel:" + number + setDelay() + pin + "#";
+        /*
+        number = number + setDelay() + pin;
+        Contacts contacts = new Contacts(this);
+        if (contacts.Exists(title, number) == false) {
+            contacts.Add(title, number);
         }
+        */
 
         Intent join = new Intent(Intent.ACTION_CALL);
+        number = "tel:" + number + setDelay() + pin + "#";
+        DebugLog.writeLog(className, "dialing number " + number);
         join.setData(Uri.parse(number));
         join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(join);
@@ -59,9 +69,9 @@ public class JoinActivity extends Activity {
     private String setDelay() {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String delay = sharedPreferences.getString("delay", null);
-        int comma = Integer.parseInt(delay);
-        delay = "";
+        Integer comma = sharedPreferences.getInt(getBaseContext().getResources().getString(R.string.pause_id),
+                getBaseContext().getResources().getInteger(R.integer.pause_def))/2;
+        String delay = "";
         for (int i = 0; i < comma; i++) {
             delay += ",";
         }

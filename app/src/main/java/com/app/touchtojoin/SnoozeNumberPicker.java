@@ -18,15 +18,19 @@
 
 package com.app.touchtojoin;
 
-import android.util.Log;
+import android.content.Context;
+import android.util.AttributeSet;
 
-class DebugLog {
+public class SnoozeNumberPicker extends NumberPickerPreference {
 
-    private static final boolean debug = true;
+    public SnoozeNumberPicker(Context context, AttributeSet attrs) {
 
-    public static void writeLog(String className, String msg) {
-        if (debug) {
-            Log.d("TouchToJoin", className + ": " + msg);
-        }
+        super(context, attrs);
+        attrName = getContext().getResources().getString(R.string.snooze_id);
+        timeUnit = getContext().getResources().getString(R.string.minutes);
+        minValue = getContext().getResources().getInteger(R.integer.snooze_min);
+        maxValue = getContext().getResources().getInteger(R.integer.snooze_max);
+        defValue = getContext().getResources().getInteger(R.integer.snooze_def);
+        onSetInitialValue();
     }
 }

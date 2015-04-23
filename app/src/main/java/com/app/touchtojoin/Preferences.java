@@ -18,60 +18,76 @@
 
 package com.app.touchtojoin;
 
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 
 public class Preferences extends PreferenceActivity
 {
+    private final String className = "Preferences";
+
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
-        DebugLog.writeLog("Preferences: register broadcast receivers.");
+        DebugLog.writeLog(className, "register broadcast receivers.");
         RegisterReceiver.registerReceiver(Preferences.this);
 
-        getFragmentManager().beginTransaction().replace(android.R.id.content, new MyPreferenceFragment()).commit();
+        getFragmentManager().beginTransaction().replace(android.R.id.content, new InternalFragment()).commit();
+
+        String appVersion = "";
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            appVersion = pInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            DebugLog.writeLog(className, "package not found.");
+        }
+        setTitle(getResources().getString(R.string.app_title) + "  " + appVersion);
     }
 
-    public static class MyPreferenceFragment extends PreferenceFragment
-    {
-        private EditTextPreference delay;
-        private EditTextPreference snooze;
+    public static class InternalFragment extends PreferenceFragment {
+
+        private static final String className = "InternalFragment";
+        private static Preference callBack;
 
         @Override
-        public void onCreate(final Bundle savedInstanceState)
-        {
+        public void onCreate(final Bundle savedInstanceState) {
+
             super.onCreate(savedInstanceState);
 
             addPreferencesFromResource(R.xml.preferences);
+            callBack = findPreference(getResources().getString(R.string.call_id));
+        }
 
-            delay = (EditTextPreference) findPreference("delay");
-            delay.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        @Override
+        public void onResume() {
 
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newVal) {
+            super.onResume();
 
-                    final String value = (String) newVal;
-                    delay.setSummary(value);
-                    return true;
-                }
-            });
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(callBack.getContext());
+            if (sharedPreferences.contains(callBack.getContext().getResources().getString(R.string.call_id))) {
+                String confInfo = sharedPreferences.getString(callBack.getContext().getResources().getString(R.string.call_id),
+                        callBack.getContext().getResources().getString(R.string.no_call));
+                DebugLog.writeLog(className, "refresh active conference - " + confInfo);
+                callBack.setSummary(confInfo);
+            }
+        }
 
-            snooze = (EditTextPreference) findPreference("snooze");
-            snooze.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+        static void saveActiveConference(String confInfo) {
 
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newVal) {
+            DebugLog.writeLog(className, "save active conference - " + confInfo);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(callBack.getContext());
+            SharedPreferences.Editor edit = sharedPreferences.edit();
+            edit.putString(callBack.getContext().getResources().getString(R.string.call_id), confInfo);
+            edit.commit();
 
-                    final String value = (String) newVal;
-                    snooze.setSummary(value);
-                    return true;
-                }
-            });
+            callBack.setSummary(confInfo);
         }
     }
 }

@@ -27,8 +27,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.format.DateUtils;
 
 public class SnoozeAlarm extends Activity {
+
+    private final String className = "SnoozeAlarm";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,9 +41,9 @@ public class SnoozeAlarm extends Activity {
         Bundle extras = getIntent().getExtras();
         int notificationId = extras.getInt("notificationId");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        String snooze = sharedPreferences.getString("snooze", null);
-        int minutes = Integer.parseInt(snooze);
-        DebugLog.writeLog("SnoozeAlarm: snooze notification with Id " + notificationId + " for " + minutes + " minutes.");
+        Integer minutes = sharedPreferences.getInt(getBaseContext().getResources().getString(R.string.snooze_id),
+                getBaseContext().getResources().getInteger(R.integer.snooze_def));
+        DebugLog.writeLog(className, "snooze notification with Id " + notificationId + " for " + minutes + " minutes.");
 
         NotificationManager mNotificationManager =
                 (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -53,7 +56,7 @@ public class SnoozeAlarm extends Activity {
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         AlarmManager alarm = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 10000/*minutes*DateUtils.MINUTE_IN_MILLIS*/, pendingIntent);
+        alarm.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + minutes* DateUtils.MINUTE_IN_MILLIS, pendingIntent);
 
         finish();
     }

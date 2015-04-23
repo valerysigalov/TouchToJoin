@@ -29,6 +29,8 @@ import android.widget.Toast;
 
 public class Feedback extends Activity {
 
+    private final String className = "Feedback";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -49,7 +51,7 @@ public class Feedback extends Activity {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             appVersion = appVersion +  " " + pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            DebugLog.writeLog("Feedback: package not found.");
+            DebugLog.writeLog(className, "package not found.");
         }
         String device = res.getString(R.string.device) +  " " + android.os.Build.MODEL;
         String os = res.getString(R.string.os) +  " " +  Build.VERSION.RELEASE;

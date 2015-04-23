@@ -24,10 +24,12 @@ import android.content.Intent;
 
 public class BootReceiver extends BroadcastReceiver {
 
+    private final String className = "BootReceiver";
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        DebugLog.writeLog("BootReceiver: register broadcast receivers.");
+        DebugLog.writeLog(className, "register broadcast receivers.");
         RegisterReceiver.registerReceiver(context);
     }
 }

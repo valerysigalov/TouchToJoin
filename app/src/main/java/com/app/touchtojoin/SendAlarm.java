@@ -18,37 +18,50 @@
 
 package com.app.touchtojoin;
 
+import android.app.AlarmManager;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.text.format.DateUtils;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SendAlarm extends BroadcastReceiver {
 
-    private static int notificationId = 0;
+    private final String className = "SendAlarm";
+    private static Integer notificationId = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         notificationId = notificationId + 1;
-        DebugLog.writeLog("Send notification with Id " + notificationId);
+        DebugLog.writeLog(className, "send notification with Id " + notificationId);
 
         Bundle extras = intent.getExtras();
         String date = extras.getString("date");
-        DebugLog.writeLog("SendAlarm: conference date is " + date);
+        DebugLog.writeLog(className, "conference date is " + date);
+        String begin = extras.getString("begin");
+        DebugLog.writeLog(className, "conference begin time is " + begin);
+        String end = extras.getString("end");
+        DebugLog.writeLog(className, "conference end time is " + end);
         String title = extras.getString("title");
-        DebugLog.writeLog("SendAlarm: conference title is " + title);
+        DebugLog.writeLog(className, "conference title is " + title);
         String number = extras.getString("number");
-        DebugLog.writeLog("SendAlarm: conference number is " + number);
+        DebugLog.writeLog(className, "conference number is " + number);
         String pin = extras.getString("pin");
-        DebugLog.writeLog("SendAlarm: conference pin is " + pin);
+        DebugLog.writeLog(className, "conference pin is " + pin);
 
-        Intent join = new Intent(context, JoinActivity.class);
+        Intent join = new Intent(context, JoinCall.class);
         join.putExtras(extras);
         join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
@@ -70,16 +83,46 @@ public class SendAlarm extends BroadcastReceiver {
                         .addAction(R.drawable.ic_action_alarms, "Snooze", pSnooze)
                         .setSmallIcon(R.drawable.ic_action_call)
                         .setContentTitle(title)
-                        .setContentText("Phone: " + number + ", PIN: " + pin)
+                        .setContentText(number + "x" + pin + "#")
                         .setColor(Color.rgb(51, 153, 255))
                         .setWhen(0)
                         .setPriority(Notification.PRIORITY_MAX);
 
         mBuilder.setContentIntent(pJoin);
+        Notification notification = mBuilder.build();
 
-        NotificationManager mNotificationManager =
-                (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Intent publish = new Intent(context, PublishAlarm.class);
+        publish.putExtra(PublishAlarm.notificationID, notificationId);
+        publish.putExtra(PublishAlarm.notificationData, notification);
+        publish.putExtra(PublishAlarm.confNumber, title + ", tel: " + number + ", ext: " + pin);
+        publish.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
-        mNotificationManager.notify(notificationId, mBuilder.build());
+        PendingIntent pPublish = PendingIntent.getBroadcast(context, notificationId,
+                publish, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        String parseDate = date + " " + begin;
+        DebugLog.writeLog(className, "parse date " + parseDate);
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        try {
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            Integer remindMinutes = sharedPreferences.getInt(context.getResources().getString(R.string.remind_id),
+                    context.getResources().getInteger(R.integer.remind_def));
+
+            Date beginDate = formatter.parse(parseDate);
+            long dateInMillis = beginDate.getTime();
+            long notifyInMillis = dateInMillis - remindMinutes* DateUtils.MINUTE_IN_MILLIS;
+            DebugLog.writeLog(className, "notify in milliseconds " + notifyInMillis);
+            long currentTimeInMillis = System.currentTimeMillis();
+            DebugLog.writeLog(className, "current time in milliseconds " + currentTimeInMillis);
+            if (notifyInMillis < currentTimeInMillis) {
+                notifyInMillis = currentTimeInMillis;
+            }
+
+            DebugLog.writeLog(className, "set alarm to be published at " + notifyInMillis);
+            AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, notifyInMillis, pPublish);
+        } catch (ParseException e) {
+            DebugLog.writeLog(className, "failed to parse date " + e.toString());
+        }
     }
 }
