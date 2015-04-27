@@ -29,13 +29,13 @@ import android.preference.PreferenceManager;
 
 public class Preferences extends PreferenceActivity
 {
-    private final String className = "Preferences";
 
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
 
+        String className = "Preferences";
         DebugLog.writeLog(className, "register broadcast receivers.");
         RegisterReceiver.registerReceiver(Preferences.this);
 
@@ -63,6 +63,7 @@ public class Preferences extends PreferenceActivity
 
             addPreferencesFromResource(R.xml.preferences);
             callBack = findPreference(getResources().getString(R.string.call_id));
+            saveActiveConference(callBack.getContext().getResources().getString(R.string.no_call));
         }
 
         @Override
@@ -71,15 +72,13 @@ public class Preferences extends PreferenceActivity
             super.onResume();
 
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(callBack.getContext());
-            if (sharedPreferences.contains(callBack.getContext().getResources().getString(R.string.call_id))) {
-                String confInfo = sharedPreferences.getString(callBack.getContext().getResources().getString(R.string.call_id),
-                        callBack.getContext().getResources().getString(R.string.no_call));
-                DebugLog.writeLog(className, "refresh active conference - " + confInfo);
-                callBack.setSummary(confInfo);
-            }
+            String confInfo = sharedPreferences.getString(callBack.getContext().getResources().getString(R.string.call_id),
+                    callBack.getContext().getResources().getString(R.string.no_call));
+            DebugLog.writeLog(className, "refresh active conference - " + confInfo);
+            callBack.setSummary(confInfo);
         }
 
-        static void saveActiveConference(String confInfo) {
+        public static void saveActiveConference(String confInfo) {
 
             DebugLog.writeLog(className, "save active conference - " + confInfo);
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(callBack.getContext());
@@ -88,6 +87,18 @@ public class Preferences extends PreferenceActivity
             edit.commit();
 
             callBack.setSummary(confInfo);
+        }
+
+        public static String setDelay() {
+
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(callBack.getContext());
+            Integer comma = sharedPreferences.getInt(callBack.getContext().getResources().getString(R.string.pause_id),
+                    callBack.getContext().getResources().getInteger(R.integer.pause_def))/2;
+            String delay = "";
+            for (int i = 0; i < comma; i++) {
+                delay += ",";
+            }
+            return delay;
         }
     }
 }

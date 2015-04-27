@@ -25,11 +25,10 @@ import android.provider.CalendarContract;
 
 public class EventReceiver extends BroadcastReceiver {
 
-    private final String className = "EventReceiver";
-
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equalsIgnoreCase(CalendarContract.ACTION_EVENT_REMINDER)) {
+            String className = "EventReceiver";
             DebugLog.writeLog(className, "received calendar event notification.");
             ReadCalendar.getEventByTime(context, intent);
         }

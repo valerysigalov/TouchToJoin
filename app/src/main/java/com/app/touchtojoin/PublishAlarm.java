@@ -26,10 +26,8 @@ import android.content.Intent;
 
 public class PublishAlarm extends BroadcastReceiver {
 
-    private final String className = "PublishAlarm";
-    public static String notificationID = "notificationID";
-    public static String notificationData = "notification";
-    public static String confNumber = "number";
+    public static final String notificationID = "notificationID";
+    public static final String notificationData = "notification";
 
     public void onReceive(Context context, Intent intent) {
 
@@ -38,10 +36,9 @@ public class PublishAlarm extends BroadcastReceiver {
 
         Notification notification = intent.getParcelableExtra(notificationData);
         Integer id = intent.getIntExtra(notificationID, 0);
-        String number = intent.getStringExtra(confNumber);
 
+        String className = "PublishAlarm";
         DebugLog.writeLog(className, "publish alarm with notification ID " + id);
-        Preferences.InternalFragment.saveActiveConference(number);
         notificationManager.notify(id, notification);
     }
 }

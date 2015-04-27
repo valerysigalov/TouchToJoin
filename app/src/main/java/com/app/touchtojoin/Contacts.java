@@ -32,7 +32,7 @@ import java.util.ArrayList;
 class Contacts {
 
     private final String className = "Contacts";
-    private Context contactsContext;
+    private final Context contactsContext;
 
     Contacts(Context context) {
         contactsContext = context;

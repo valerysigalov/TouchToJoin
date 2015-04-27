@@ -25,8 +25,10 @@
     <string name="feedback">Feedback</string>
     <string name="device">Device name:</string>
     <string name="os">OS version:</string>
-    <string name="experience">Please tell us about your experience with Touch to Join application.</string>
+    <string name="experience">Please tell us about your experience.</string>
     <string name="noclients">There are no email clients installed.</string>
     <string name="label">T2J</string>
+    <string name="rejoin">Rejoin</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

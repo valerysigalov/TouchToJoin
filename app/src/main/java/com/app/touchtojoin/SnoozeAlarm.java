@@ -31,8 +31,6 @@ import android.text.format.DateUtils;
 
 public class SnoozeAlarm extends Activity {
 
-    private final String className = "SnoozeAlarm";
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -43,6 +41,7 @@ public class SnoozeAlarm extends Activity {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         Integer minutes = sharedPreferences.getInt(getBaseContext().getResources().getString(R.string.snooze_id),
                 getBaseContext().getResources().getInteger(R.integer.snooze_def));
+        String className = "SnoozeAlarm";
         DebugLog.writeLog(className, "snooze notification with Id " + notificationId + " for " + minutes + " minutes.");
 
         NotificationManager mNotificationManager =

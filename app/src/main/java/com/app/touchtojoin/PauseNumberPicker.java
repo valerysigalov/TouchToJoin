@@ -21,7 +21,7 @@ package com.app.touchtojoin;
 import android.content.Context;
 import android.util.AttributeSet;
 
-public class PauseNumberPicker extends NumberPickerPreference {
+class PauseNumberPicker extends NumberPickerPreference {
 
     public PauseNumberPicker(Context context, AttributeSet attrs) {
 

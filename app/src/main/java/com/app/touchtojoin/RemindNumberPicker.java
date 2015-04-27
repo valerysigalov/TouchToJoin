@@ -21,7 +21,7 @@ package com.app.touchtojoin;
 import android.content.Context;
 import android.util.AttributeSet;
 
-public class RemindNumberPicker extends NumberPickerPreference {
+class RemindNumberPicker extends NumberPickerPreference {
 
     public RemindNumberPicker(Context context, AttributeSet attrs) {
 

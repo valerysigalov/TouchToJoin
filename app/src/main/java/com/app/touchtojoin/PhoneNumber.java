@@ -61,7 +61,7 @@ class PhoneNumber {
 
         String phoneNumber = null;
         if (text == null) {
-            return phoneNumber;
+            return null;
         }
         Pattern pattern = Pattern.compile(number, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(text);

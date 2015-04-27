@@ -29,8 +29,6 @@ import android.widget.Toast;
 
 public class Feedback extends Activity {
 
-    private final String className = "Feedback";
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -51,12 +49,14 @@ public class Feedback extends Activity {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             appVersion = appVersion +  " " + pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
+            String className = "Feedback";
             DebugLog.writeLog(className, "package not found.");
         }
         String device = res.getString(R.string.device) +  " " + android.os.Build.MODEL;
         String os = res.getString(R.string.os) +  " " +  Build.VERSION.RELEASE;
         String invite = res.getString(R.string.experience);
-        String body = appName + "\n\n" + appVersion + "\n\n" + device + "\n\n" + os + "\n\n" + invite + "\n\n";
+        String delim  = "-------------------------------------";
+        String body = appName + "\n\n" + appVersion + "\n\n" + device + "\n\n" + os + "\n\n" + invite + "\n\n" + delim + "\n\n";
         intent.putExtra(Intent.EXTRA_TEXT, body);
 
         try {

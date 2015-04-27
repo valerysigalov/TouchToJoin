@@ -27,7 +27,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.text.format.DateUtils;
@@ -38,13 +37,13 @@ import java.util.Date;
 
 public class SendAlarm extends BroadcastReceiver {
 
-    private final String className = "SendAlarm";
     private static Integer notificationId = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
         notificationId = notificationId + 1;
+        String className = "SendAlarm";
         DebugLog.writeLog(className, "send notification with Id " + notificationId);
 
         Bundle extras = intent.getExtras();
@@ -83,7 +82,7 @@ public class SendAlarm extends BroadcastReceiver {
                         .addAction(R.drawable.ic_action_alarms, "Snooze", pSnooze)
                         .setSmallIcon(R.drawable.ic_action_call)
                         .setContentTitle(title)
-                        .setContentText(number + "x" + pin + "#")
+                        .setContentText(begin + " - " + end + " " + number + "x" + pin + "#")
                         .setColor(Color.rgb(51, 153, 255))
                         .setWhen(0)
                         .setPriority(Notification.PRIORITY_MAX);
@@ -94,7 +93,6 @@ public class SendAlarm extends BroadcastReceiver {
         Intent publish = new Intent(context, PublishAlarm.class);
         publish.putExtra(PublishAlarm.notificationID, notificationId);
         publish.putExtra(PublishAlarm.notificationData, notification);
-        publish.putExtra(PublishAlarm.confNumber, title + ", tel: " + number + ", ext: " + pin);
         publish.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
         PendingIntent pPublish = PendingIntent.getBroadcast(context, notificationId,

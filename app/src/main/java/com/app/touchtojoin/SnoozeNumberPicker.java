@@ -21,7 +21,7 @@ package com.app.touchtojoin;
 import android.content.Context;
 import android.util.AttributeSet;
 
-public class SnoozeNumberPicker extends NumberPickerPreference {
+class SnoozeNumberPicker extends NumberPickerPreference {
 
     public SnoozeNumberPicker(Context context, AttributeSet attrs) {
 

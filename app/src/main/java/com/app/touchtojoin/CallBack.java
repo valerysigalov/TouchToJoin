@@ -20,43 +20,39 @@ package com.app.touchtojoin;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 
 public class CallBack extends Activity {
-
-    private static final String className = "CallBack";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.contains(this.getResources().getString(R.string.call_id))) {
-            String confInfo = sharedPreferences.getString(this.getResources().getString(R.string.call_id),
-                    this.getResources().getString(R.string.no_call));
+        Bundle extras = JoinCall.getExtras();
+        if (extras != null) {
+            String className = "CallBack";
+            String date = extras.getString("date").trim();
+            DebugLog.writeLog(className, "conference date is " + date);
+            String begin = extras.getString("begin").trim();
+            DebugLog.writeLog(className, "conference begin time is " + begin);
+            String end = extras.getString("end").trim();
+            DebugLog.writeLog(className, "conference end time is " + end);
+            String title = extras.getString("title").trim();
+            DebugLog.writeLog(className, "conference title is " + title);
+            String number = extras.getString("number").trim();
+            DebugLog.writeLog(className, "conference number is " + number);
+            String pin = extras.getString("pin").trim();
+            DebugLog.writeLog(className, "conference pin is " + pin);
 
-            String delim = ",\\stel:\\s?|,\\sext:\\s?";
-            String [] confInfoArray = confInfo.split(delim);
-            Bundle extras = new Bundle();
-            extras.putString("date", "now");
-            extras.putString("begin", "now");
-            extras.putString("end", "now");
-            extras.putString("title", confInfoArray[0]);
-            DebugLog.writeLog(className, "conference title is " + confInfoArray[0]);
-            extras.putString("number", confInfoArray[1]);
-            DebugLog.writeLog(className, "conference number is " + confInfoArray[1]);
-            extras.putString("pin", confInfoArray[2]);
-            DebugLog.writeLog(className, "conference pin is " + confInfoArray[2]);
-
-            Intent join = new Intent(this, JoinCall.class);
-            join.putExtras(extras);
+            Intent join = new Intent(Intent.ACTION_CALL);
+            number = "tel:" + number + Preferences.InternalFragment.setDelay() + pin + "#";
+            DebugLog.writeLog(className, "dialing number " + number);
+            join.setData(Uri.parse(number));
             join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(join);
         }
-
         finish();
     }
 }

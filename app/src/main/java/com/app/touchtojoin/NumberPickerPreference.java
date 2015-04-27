@@ -29,19 +29,17 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
 
-public class NumberPickerPreference extends DialogPreference {
-
-    private final String className = "NumberPickerPreference";
+class NumberPickerPreference extends DialogPreference {
 
     private NumberPicker picker;
     private Integer curValue;
-    protected Integer minValue;
-    protected Integer maxValue;
-    protected Integer defValue;
-    protected String attrName;
-    protected String timeUnit;
+    Integer minValue;
+    Integer maxValue;
+    Integer defValue;
+    String attrName;
+    String timeUnit;
 
-    public NumberPickerPreference(Context context, AttributeSet attrs) {
+    NumberPickerPreference(Context context, AttributeSet attrs) {
 
         super(context, attrs);
     }
@@ -81,7 +79,7 @@ public class NumberPickerPreference extends DialogPreference {
         }
     }
 
-    protected void onSetInitialValue() {
+    void onSetInitialValue() {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         if (sharedPreferences.contains(attrName)) {
@@ -106,9 +104,10 @@ public class NumberPickerPreference extends DialogPreference {
         }
     }
 
-    protected void setValue(Integer value) {
+    void setValue(Integer value) {
 
         curValue = value;
+        String className = "NumberPickerPreference";
         DebugLog.writeLog(className, "set value - " + value + " for " + attrName);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());

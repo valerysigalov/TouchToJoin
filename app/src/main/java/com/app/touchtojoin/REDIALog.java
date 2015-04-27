@@ -22,19 +22,23 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
-public class JoinCall extends Activity {
+public class REDIALog extends Activity {
 
-    private static Bundle extras = null;
+    private final String className = "REDIALog";
+    private Bundle extras;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.redialog);
 
         extras = getIntent().getExtras();
         String date = extras.getString("date").trim();
-        String className = "JoinCall";
         DebugLog.writeLog(className, "conference date is " + date);
         String begin = extras.getString("begin").trim();
         DebugLog.writeLog(className, "conference begin time is " + begin);
@@ -47,27 +51,32 @@ public class JoinCall extends Activity {
         String pin = extras.getString("pin").trim();
         DebugLog.writeLog(className, "conference pin is " + pin);
 
-        Preferences.InternalFragment.saveActiveConference(title + "\n" + begin + " - " + end + " " +
-                number + "x" + pin + "#");
+        TextView textView = (TextView) findViewById(R.id.message);
+        String message = "The conference \"" + title + "\" will end at " + end + ".\n" +
+                "Would you like to rejoin the call at " + number + "x" + pin + "#?";
+        textView.setText(message);
 
-        /*
-        number = number + setDelay() + pin;
-        Contacts contacts = new Contacts(this);
-        if (contacts.Exists(title, number) == false) {
-            contacts.Add(title, number);
-        }
-        */
+        Button rejoin = (Button) findViewById(R.id.rejoin);
+        rejoin.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
 
-        Intent join = new Intent(Intent.ACTION_CALL);
-        number = "tel:" + number + Preferences.InternalFragment.setDelay() + pin + "#";
-        DebugLog.writeLog(className, "dialing number " + number);
-        join.setData(Uri.parse(number));
-        join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(join);
-    }
+                Intent join = new Intent(Intent.ACTION_CALL);
+                String number = "tel:" + extras.getString("number").trim() + ",,," +
+                        extras.getString("pin").trim() + "#";
+                DebugLog.writeLog(className, "dialing number " + number);
+                join.setData(Uri.parse(number));
+                join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(join);
+                finish();
+            }
+        });
 
-    public static Bundle getExtras() {
+        Button cancel = (Button) findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
 
-        return extras;
+                finish();
+            }
+        });
     }
 }

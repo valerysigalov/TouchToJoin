@@ -29,7 +29,7 @@ import java.util.Date;
 
 class ReadCalendar {
 
-    private static String className = "ReadCalendar";
+    private static final String className = "ReadCalendar";
     private static String savedTime = null;
 
     public static void getEventByTime(Context context, Intent intent) {
