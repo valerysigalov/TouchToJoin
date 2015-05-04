@@ -25,14 +25,12 @@ import android.os.Bundle;
 
 public class JoinCall extends Activity {
 
-    private static Bundle extras = null;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
 
-        extras = getIntent().getExtras();
+        Bundle extras = getIntent().getExtras();
         String date = extras.getString("date").trim();
         String className = "JoinCall";
         DebugLog.writeLog(className, "conference date is " + date);
@@ -47,8 +45,7 @@ public class JoinCall extends Activity {
         String pin = extras.getString("pin").trim();
         DebugLog.writeLog(className, "conference pin is " + pin);
 
-        Preferences.InternalFragment.saveActiveConference(title + "\n" + begin + " - " + end + " " +
-                number + "x" + pin + "#");
+        Preferences.InternalFragment.saveLastCall(extras);
 
         /*
         number = number + setDelay() + pin;
@@ -64,10 +61,5 @@ public class JoinCall extends Activity {
         join.setData(Uri.parse(number));
         join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(join);
-    }
-
-    public static Bundle getExtras() {
-
-        return extras;
     }
 }

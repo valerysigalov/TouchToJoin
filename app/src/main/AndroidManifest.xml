@@ -74,6 +74,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.app.touchtojoin.Defaults"
+            android:theme="@style/Theme.Transparent"
+            android:label="@string/app_title">
+            <intent-filter>
+                <action android:name="com.app.touchtojoin.Defaults" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.app.touchtojoin.Feedback"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_title">
@@ -108,10 +117,11 @@
         </activity>
         <activity
             android:name="com.app.touchtojoin.REDIALog"
-            android:theme="@style/Theme.AppCompat.Dialog"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"
             android:taskAffinity=""
             android:launchMode="singleTask"
             android:excludeFromRecents="true"
+            android:icon="@drawable/ic_launcher"
             android:label="@string/app_title">
             <intent-filter>
                 <action android:name="com.app.touchtojoin.REDIALog" />

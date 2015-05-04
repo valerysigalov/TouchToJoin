@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="pause_def">6</integer>
-    <integer name="pause_min">0</integer>
+    <integer name="pause_min">2</integer>
     <integer name="pause_max">60</integer>
+    <integer name="pause_step">2</integer>
     <integer name="snooze_def">5</integer>
     <integer name="snooze_min">1</integer>
     <integer name="snooze_max">60</integer>
-    <integer name="remind_def">1</integer>
+    <integer name="snooze_step">1</integer>
+    <integer name="remind_def">2</integer>
     <integer name="remind_min">0</integer>
     <integer name="remind_max">60</integer>
+    <integer name="remind_step">1</integer>
 </resources>

@@ -24,7 +24,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CalendarContract;
 
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Date;
 
 class ReadCalendar {
@@ -63,8 +63,8 @@ class ReadCalendar {
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 do {
-                    SimpleDateFormat fmt_date = new SimpleDateFormat("MM/dd/yyyy");
-                    SimpleDateFormat fmt_time = new SimpleDateFormat("HH:mm");
+                    DateFormat fmt_date = DateFormat.getDateInstance(DateFormat.SHORT);
+                    DateFormat fmt_time = DateFormat.getTimeInstance(DateFormat.SHORT);
                     long time = cursor.getLong(cursor.getColumnIndex(
                             CalendarContract.CalendarAlerts.DTSTART));
                     date = fmt_date.format(new Date(time));
@@ -77,6 +77,9 @@ class ReadCalendar {
                     DebugLog.writeLog(className, "end " + end);
                     title = cursor.getString(cursor.getColumnIndex(
                             CalendarContract.CalendarAlerts.TITLE));
+                    if (title.equals("")) {
+                        title = "(No title)";
+                    }
                     DebugLog.writeLog(className, "title " + title);
                     phoneNumber = PhoneNumber.findNumber(title);
                     pinCode = PhoneNumber.findPinCode(title, phoneNumber);

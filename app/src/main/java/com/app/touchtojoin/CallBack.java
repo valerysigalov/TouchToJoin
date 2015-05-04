@@ -30,7 +30,7 @@ public class CallBack extends Activity {
 
         super.onCreate(savedInstanceState);
 
-        Bundle extras = JoinCall.getExtras();
+        Bundle extras = Preferences.InternalFragment.restoreLastCall();
         if (extras != null) {
             String className = "CallBack";
             String date = extras.getString("date").trim();

@@ -23,6 +23,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -35,7 +37,12 @@ public class REDIALog extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.redialog);
+        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.ic_launcher);
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.width  = WindowManager.LayoutParams.MATCH_PARENT;
+        getWindow().setAttributes(params);
 
         extras = getIntent().getExtras();
         String date = extras.getString("date").trim();
@@ -52,8 +59,8 @@ public class REDIALog extends Activity {
         DebugLog.writeLog(className, "conference pin is " + pin);
 
         TextView textView = (TextView) findViewById(R.id.message);
-        String message = "The conference \"" + title + "\" will end at " + end + ".\n" +
-                "Would you like to rejoin the call at " + number + "x" + pin + "#?";
+        String message = "Dropped? or Disconnected?\n" + title + "\n" +
+                begin.replaceAll("[^0-9:]", "").trim() + " \u2013 " + end + " " + number + "x" + pin + "#";
         textView.setText(message);
 
         Button rejoin = (Button) findViewById(R.id.rejoin);

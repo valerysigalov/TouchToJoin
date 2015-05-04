@@ -26,11 +26,12 @@ class PauseNumberPicker extends NumberPickerPreference {
     public PauseNumberPicker(Context context, AttributeSet attrs) {
 
         super(context, attrs);
-        attrName = getContext().getResources().getString(R.string.pause_id);
+        attrName = "pause";
         timeUnit = getContext().getResources().getString(R.string.seconds);
         minValue = getContext().getResources().getInteger(R.integer.pause_min);
         maxValue = getContext().getResources().getInteger(R.integer.pause_max);
         defValue = getContext().getResources().getInteger(R.integer.pause_def);
+        stepValue = getContext().getResources().getInteger(R.integer.pause_step);
         onSetInitialValue();
     }
 }

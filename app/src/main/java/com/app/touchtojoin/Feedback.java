@@ -54,9 +54,17 @@ public class Feedback extends Activity {
         }
         String device = res.getString(R.string.device) +  " " + android.os.Build.MODEL;
         String os = res.getString(R.string.os) +  " " +  Build.VERSION.RELEASE;
+        String settings = res.getString(R.string.settings) + "\n" +
+                "\t" + res.getString(R.string.pause_time) + " " + Preferences.InternalFragment.getInt("pause",
+                res.getInteger(R.integer.pause_def)) + " " + res.getString(R.string.seconds) + "\n" +
+                "\t" + res.getString(R.string.snooze_time) + " " + Preferences.InternalFragment.getInt("snooze",
+                res.getInteger(R.integer.snooze_def)) + " " + res.getString(R.string.minutes) + "\n" +
+                "\t" + res.getString(R.string.remind_time) + " " + Preferences.InternalFragment.getInt("remind",
+                res.getInteger(R.integer.remind_def)) + " " + res.getString(R.string.minutes);
         String invite = res.getString(R.string.experience);
         String delim  = "-------------------------------------";
-        String body = appName + "\n\n" + appVersion + "\n\n" + device + "\n\n" + os + "\n\n" + invite + "\n\n" + delim + "\n\n";
+        String body = appName + "\n\n" + appVersion + "\n\n" + device + "\n\n" + os + "\n\n" + settings + "\n\n" +
+                invite + "\n\n" + delim + "\n\n";
         intent.putExtra(Intent.EXTRA_TEXT, body);
 
         try {

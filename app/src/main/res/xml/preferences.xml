@@ -3,28 +3,34 @@
 
     <PreferenceScreen
         android:title="@string/history"
-        android:key="@string/call_id"
+        android:key="call"
         android:summary="@string/no_call">
         <intent android:action="com.app.touchtojoin.CallBack"/>
     </PreferenceScreen>
 
     <com.app.touchtojoin.PauseNumberPicker
         android:title="@string/pause"
-        android:key="@string/pause_id"
+        android:key="pause"
         android:summary="@string/pause_def">
     </com.app.touchtojoin.PauseNumberPicker>
 
     <com.app.touchtojoin.SnoozeNumberPicker
         android:title="@string/snooze"
-        android:key="@string/snooze_id"
+        android:key="snooze"
         android:summary="@string/snooze_def">
     </com.app.touchtojoin.SnoozeNumberPicker>
 
     <com.app.touchtojoin.RemindNumberPicker
         android:title="@string/remind"
-        android:key="@string/remind_id"
+        android:key="remind"
         android:summary="@string/remind_def">
     </com.app.touchtojoin.RemindNumberPicker>
+
+    <PreferenceScreen
+        android:title="@string/defaults"
+        android:summary="@string/defaults_def">
+        <intent android:action="com.app.touchtojoin.Defaults"/>
+    </PreferenceScreen>
 
     <PreferenceScreen
         android:title="@string/feedback"

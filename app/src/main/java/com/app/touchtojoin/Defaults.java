@@ -18,20 +18,16 @@
 
 package com.app.touchtojoin;
 
-import android.content.Context;
-import android.util.AttributeSet;
+import android.app.Activity;
+import android.os.Bundle;
 
-class SnoozeNumberPicker extends NumberPickerPreference {
+public class Defaults extends Activity {
 
-    public SnoozeNumberPicker(Context context, AttributeSet attrs) {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
 
-        super(context, attrs);
-        attrName = "snooze";
-        timeUnit = getContext().getResources().getString(R.string.minutes);
-        minValue = getContext().getResources().getInteger(R.integer.snooze_min);
-        maxValue = getContext().getResources().getInteger(R.integer.snooze_max);
-        defValue = getContext().getResources().getInteger(R.integer.snooze_def);
-        stepValue = getContext().getResources().getInteger(R.integer.snooze_step);
-        onSetInitialValue();
+        super.onCreate(savedInstanceState);
+        Preferences.InternalFragment.setDefaults();
+        finish();
     }
 }

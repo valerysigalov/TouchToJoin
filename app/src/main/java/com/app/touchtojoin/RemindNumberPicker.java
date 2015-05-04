@@ -26,11 +26,12 @@ class RemindNumberPicker extends NumberPickerPreference {
     public RemindNumberPicker(Context context, AttributeSet attrs) {
 
         super(context, attrs);
-        attrName = getContext().getResources().getString(R.string.remind_id);
+        attrName = "remind";
         timeUnit = getContext().getResources().getString(R.string.minutes);
         minValue = getContext().getResources().getInteger(R.integer.remind_min);
         maxValue = getContext().getResources().getInteger(R.integer.remind_max);
         defValue = getContext().getResources().getInteger(R.integer.remind_def);
+        stepValue = getContext().getResources().getInteger(R.integer.remind_step);
         onSetInitialValue();
     }
 }

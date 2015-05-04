@@ -19,9 +19,7 @@
 package com.app.touchtojoin;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.preference.DialogPreference;
-import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -36,8 +34,10 @@ class NumberPickerPreference extends DialogPreference {
     Integer minValue;
     Integer maxValue;
     Integer defValue;
+    Integer stepValue;
     String attrName;
     String timeUnit;
+    String[] valueSet;
 
     NumberPickerPreference(Context context, AttributeSet attrs) {
 
@@ -65,43 +65,47 @@ class NumberPickerPreference extends DialogPreference {
     protected void onBindDialogView(View view) {
 
         super.onBindDialogView(view);
-
-        picker.setMinValue(minValue);
-        picker.setMaxValue(maxValue);
-        picker.setValue(curValue);
+        setDisplayedValues();
     }
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {
 
         if (positiveResult) {
-            setValue(picker.getValue());
+            setValue(minValue+picker.getValue()*stepValue);
         }
     }
 
     void onSetInitialValue() {
 
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        if (sharedPreferences.contains(attrName)) {
-            Integer value = sharedPreferences.getInt(attrName, 0);
-            setValue(value);
-        }
-        else {
-            setValue(defValue);
-        }
+        Integer value = Preferences.InternalFragment.getInt(attrName, defValue);
+        setValue(value);
     }
 
     @Override
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
 
         if (restorePersistedValue) {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-            Integer value = sharedPreferences.getInt(attrName, 0);
+            Integer value = Preferences.InternalFragment.getInt(attrName, defValue);
             setValue(value);
         }
         else {
             setValue(defValue);
         }
+    }
+
+    void setDisplayedValues() {
+
+        Integer valueSetLen = (maxValue-minValue)/stepValue+1;
+        valueSet = new String[valueSetLen];
+
+        for (int index = 0; index < valueSetLen; index++) {
+            valueSet[index] = Integer.toString(minValue+index*stepValue);
+        }
+        picker.setMinValue(0);
+        picker.setMaxValue(valueSetLen-1);
+        picker.setDisplayedValues(valueSet);
+        picker.setValue((curValue-minValue)/stepValue);
     }
 
     void setValue(Integer value) {
@@ -109,12 +113,7 @@ class NumberPickerPreference extends DialogPreference {
         curValue = value;
         String className = "NumberPickerPreference";
         DebugLog.writeLog(className, "set value - " + value + " for " + attrName);
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-        SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putInt(attrName, curValue);
-        edit.commit();
-
-        setSummary(String.valueOf(curValue) + " " + timeUnit);
+        Preferences.InternalFragment.putInt(attrName, value);
+        setSummary(String.valueOf(value) + " " + timeUnit);
     }
 }

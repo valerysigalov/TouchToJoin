@@ -25,8 +25,8 @@ import android.os.Bundle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class CallListener extends BroadcastReceiver {
@@ -56,16 +56,16 @@ public class CallListener extends BroadcastReceiver {
             Bundle extras;
             switch (state) {
                 case TelephonyManager.CALL_STATE_IDLE:
-                    extras = JoinCall.getExtras();
+                    extras = Preferences.InternalFragment.restoreLastCall();
                     if (extras != null) {
-                        if (incomingNumber.equals(extras.getString("number").trim())) {
+                        if (incomingNumber.equals(extras.getString("number").replace(" ", ""))) {
                             DebugLog.writeLog(className, "call number " + incomingNumber + " ended.");
                             try {
                                 long currentTimeInMillis = System.currentTimeMillis();
                                 String parseEndTime = extras.getString("date").trim() + " " +
                                         extras.getString("end").trim();
                                 DebugLog.writeLog(className, "parse end time " + parseEndTime);
-                                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+                                DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
                                 Date endTime = formatter.parse(parseEndTime);
                                 long endTimeInMillis = endTime.getTime();
                                 if (endTimeInMillis > currentTimeInMillis) {
@@ -82,7 +82,7 @@ public class CallListener extends BroadcastReceiver {
                     }
                     break;
                 case TelephonyManager.CALL_STATE_OFFHOOK:
-                    extras = JoinCall.getExtras();
+                    extras = Preferences.InternalFragment.restoreLastCall();
                     if (extras != null && incomingNumber.equals(extras.getString("number").trim())) {
                         DebugLog.writeLog(className, "call number " + incomingNumber + " started.");
                     }

@@ -24,9 +24,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.format.DateUtils;
 
 public class SnoozeAlarm extends Activity {
@@ -38,8 +36,7 @@ public class SnoozeAlarm extends Activity {
 
         Bundle extras = getIntent().getExtras();
         int notificationId = extras.getInt("notificationId");
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        Integer minutes = sharedPreferences.getInt(getBaseContext().getResources().getString(R.string.snooze_id),
+        Integer minutes = Preferences.InternalFragment.getInt("snooze",
                 getBaseContext().getResources().getInteger(R.integer.snooze_def));
         String className = "SnoozeAlarm";
         DebugLog.writeLog(className, "snooze notification with Id " + notificationId + " for " + minutes + " minutes.");

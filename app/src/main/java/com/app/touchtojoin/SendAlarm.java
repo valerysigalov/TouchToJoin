@@ -24,15 +24,13 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.text.format.DateUtils;
 
+import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SendAlarm extends BroadcastReceiver {
@@ -82,8 +80,9 @@ public class SendAlarm extends BroadcastReceiver {
                         .addAction(R.drawable.ic_action_alarms, "Snooze", pSnooze)
                         .setSmallIcon(R.drawable.ic_action_call)
                         .setContentTitle(title)
-                        .setContentText(begin + " - " + end + " " + number + "x" + pin + "#")
+                        .setContentText(begin.replaceAll("[^0-9:]", "").trim() + " \u2013 " + end + " " + number + "x" + pin + "#")
                         .setColor(Color.rgb(51, 153, 255))
+                        .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS)
                         .setWhen(0)
                         .setPriority(Notification.PRIORITY_MAX);
 
@@ -100,10 +99,9 @@ public class SendAlarm extends BroadcastReceiver {
 
         String parseDate = date + " " + begin;
         DebugLog.writeLog(className, "parse date " + parseDate);
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         try {
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-            Integer remindMinutes = sharedPreferences.getInt(context.getResources().getString(R.string.remind_id),
+            Integer remindMinutes = Preferences.InternalFragment.getInt("remind",
                     context.getResources().getInteger(R.integer.remind_def));
 
             Date beginDate = formatter.parse(parseDate);
