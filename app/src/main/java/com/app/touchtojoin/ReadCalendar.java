@@ -45,8 +45,8 @@ class ReadCalendar {
         String[] projection = new String[] { CalendarContract.CalendarAlerts.EVENT_LOCATION,
                 CalendarContract.CalendarAlerts.DESCRIPTION,
                 CalendarContract.CalendarAlerts.TITLE,
-                CalendarContract.CalendarAlerts.DTSTART,
-                CalendarContract.CalendarAlerts.DTEND};
+                CalendarContract.Instances.BEGIN,
+                CalendarContract.Instances.END};
 
         String selection = CalendarContract.CalendarAlerts.ALARM_TIME + "=?";
 
@@ -66,13 +66,13 @@ class ReadCalendar {
                     DateFormat fmt_date = DateFormat.getDateInstance(DateFormat.SHORT);
                     DateFormat fmt_time = DateFormat.getTimeInstance(DateFormat.SHORT);
                     long time = cursor.getLong(cursor.getColumnIndex(
-                            CalendarContract.CalendarAlerts.DTSTART));
+                            CalendarContract.Instances.BEGIN));
                     date = fmt_date.format(new Date(time));
                     DebugLog.writeLog(className, "date " + date);
                     begin = fmt_time.format(new Date(time));
                     DebugLog.writeLog(className, "begin " + begin);
                     time = cursor.getLong(cursor.getColumnIndex(
-                            CalendarContract.CalendarAlerts.DTEND));
+                            CalendarContract.Instances.END));
                     end = fmt_time.format(new Date(time));
                     DebugLog.writeLog(className, "end " + end);
                     title = cursor.getString(cursor.getColumnIndex(

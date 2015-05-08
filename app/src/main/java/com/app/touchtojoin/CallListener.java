@@ -56,7 +56,7 @@ public class CallListener extends BroadcastReceiver {
             Bundle extras;
             switch (state) {
                 case TelephonyManager.CALL_STATE_IDLE:
-                    extras = Preferences.InternalFragment.restoreLastCall();
+                    extras = Preferences.restoreLastCall();
                     if (extras != null) {
                         if (incomingNumber.equals(extras.getString("number").replace(" ", ""))) {
                             DebugLog.writeLog(className, "call number " + incomingNumber + " ended.");
@@ -82,7 +82,7 @@ public class CallListener extends BroadcastReceiver {
                     }
                     break;
                 case TelephonyManager.CALL_STATE_OFFHOOK:
-                    extras = Preferences.InternalFragment.restoreLastCall();
+                    extras = Preferences.restoreLastCall();
                     if (extras != null && incomingNumber.equals(extras.getString("number").trim())) {
                         DebugLog.writeLog(className, "call number " + incomingNumber + " started.");
                     }

@@ -45,7 +45,7 @@ public class JoinCall extends Activity {
         String pin = extras.getString("pin").trim();
         DebugLog.writeLog(className, "conference pin is " + pin);
 
-        Preferences.InternalFragment.saveLastCall(extras);
+        Preferences.saveLastCall(extras);
 
         /*
         number = number + setDelay() + pin;
@@ -56,7 +56,7 @@ public class JoinCall extends Activity {
         */
 
         Intent join = new Intent(Intent.ACTION_CALL);
-        number = "tel:" + number + Preferences.InternalFragment.setDelay() + pin + "#";
+        number = "tel:" + number + Preferences.setDelay() + pin + "#";
         DebugLog.writeLog(className, "dialing number " + number);
         join.setData(Uri.parse(number));
         join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
