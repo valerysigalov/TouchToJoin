@@ -117,7 +117,7 @@
         </activity>
         <activity
             android:name="com.app.touchtojoin.REDIALog"
-            android:theme="@android:style/Theme.Holo.Light.Dialog"
+            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"
             android:taskAffinity=""
             android:launchMode="singleTask"
             android:excludeFromRecents="true"

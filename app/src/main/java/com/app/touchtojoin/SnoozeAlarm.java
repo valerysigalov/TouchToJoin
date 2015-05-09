@@ -36,7 +36,7 @@ public class SnoozeAlarm extends Activity {
 
         Bundle extras = getIntent().getExtras();
         int notificationId = extras.getInt("notificationId");
-        Integer minutes = Preferences.getInt("snooze",
+        Integer minutes = Preferences.getInt(this, "snooze",
                 getBaseContext().getResources().getInteger(R.integer.snooze_def));
         String className = "SnoozeAlarm";
         DebugLog.writeLog(className, "snooze notification with Id " + notificationId + " for " + minutes + " minutes.");

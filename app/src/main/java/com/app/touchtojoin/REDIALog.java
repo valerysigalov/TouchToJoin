@@ -37,9 +37,7 @@ public class REDIALog extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_LEFT_ICON);
         setContentView(R.layout.redialog);
-        getWindow().setFeatureDrawableResource(Window.FEATURE_LEFT_ICON, R.drawable.ic_launcher);
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.width  = WindowManager.LayoutParams.MATCH_PARENT;
         getWindow().setAttributes(params);
@@ -59,7 +57,7 @@ public class REDIALog extends Activity {
         DebugLog.writeLog(className, "conference pin is " + pin);
 
         TextView textView = (TextView) findViewById(R.id.message);
-        String message = "Dropped? or Disconnected?\n" + title + "\n" +
+        String message = "Disconnected?\n" + title + "\n" +
                 begin.replaceAll("[^0-9:]", "").trim() + " \u2013 " + end + " " + number + "x" + pin + "#";
         textView.setText(message);
 

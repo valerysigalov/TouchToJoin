@@ -29,6 +29,7 @@ import android.widget.NumberPicker;
 
 class NumberPickerPreference extends DialogPreference {
 
+    protected Context context;
     private NumberPicker picker;
     private Integer curValue;
     Integer minValue;
@@ -42,6 +43,7 @@ class NumberPickerPreference extends DialogPreference {
     NumberPickerPreference(Context context, AttributeSet attrs) {
 
         super(context, attrs);
+        this.context = context;
     }
 
     @Override
@@ -78,7 +80,7 @@ class NumberPickerPreference extends DialogPreference {
 
     void onSetInitialValue() {
 
-        Integer value = Preferences.getInt(attrName, defValue);
+        Integer value = Preferences.getInt(context, attrName, defValue);
         setValue(value);
     }
 
@@ -86,7 +88,7 @@ class NumberPickerPreference extends DialogPreference {
     protected void onSetInitialValue(boolean restorePersistedValue, Object defaultValue) {
 
         if (restorePersistedValue) {
-            Integer value = Preferences.getInt(attrName, defValue);
+            Integer value = Preferences.getInt(context, attrName, defValue);
             setValue(value);
         }
         else {
@@ -113,7 +115,7 @@ class NumberPickerPreference extends DialogPreference {
         curValue = value;
         String className = "NumberPickerPreference";
         DebugLog.writeLog(className, "set value - " + value + " for " + attrName);
-        Preferences.putInt(attrName, value);
+        Preferences.putInt(context, attrName, value);
         setSummary(String.valueOf(value) + " " + timeUnit);
     }
 }

@@ -27,7 +27,7 @@ public class Defaults extends Activity {
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        Preferences.setDefaults();
+        Preferences.setDefaults(this);
         finish();
     }
 }

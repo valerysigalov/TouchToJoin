@@ -101,7 +101,7 @@ public class SendAlarm extends BroadcastReceiver {
         DebugLog.writeLog(className, "parse date " + parseDate);
         DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         try {
-            Integer remindMinutes = Preferences.getInt("remind",
+            Integer remindMinutes = Preferences.getInt(context, "remind",
                     context.getResources().getInteger(R.integer.remind_def));
 
             Date beginDate = formatter.parse(parseDate);
