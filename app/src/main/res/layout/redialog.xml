@@ -15,21 +15,28 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/message">
 
+        <Space
+            android:layout_width="20px"
+            android:layout_height="20px"
+            android:layout_weight="0.6" />
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rejoin"
             android:id="@+id/rejoin"
-            android:layout_weight="0.5"
-            style="@android:style/Theme.DeviceDefault.Light.Dialog" />
+            android:layout_weight="0.2"
+            style="@android:style/Widget.DeviceDefault.Light.Button.Borderless.Small"
+            android:layout_gravity="right" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
             android:id="@+id/cancel"
-            android:layout_weight="0.5"
-            style="@android:style/Theme.DeviceDefault.Light.Dialog" />
+            android:layout_weight="0.2"
+            style="@android:style/Widget.DeviceDefault.Light.Button.Borderless.Small"
+            android:layout_gravity="right" />
     </LinearLayout>
 
 </RelativeLayout>
