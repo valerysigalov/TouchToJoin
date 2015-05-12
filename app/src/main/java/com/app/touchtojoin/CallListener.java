@@ -58,7 +58,7 @@ public class CallListener extends BroadcastReceiver {
                 case TelephonyManager.CALL_STATE_IDLE:
                     extras = Preferences.restoreLastCall(context);
                     if (extras != null) {
-                        if (incomingNumber.equals(extras.getString("number").replace(" ", ""))) {
+                        if (incomingNumber.equals(extras.getString("number").replaceAll(" |-", ""))) {
                             DebugLog.writeLog(className, "call number " + incomingNumber + " ended.");
                             try {
                                 long currentTimeInMillis = System.currentTimeMillis();

@@ -9,32 +9,31 @@
     </PreferenceScreen>
 
     <com.app.touchtojoin.PauseNumberPicker
-        android:title="@string/pause"
+        android:title="@string/set_pause"
         android:key="pause"
         android:summary="@string/pause_def">
     </com.app.touchtojoin.PauseNumberPicker>
 
     <com.app.touchtojoin.SnoozeNumberPicker
-        android:title="@string/snooze"
+        android:title="@string/set_snooze"
         android:key="snooze"
         android:summary="@string/snooze_def">
     </com.app.touchtojoin.SnoozeNumberPicker>
 
     <com.app.touchtojoin.RemindNumberPicker
-        android:title="@string/remind"
+        android:title="@string/set_remind"
         android:key="remind"
         android:summary="@string/remind_def">
     </com.app.touchtojoin.RemindNumberPicker>
 
     <PreferenceScreen
-        android:title="@string/defaults"
-        android:summary="@string/defaults_def">
+        android:title="@string/defaults">
         <intent android:action="com.app.touchtojoin.Defaults"/>
     </PreferenceScreen>
 
     <PreferenceScreen
         android:title="@string/feedback"
-        android:summary="@string/subject">
+        android:summary="@string/email">
         <intent android:action="com.app.touchtojoin.Feedback"/>
     </PreferenceScreen>
 

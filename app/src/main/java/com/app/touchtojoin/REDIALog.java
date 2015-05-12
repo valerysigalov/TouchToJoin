@@ -41,6 +41,7 @@ public class REDIALog extends Activity {
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.width  = WindowManager.LayoutParams.MATCH_PARENT;
         getWindow().setAttributes(params);
+        setTitle("Disconnected?");
 
         extras = getIntent().getExtras();
         String date = extras.getString("date").trim();
@@ -57,8 +58,8 @@ public class REDIALog extends Activity {
         DebugLog.writeLog(className, "conference pin is " + pin);
 
         TextView textView = (TextView) findViewById(R.id.message);
-        String message = "Disconnected?\n" + title + "\n" +
-                begin.replaceAll("[^0-9:]", "").trim() + " \u2013 " + end + " " + number + "x" + pin + "#";
+        String message = title + "\n" + begin.replaceAll("[^0-9:]", "").trim() +
+                " \u2013 " + end + " " + number + "x" + pin + "#";
         textView.setText(message);
 
         Button rejoin = (Button) findViewById(R.id.rejoin);

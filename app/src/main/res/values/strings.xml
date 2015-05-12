@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Application Name: Touch to Join</string>
     <string name="app_title">Touch to Join</string>
-    <string name="app_ver">Application Version:</string>
-    <string name="history">Touch to Join the last conference call</string>
+    <string name="history">Rejoin last conference call</string>
     <string name="no_call">No conference calls had been made yet</string>
-    <string name="pause">Set pause in dialing Conference ID</string>
-    <string name="pause_time">Pause time</string>
-    <string name="pause_def">6 seconds</string>
-    <string name="snooze">Set snooze alarm time</string>
-    <string name="snooze_time">Snooze alarm time</string>
-    <string name="snooze_def">5 minutes</string>
-    <string name="remind">Choose when to be reminded of the event</string>
-    <string name="remind_time">Remind time</string>
-    <string name="remind_def">2 minutes</string>
-    <string name="minutes">minutes</string>
-    <string name="seconds">seconds</string>
+    <string name="set_pause">Pause before dialing access code</string>
+    <string name="pause_def">6 sec</string>
+    <string name="set_snooze">Snooze notifications</string>
+    <string name="snooze_def">5 min</string>
+    <string name="set_remind">Notification before upcoming conference call</string>
+    <string name="remind_def">2 min</string>
+    <string name="minutes">min</string>
+    <string name="seconds">sec</string>
     <string name="mailto">touch.to.join@gmail.com</string>
     <string name="send">Send mail...</string>
     <string name="type">message/rfc822</string>
-    <string name="subject">Touch to Join user feedback</string>
+    <string name="subject">user feedback</string>
+    <string name="email">Email developers</string>
     <string name="feedback">Feedback</string>
-    <string name="device">Device name:</string>
-    <string name="os">OS version:</string>
-    <string name="experience">Please tell us about your experience.</string>
+    <string name="device">Device:</string>
+    <string name="os">OS: Android</string>
+    <string name="settings">Settings:</string>
+    <string name="pause">Pause</string>
+    <string name="snooze">Snooze</string>
+    <string name="remind">Reminder</string>
+    <string name="bug">Bug:</string>
+    <string name="suggestion">Suggestion:</string>
+    <string name="other">Something else:</string>
     <string name="noclients">There are no email clients installed.</string>
     <string name="label">T2J</string>
     <string name="rejoin">Rejoin</string>
     <string name="cancel">Cancel</string>
-    <string name="defaults">Return to defaults</string>
-    <string name="defaults_def">Touch to restore the default settings</string>
-    <string name="settings">Application settings:</string>
+    <string name="defaults">Restore defaults</string>
 
 </resources>

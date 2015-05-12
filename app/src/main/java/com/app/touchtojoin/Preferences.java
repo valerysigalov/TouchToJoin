@@ -35,6 +35,7 @@ public class Preferences extends PreferenceActivity
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
+        setTheme(android.R.style.Theme_DeviceDefault_Settings);
         super.onCreate(savedInstanceState);
 
         String className = "Preferences";

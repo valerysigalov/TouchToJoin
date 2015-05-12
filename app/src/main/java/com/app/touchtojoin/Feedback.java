@@ -42,29 +42,27 @@ public class Feedback extends Activity {
         Resources res = getResources();
         intent.setType(res.getString(R.string.type));
         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{res.getString(R.string.mailto)});
-        intent.putExtra(Intent.EXTRA_SUBJECT, res.getString(R.string.subject));
-        String appName = res.getString(R.string.app_name);
-        String appVersion = res.getString(R.string.app_ver);
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            appVersion = appVersion +  " " + pInfo.versionName;
+            String subject = res.getString(R.string.app_title) + " " + pInfo.versionName +
+                    " " + res.getString(R.string.subject);
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         } catch (PackageManager.NameNotFoundException e) {
             String className = "Feedback";
             DebugLog.writeLog(className, "package not found.");
         }
         String device = res.getString(R.string.device) +  " " + android.os.Build.MODEL;
         String os = res.getString(R.string.os) +  " " +  Build.VERSION.RELEASE;
-        String settings = res.getString(R.string.settings) + "\n" +
-                "\t" + res.getString(R.string.pause_time) + " " + Preferences.getInt(this, "pause",
-                res.getInteger(R.integer.pause_def)) + " " + res.getString(R.string.seconds) + "\n" +
-                "\t" + res.getString(R.string.snooze_time) + " " + Preferences.getInt(this, "snooze",
-                res.getInteger(R.integer.snooze_def)) + " " + res.getString(R.string.minutes) + "\n" +
-                "\t" + res.getString(R.string.remind_time) + " " + Preferences.getInt(this, "remind",
+        String settings = res.getString(R.string.settings) + " " +
+                res.getString(R.string.pause) + " " + Preferences.getInt(this, "pause",
+                res.getInteger(R.integer.pause_def)) + " " + res.getString(R.string.seconds) + ", " +
+                res.getString(R.string.snooze) + " " + Preferences.getInt(this, "snooze",
+                res.getInteger(R.integer.snooze_def)) + " " + res.getString(R.string.minutes) + ", " +
+                res.getString(R.string.remind) + " " + Preferences.getInt(this, "remind",
                 res.getInteger(R.integer.remind_def)) + " " + res.getString(R.string.minutes);
-        String invite = res.getString(R.string.experience);
-        String delim  = "-------------------------------------";
-        String body = appName + "\n\n" + appVersion + "\n\n" + device + "\n\n" + os + "\n\n" + settings + "\n\n" +
-                invite + "\n\n" + delim + "\n\n";
+        String body = device + ", " + os + ".\n" + settings + ".\n\n" +
+                res.getString(R.string.bug) + "\n\n" + res.getString(R.string.suggestion) + "\n\n" +
+                res.getString(R.string.other);
         intent.putExtra(Intent.EXTRA_TEXT, body);
 
         try {
