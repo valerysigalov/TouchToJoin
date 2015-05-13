@@ -81,7 +81,7 @@ public class SendAlarm extends BroadcastReceiver {
                         .setSmallIcon(R.drawable.ic_notification)
                         .setContentTitle(title)
                         .setContentText(begin.replaceAll("[^0-9:]", "").trim() + " \u2013 " + end + " " + number + "x" + pin + "#")
-                        .setColor(Color.rgb(51, 153, 255))
+                        .setColor(Color.rgb(82, 144, 245))
                         .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE | Notification.DEFAULT_LIGHTS)
                         .setWhen(0)
                         .setPriority(Notification.PRIORITY_MAX);

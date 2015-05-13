@@ -7,12 +7,11 @@
         android:layout_height="wrap_content"
         android:text="New Text"
         android:id="@+id/message"
-        android:textSize="@dimen/abc_text_size_small_material"
+        android:textSize="@dimen/abc_text_size_medium_material"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="10dp"
-        android:textStyle="bold" />
+        android:layout_marginBottom="10dp" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -23,25 +22,27 @@
         <Space
             android:layout_width="20px"
             android:layout_height="20px"
-            android:layout_weight="0.6" />
+            android:layout_weight="0.8" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/rejoin"
             android:id="@+id/rejoin"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             style="@android:style/Widget.DeviceDefault.Light.Button.Borderless.Small"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textColor="@android:color/holo_blue_light" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
             android:id="@+id/cancel"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             style="@android:style/Widget.DeviceDefault.Light.Button.Borderless.Small"
-            android:layout_gravity="right" />
+            android:layout_gravity="right"
+            android:textColor="@android:color/holo_blue_light" />
     </LinearLayout>
 
 </RelativeLayout>

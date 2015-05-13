@@ -38,6 +38,7 @@ public class REDIALog extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.redialog);
+        setFinishOnTouchOutside(false);
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.width  = WindowManager.LayoutParams.MATCH_PARENT;
         getWindow().setAttributes(params);
@@ -59,7 +60,7 @@ public class REDIALog extends Activity {
 
         TextView textView = (TextView) findViewById(R.id.message);
         String message = title + "\n" + begin.replaceAll("[^0-9:]", "").trim() +
-                " \u2013 " + end + " " + number + "x" + pin + "#";
+                " \u2013 " + end + "\n" + number + "x" + pin + "#";
         textView.setText(message);
 
         Button rejoin = (Button) findViewById(R.id.rejoin);

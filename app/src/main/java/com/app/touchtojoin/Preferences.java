@@ -35,7 +35,7 @@ public class Preferences extends PreferenceActivity
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
-        setTheme(android.R.style.Theme_DeviceDefault_Settings);
+        setTheme(android.R.style.Theme_DeviceDefault_Light_DarkActionBar);
         super.onCreate(savedInstanceState);
 
         String className = "Preferences";
@@ -52,7 +52,7 @@ public class Preferences extends PreferenceActivity
         } catch (PackageManager.NameNotFoundException e) {
             DebugLog.writeLog(className, "package not found.");
         }
-        setTitle(getResources().getString(R.string.app_title) + "  " + appVersion);
+        setTitle(getResources().getString(R.string.app_title));
     }
 
     @Override

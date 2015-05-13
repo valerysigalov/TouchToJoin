@@ -62,7 +62,7 @@ public class Feedback extends Activity {
                 res.getInteger(R.integer.remind_def)) + " " + res.getString(R.string.minutes);
         String body = device + ", " + os + ".\n" + settings + ".\n\n" +
                 res.getString(R.string.bug) + "\n\n" + res.getString(R.string.suggestion) + "\n\n" +
-                res.getString(R.string.other);
+                res.getString(R.string.other) + "\n\n";
         intent.putExtra(Intent.EXTRA_TEXT, body);
 
         try {
