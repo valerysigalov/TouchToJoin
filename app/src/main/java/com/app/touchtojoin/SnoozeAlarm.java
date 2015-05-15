@@ -38,8 +38,8 @@ public class SnoozeAlarm extends Activity {
         int notificationId = extras.getInt("notificationId");
         Integer minutes = Preferences.getInt(this, "snooze",
                 getBaseContext().getResources().getInteger(R.integer.snooze_def));
-        String className = "SnoozeAlarm";
-        DebugLog.writeLog(className, "snooze notification with Id " + notificationId + " for " + minutes + " minutes.");
+        final String className = "SnoozeAlarm";
+        DebugLog.writeLog(className, "snooze - " + extras.toString() + " - for " + minutes + " minutes");
 
         NotificationManager mNotificationManager =
                 (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);

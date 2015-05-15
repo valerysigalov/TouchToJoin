@@ -34,6 +34,7 @@ public class Feedback extends Activity {
 
         super.onCreate(savedInstanceState);
         sendFeedback();
+        finish();
     }
 
     private void sendFeedback() {
@@ -48,8 +49,8 @@ public class Feedback extends Activity {
                     " " + res.getString(R.string.subject);
             intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         } catch (PackageManager.NameNotFoundException e) {
-            String className = "Feedback";
-            DebugLog.writeLog(className, "package not found.");
+            final String className = "Feedback";
+            DebugLog.writeLog(className, "package not found");
         }
         String device = res.getString(R.string.device) +  " " + android.os.Build.MODEL;
         String os = res.getString(R.string.os) +  " " +  Build.VERSION.RELEASE;
@@ -60,7 +61,11 @@ public class Feedback extends Activity {
                 res.getInteger(R.integer.snooze_def)) + " " + res.getString(R.string.minutes) + ", " +
                 res.getString(R.string.remind) + " " + Preferences.getInt(this, "remind",
                 res.getInteger(R.integer.remind_def)) + " " + res.getString(R.string.minutes);
-        String body = device + ", " + os + ".\n" + settings + ".\n\n" +
+        String log = "";
+        if (Preferences.isLogEnabled(this)) {
+            log = res.getString(R.string.logcat) + "\n\n" + DebugLog.getLog() + "\n\n";
+        }
+        String body = device + ", " + os + ".\n" + settings + ".\n\n" + log +
                 res.getString(R.string.bug) + "\n\n" + res.getString(R.string.suggestion) + "\n\n" +
                 res.getString(R.string.other) + "\n\n";
         intent.putExtra(Intent.EXTRA_TEXT, body);

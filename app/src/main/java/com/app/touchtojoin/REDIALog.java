@@ -19,19 +19,19 @@
 package com.app.touchtojoin;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class REDIALog extends Activity {
 
-    private final String className = "REDIALog";
     private Bundle extras;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,23 +44,17 @@ public class REDIALog extends Activity {
         getWindow().setAttributes(params);
         setTitle("Disconnected?");
 
+        context = this;
         extras = getIntent().getExtras();
-        String date = extras.getString("date").trim();
-        DebugLog.writeLog(className, "conference date is " + date);
         String begin = extras.getString("begin").trim();
-        DebugLog.writeLog(className, "conference begin time is " + begin);
         String end = extras.getString("end").trim();
-        DebugLog.writeLog(className, "conference end time is " + end);
         String title = extras.getString("title").trim();
-        DebugLog.writeLog(className, "conference title is " + title);
         String number = extras.getString("number").trim();
-        DebugLog.writeLog(className, "conference number is " + number);
         String pin = extras.getString("pin").trim();
-        DebugLog.writeLog(className, "conference pin is " + pin);
 
         TextView textView = (TextView) findViewById(R.id.message);
-        String message = title + "\n" + begin.replaceAll("[^0-9:]", "").trim() +
-                " \u2013 " + end + "\n" + number + "x" + pin + "#";
+        String message = title + "\n\n" + begin.replaceAll("[^0-9:]", "").trim() +
+                " \u2013 " + end + "\n\n" + number + "x" + pin + "#";
         textView.setText(message);
 
         Button rejoin = (Button) findViewById(R.id.rejoin);
@@ -68,9 +62,10 @@ public class REDIALog extends Activity {
             public void onClick(View v) {
 
                 Intent join = new Intent(Intent.ACTION_CALL);
-                String number = "tel:" + extras.getString("number").trim() + ",,," +
+                String number = "tel:" + extras.getString("number").trim() + Preferences.setDelay(context) +
                         extras.getString("pin").trim() + "#";
-                DebugLog.writeLog(className, "dialing number " + number);
+                final String className = "REDIALog";
+                DebugLog.writeLog(className, number);
                 join.setData(Uri.parse(number));
                 join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(join);

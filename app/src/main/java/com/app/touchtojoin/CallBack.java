@@ -32,23 +32,12 @@ public class CallBack extends Activity {
 
         Bundle extras = Preferences.restoreLastCall(this);
         if (extras != null) {
-            String className = "CallBack";
-            String date = extras.getString("date").trim();
-            DebugLog.writeLog(className, "conference date is " + date);
-            String begin = extras.getString("begin").trim();
-            DebugLog.writeLog(className, "conference begin time is " + begin);
-            String end = extras.getString("end").trim();
-            DebugLog.writeLog(className, "conference end time is " + end);
-            String title = extras.getString("title").trim();
-            DebugLog.writeLog(className, "conference title is " + title);
+            final String className = "CallBack";
+            DebugLog.writeLog(className, extras.toString());
             String number = extras.getString("number").trim();
-            DebugLog.writeLog(className, "conference number is " + number);
             String pin = extras.getString("pin").trim();
-            DebugLog.writeLog(className, "conference pin is " + pin);
-
             Intent join = new Intent(Intent.ACTION_CALL);
             number = "tel:" + number + Preferences.setDelay(this) + pin + "#";
-            DebugLog.writeLog(className, "dialing number " + number);
             join.setData(Uri.parse(number));
             join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(join);

@@ -8,11 +8,11 @@
         <intent android:action="com.app.touchtojoin.CallBack"/>
     </PreferenceScreen>
 
-    <com.app.touchtojoin.PauseNumberPicker
-        android:title="@string/set_pause"
-        android:key="pause"
-        android:summary="@string/pause_def">
-    </com.app.touchtojoin.PauseNumberPicker>
+    <com.app.touchtojoin.RemindNumberPicker
+        android:title="@string/set_remind"
+        android:key="remind"
+        android:summary="@string/remind_def">
+    </com.app.touchtojoin.RemindNumberPicker>
 
     <com.app.touchtojoin.SnoozeNumberPicker
         android:title="@string/set_snooze"
@@ -20,16 +20,24 @@
         android:summary="@string/snooze_def">
     </com.app.touchtojoin.SnoozeNumberPicker>
 
-    <com.app.touchtojoin.RemindNumberPicker
-        android:title="@string/set_remind"
-        android:key="remind"
-        android:summary="@string/remind_def">
-    </com.app.touchtojoin.RemindNumberPicker>
+    <com.app.touchtojoin.PauseNumberPicker
+        android:title="@string/set_pause"
+        android:key="pause"
+        android:summary="@string/pause_def">
+    </com.app.touchtojoin.PauseNumberPicker>
 
     <PreferenceScreen
         android:title="@string/defaults">
         <intent android:action="com.app.touchtojoin.Defaults"/>
     </PreferenceScreen>
+
+    <ListPreference
+        android:title="@string/log"
+        android:key="log"
+        android:summary="@string/disable"
+        android:entries="@array/log"
+        android:entryValues="@array/log">
+    </ListPreference >
 
     <PreferenceScreen
         android:title="@string/feedback"

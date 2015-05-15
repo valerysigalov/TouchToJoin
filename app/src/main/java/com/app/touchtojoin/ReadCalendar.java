@@ -37,7 +37,6 @@ class ReadCalendar {
         String alarmTime = intent.getData().getLastPathSegment();
 
         if (savedTime != null && alarmTime.equals(savedTime)) {
-            DebugLog.writeLog(className, "the event was already processed.");
             return;
         }
         savedTime = alarmTime;
@@ -68,32 +67,32 @@ class ReadCalendar {
                     long time = cursor.getLong(cursor.getColumnIndex(
                             CalendarContract.Instances.BEGIN));
                     date = fmt_date.format(new Date(time));
-                    DebugLog.writeLog(className, "date " + date);
+                    DebugLog.writeLog(className, "date=" + date);
                     begin = fmt_time.format(new Date(time));
-                    DebugLog.writeLog(className, "begin " + begin);
+                    DebugLog.writeLog(className, "begin=" + begin);
                     time = cursor.getLong(cursor.getColumnIndex(
                             CalendarContract.Instances.END));
                     end = fmt_time.format(new Date(time));
-                    DebugLog.writeLog(className, "end " + end);
+                    DebugLog.writeLog(className, "end=" + end);
                     title = cursor.getString(cursor.getColumnIndex(
                             CalendarContract.CalendarAlerts.TITLE));
                     if (title.equals("")) {
                         title = "(No title)";
                     }
-                    DebugLog.writeLog(className, "title " + title);
+                    DebugLog.writeLog(className, "title=" + title);
                     phoneNumber = PhoneNumber.findNumber(title);
                     pinCode = PhoneNumber.findPinCode(title, phoneNumber);
                     if (phoneNumber == null || pinCode == null) {
                         String location = cursor.getString(cursor.getColumnIndex(
                                 CalendarContract.CalendarAlerts.EVENT_LOCATION));
-                        DebugLog.writeLog(className, "location " + location);
+                        DebugLog.writeLog(className, "location=" + location);
                         phoneNumber = PhoneNumber.findNumber(location);
                         pinCode = PhoneNumber.findPinCode(location, phoneNumber);
                     }
                     if (phoneNumber == null || pinCode == null) {
                         String description = cursor.getString(cursor.getColumnIndex(
                                 CalendarContract.CalendarAlerts.DESCRIPTION));
-                        DebugLog.writeLog(className, "description " + description);
+                        DebugLog.writeLog(className, "description=" + description);
                         phoneNumber = PhoneNumber.findNumber(description);
                         pinCode = PhoneNumber.findPinCode(description, phoneNumber);
                     }
@@ -103,12 +102,9 @@ class ReadCalendar {
         }
 
         if (phoneNumber == null || pinCode == null) {
-            DebugLog.writeLog(className, "failed to find valid phone number and PIN code in calendar event.");
+            DebugLog.writeLog(className, "not a conference event");
         }
         else {
-            DebugLog.writeLog(className, "the conference phone number is " + phoneNumber);
-            DebugLog.writeLog(className, "the conference PIN code is " + pinCode);
-            DebugLog.writeLog(className, "start notification activity.");
             Intent notification = new Intent(context, SendAlarm.class);
             Bundle extras = new Bundle();
             extras.putString("date", date.trim());
@@ -117,6 +113,7 @@ class ReadCalendar {
             extras.putString("title", title.trim());
             extras.putString("number", phoneNumber.trim());
             extras.putString("pin", pinCode.trim());
+            DebugLog.writeLog(className, "send notification - " + extras.toString());
             notification.putExtras(extras);
             context.sendBroadcast(notification);
         }

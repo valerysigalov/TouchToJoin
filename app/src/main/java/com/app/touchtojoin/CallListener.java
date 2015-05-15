@@ -53,42 +53,39 @@ public class CallListener extends BroadcastReceiver {
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
 
-            Bundle extras;
             switch (state) {
                 case TelephonyManager.CALL_STATE_IDLE:
-                    extras = Preferences.restoreLastCall(context);
-                    if (extras != null) {
-                        if (incomingNumber.equals(extras.getString("number").replaceAll(" |-", ""))) {
-                            DebugLog.writeLog(className, "call number " + incomingNumber + " ended.");
-                            try {
-                                long currentTimeInMillis = System.currentTimeMillis();
-                                String parseEndTime = extras.getString("date").trim() + " " +
-                                        extras.getString("end").trim();
-                                DebugLog.writeLog(className, "parse end time " + parseEndTime);
-                                DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-                                Date endTime = formatter.parse(parseEndTime);
-                                long endTimeInMillis = endTime.getTime();
-                                if (endTimeInMillis > currentTimeInMillis) {
-                                    Intent rejoin = new Intent(context, REDIALog.class);
-                                    rejoin.putExtras(extras);
-                                    rejoin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    DebugLog.writeLog(className, "Start rejoin dialog for call " + incomingNumber);
-                                    context.startActivity(rejoin);
+                    if (!incomingNumber.isEmpty()) {
+                        String number = Preferences.getString(context, "number", null);
+                        if (number != null) {
+                            DebugLog.writeLog(className, "compare " + number + " with " + incomingNumber);
+                            if (incomingNumber.equals(number.replaceAll(" |-", ""))) {
+                                Bundle extras = Preferences.restoreLastCall(context);
+                                if (extras != null) {
+                                    try {
+                                        long currentTimeInMillis = System.currentTimeMillis();
+                                        String parseEndTime = extras.getString("date").trim() + " " +
+                                                extras.getString("end").trim();
+                                        DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+                                        Date endTime = formatter.parse(parseEndTime);
+                                        long endTimeInMillis = endTime.getTime();
+                                        if (endTimeInMillis > currentTimeInMillis) {
+                                            Intent rejoin = new Intent(context, REDIALog.class);
+                                            rejoin.putExtras(extras);
+                                            rejoin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            context.startActivity(rejoin);
+                                        }
+                                    } catch (ParseException e) {
+                                        DebugLog.writeLog(className, "failed to parse time " + e.toString());
+                                    }
                                 }
-                            } catch (ParseException e) {
-                                DebugLog.writeLog(className, "failed to parse time " + e.toString());
                             }
                         }
                     }
                     break;
                 case TelephonyManager.CALL_STATE_OFFHOOK:
-                    extras = Preferences.restoreLastCall(context);
-                    if (extras != null && incomingNumber.equals(extras.getString("number").trim())) {
-                        DebugLog.writeLog(className, "call number " + incomingNumber + " started.");
-                    }
                     break;
                 case TelephonyManager.CALL_STATE_RINGING:
-                    DebugLog.writeLog(className, "call number " + incomingNumber + " ringing.");
                     break;
             }
         }

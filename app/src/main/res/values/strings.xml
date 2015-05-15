@@ -3,7 +3,7 @@
 
     <string name="app_title">Touch to Join</string>
     <string name="history">Rejoin last conference call</string>
-    <string name="no_call">No conference calls had been made yet</string>
+    <string name="no_call">No saved calls yet</string>
     <string name="set_pause">Pause before dialing access code</string>
     <string name="pause_def">6 sec</string>
     <string name="set_snooze">Snooze notifications</string>
@@ -27,10 +27,18 @@
     <string name="bug">Bug:</string>
     <string name="suggestion">Suggestion:</string>
     <string name="other">Something else:</string>
+    <string name="logcat">Log:</string>
     <string name="noclients">There are no email clients installed.</string>
     <string name="label">T2J</string>
     <string name="rejoin">Rejoin</string>
     <string name="cancel">Cancel</string>
     <string name="defaults">Restore defaults</string>
+    <string name="log">Application log</string>
+    <string name="enable">Enabled</string>
+    <string name="disable">Disabled</string>
+    <string-array name="log">
+        <item>@string/disable</item>
+        <item>@string/enable</item>
+    </string-array>
 
 </resources>

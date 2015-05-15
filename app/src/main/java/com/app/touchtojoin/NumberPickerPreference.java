@@ -20,6 +20,7 @@ package com.app.touchtojoin;
 
 import android.content.Context;
 import android.preference.DialogPreference;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -29,7 +30,7 @@ import android.widget.NumberPicker;
 
 class NumberPickerPreference extends DialogPreference {
 
-    protected Context context;
+    private final Context context;
     private NumberPicker picker;
     private Integer curValue;
     Integer minValue;
@@ -38,7 +39,6 @@ class NumberPickerPreference extends DialogPreference {
     Integer stepValue;
     String attrName;
     String timeUnit;
-    String[] valueSet;
 
     NumberPickerPreference(Context context, AttributeSet attrs) {
 
@@ -64,7 +64,7 @@ class NumberPickerPreference extends DialogPreference {
     }
 
     @Override
-    protected void onBindDialogView(View view) {
+    protected void onBindDialogView(@NonNull View view) {
 
         super.onBindDialogView(view);
         setDisplayedValues();
@@ -96,10 +96,10 @@ class NumberPickerPreference extends DialogPreference {
         }
     }
 
-    void setDisplayedValues() {
+    private void setDisplayedValues() {
 
         Integer valueSetLen = (maxValue-minValue)/stepValue+1;
-        valueSet = new String[valueSetLen];
+        String[] valueSet = new String[valueSetLen];
 
         for (int index = 0; index < valueSetLen; index++) {
             valueSet[index] = Integer.toString(minValue+index*stepValue);
@@ -110,11 +110,9 @@ class NumberPickerPreference extends DialogPreference {
         picker.setValue((curValue-minValue)/stepValue);
     }
 
-    void setValue(Integer value) {
+    private void setValue(Integer value) {
 
         curValue = value;
-        String className = "NumberPickerPreference";
-        DebugLog.writeLog(className, "set value - " + value + " for " + attrName);
         Preferences.putInt(context, attrName, value);
         setSummary(String.valueOf(value) + " " + timeUnit);
     }

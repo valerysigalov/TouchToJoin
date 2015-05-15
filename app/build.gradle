@@ -8,8 +8,8 @@ android {
         applicationId "com.app.touchtojoin"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 12
-        versionName "2.2 B"
+        versionCode 13
+        versionName "2.3 B"
     }
     buildTypes {
         release {

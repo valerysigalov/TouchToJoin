@@ -68,7 +68,7 @@ class Contacts {
             cr.applyBatch(ContactsContract.AUTHORITY, ops);
             DebugLog.writeLog(className, "added new contact " +  title + " " + number);
         } catch (RemoteException | OperationApplicationException e) {
-            DebugLog.writeLog(className, "failed to add the new contact " + title + " " + number);
+            DebugLog.writeLog(className, "failed to add new contact " + title + " " + number);
         }
     }
 

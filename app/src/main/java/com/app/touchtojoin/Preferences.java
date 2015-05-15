@@ -20,9 +20,9 @@ package com.app.touchtojoin;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.ListPreference;
+import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -38,20 +38,12 @@ public class Preferences extends PreferenceActivity
         setTheme(android.R.style.Theme_DeviceDefault_Light_DarkActionBar);
         super.onCreate(savedInstanceState);
 
-        String className = "Preferences";
-        DebugLog.writeLog(className, "register broadcast receivers.");
+        DebugLog.writeLog(className, "register broadcast receivers");
         RegisterReceiver.registerReceiver(Preferences.this);
 
         internalFragment = new InternalFragment();
         getFragmentManager().beginTransaction().replace(android.R.id.content, internalFragment).commit();
 
-        String appVersion = "";
-        try {
-            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            appVersion = pInfo.versionName;
-        } catch (PackageManager.NameNotFoundException e) {
-            DebugLog.writeLog(className, "package not found.");
-        }
         setTitle(getResources().getString(R.string.app_title));
     }
 
@@ -59,19 +51,29 @@ public class Preferences extends PreferenceActivity
     public void onResume() {
 
         super.onResume();
-        DebugLog.writeLog(className, "call onResume()");
         refreshLastCall(this);
+
+        ListPreference enableLog = (ListPreference)internalFragment.findPreference("log");
+        enableLog.setSummary(getString(this, "log", getResources().getString(R.string.disable)));
+        enableLog.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                Preferences.putString(Preferences.this, "log", (String)newValue);
+                preference.setSummary((String)newValue);
+                return true;
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
 
         super.onDestroy();
-        DebugLog.writeLog(className, "call onDestroy()");
         internalFragment = null;
     }
 
-    public void refreshLastCall(Context context) {
+    private void refreshLastCall(Context context) {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String confInfo = sharedPreferences.getString("call",
@@ -81,47 +83,60 @@ public class Preferences extends PreferenceActivity
             internalFragment.findPreference("call").setSummary(confInfo);
     }
 
+    public static String getString(Context context, String key, String defVal) {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString(key, defVal);
+    }
+
+    private static void putString(Context context, String key, String value) {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString(key, value);
+        edit.commit();
+    }
+
     public static Integer getInt(Context context, String key, Integer defVal) {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Integer value = sharedPreferences.getInt(key, defVal);
-        DebugLog.writeLog(className, "return integer value " + key + " : " + value);
-        return value;
+        return sharedPreferences.getInt(key, defVal);
     }
 
     public static void putInt(Context context, String key, Integer value) {
 
-        DebugLog.writeLog(className, "save integer " + key + " : " + value);
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putInt(key, value);
         edit.commit();
     }
 
+    public static Boolean isLogEnabled(Context context) {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        return sharedPreferences.getString("log",
+                context.getResources().getString(R.string.disable)).equals(context.getResources().getString(R.string.enable));
+    }
+
     public static void saveLastCall(Context context, Bundle callInfo) {
 
+        DebugLog.writeLog(className, "save last call - " + callInfo.toString());
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         String date = callInfo.getString("date");
-        DebugLog.writeLog(className, "save last call - date is " + date);
         edit.putString("date", date);
         String begin = callInfo.getString("begin");
-        DebugLog.writeLog(className, "save last call - begin time is " + begin);
         edit.putString("begin", begin);
         String end = callInfo.getString("end");
-        DebugLog.writeLog(className, "save last call - end time is " + end);
         edit.putString("end", end);
         String title = callInfo.getString("title");
-        DebugLog.writeLog(className, "save last call - title is " + title);
         edit.putString("title", title);
         String number = callInfo.getString("number");
-        DebugLog.writeLog(className, "save last call - number is " + number);
         edit.putString("number", number);
         String pin = callInfo.getString("pin");
-        DebugLog.writeLog(className, "save last call - pin is " + pin);
         edit.putString("pin", pin);
-        String confInfo = title + "\n" + begin.replaceAll("[^0-9:]", "").trim() + " \u2013 " + end + " " + number + "x" + pin + "#";
-        DebugLog.writeLog(className, "save last call - " + confInfo);
+        String confInfo = title + "\n" + begin.replaceAll("[^0-9:]", "").trim() +
+                " \u2013 " + end + " " + number + "x" + pin + "#";
         edit.putString("call", confInfo);
         edit.commit();
         if (internalFragment != null && internalFragment.findPreference("call") != null)
@@ -130,57 +145,51 @@ public class Preferences extends PreferenceActivity
 
     public static Bundle restoreLastCall(Context context) {
 
-        DebugLog.writeLog(className, "restore last call");
         Bundle callInfo = new Bundle();
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String date = sharedPreferences.getString("date", null);
         if (date != null) {
-            DebugLog.writeLog(className, "conference date is " + date);
             callInfo.putString("date", date);
         } else {
-            DebugLog.writeLog(className, "conference date is null");
+            DebugLog.writeLog(className, "date=null");
             return null;
         }
         String begin = sharedPreferences.getString("begin", null);
         if (begin != null) {
-            DebugLog.writeLog(className, "conference begin time is " + begin);
             callInfo.putString("begin", begin);
         } else {
-            DebugLog.writeLog(className, "conference begin time is null");
+            DebugLog.writeLog(className, "begin=null");
             return null;
         }
         String end = sharedPreferences.getString("end", null);
         if (end != null) {
-            DebugLog.writeLog(className, "conference end time is " + end);
             callInfo.putString("end", end);
         } else {
-            DebugLog.writeLog(className, "conference end time is null");
+            DebugLog.writeLog(className, "end=null");
             return null;
         }
         String title = sharedPreferences.getString("title", null);
         if (title != null) {
-            DebugLog.writeLog(className, "conference title is " + title);
             callInfo.putString("title", title);
         } else {
-            DebugLog.writeLog(className, "conference title is null");
+            DebugLog.writeLog(className, "title=null");
             return null;
         }
         String number = sharedPreferences.getString("number", null);
         if (number != null) {
-            DebugLog.writeLog(className, "conference number is " + number);
             callInfo.putString("number", number);
         } else {
-            DebugLog.writeLog(className, "conference number is null");
+            DebugLog.writeLog(className, "number=null");
             return null;
         }
         String pin = sharedPreferences.getString("pin", null);
         if (pin != null) {
-            DebugLog.writeLog(className, "conference pin is " + pin);
             callInfo.putString("pin", pin);
         } else {
-            DebugLog.writeLog(className, "conference pin is null");
+            DebugLog.writeLog(className, "pin=null");
             return null;
         }
+        DebugLog.writeLog(className, "restore last call - " + callInfo.toString());
         return callInfo;
     }
 
@@ -193,21 +202,23 @@ public class Preferences extends PreferenceActivity
         for (int i = 0; i < comma; i++) {
             delay += ",";
         }
-        DebugLog.writeLog(className, "Set delay " + delay);
+        DebugLog.writeLog(className, "delay=" + delay);
         return delay;
     }
 
     public static void setDefaults(Context context) {
 
-        DebugLog.writeLog(className, "Restore default settings.");
+        DebugLog.writeLog(className, "restore default settings");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.clear();
         edit.putString("call", context.getResources().getString(R.string.no_call));
+        edit.putString("log", context.getResources().getString(R.string.disable));
         edit.putInt("pause", context.getResources().getInteger(R.integer.pause_def));
         edit.putInt("snooze", context.getResources().getInteger(R.integer.snooze_def));
         edit.putInt("remind", context.getResources().getInteger(R.integer.remind_def));
         edit.commit();
+        DebugLog.clear();
         if (internalFragment != null) {
             internalFragment.setPreferenceScreen(null);
             internalFragment.addPreferencesFromResource(R.xml.preferences);
@@ -216,13 +227,10 @@ public class Preferences extends PreferenceActivity
 
     public static class InternalFragment extends PreferenceFragment {
 
-        private static final String className = "InternalFragment";
-
         @Override
         public void onCreate(Bundle savedInstanceState) {
 
             super.onCreate(savedInstanceState);
-            DebugLog.writeLog(className, "call onCreate()");
             addPreferencesFromResource(R.xml.preferences);
         }
     }

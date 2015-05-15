@@ -27,8 +27,8 @@ public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        String className = "BootReceiver";
-        DebugLog.writeLog(className, "register broadcast receivers.");
+        final String className = "BootReceiver";
+        DebugLog.writeLog(className, "register broadcast receivers");
         RegisterReceiver.registerReceiver(context);
     }
 }

@@ -41,22 +41,15 @@ public class SendAlarm extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         notificationId = notificationId + 1;
-        String className = "SendAlarm";
-        DebugLog.writeLog(className, "send notification with Id " + notificationId);
+        final String className = "SendAlarm";
 
         Bundle extras = intent.getExtras();
         String date = extras.getString("date");
-        DebugLog.writeLog(className, "conference date is " + date);
         String begin = extras.getString("begin");
-        DebugLog.writeLog(className, "conference begin time is " + begin);
         String end = extras.getString("end");
-        DebugLog.writeLog(className, "conference end time is " + end);
         String title = extras.getString("title");
-        DebugLog.writeLog(className, "conference title is " + title);
         String number = extras.getString("number");
-        DebugLog.writeLog(className, "conference number is " + number);
         String pin = extras.getString("pin");
-        DebugLog.writeLog(className, "conference pin is " + pin);
 
         Intent join = new Intent(context, JoinCall.class);
         join.putExtras(extras);
@@ -98,7 +91,6 @@ public class SendAlarm extends BroadcastReceiver {
                 publish, PendingIntent.FLAG_UPDATE_CURRENT);
 
         String parseDate = date + " " + begin;
-        DebugLog.writeLog(className, "parse date " + parseDate);
         DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
         try {
             Integer remindMinutes = Preferences.getInt(context, "remind",
@@ -107,16 +99,14 @@ public class SendAlarm extends BroadcastReceiver {
             Date beginDate = formatter.parse(parseDate);
             long dateInMillis = beginDate.getTime();
             long notifyInMillis = dateInMillis - remindMinutes* DateUtils.MINUTE_IN_MILLIS;
-            DebugLog.writeLog(className, "notify in milliseconds " + notifyInMillis);
             long currentTimeInMillis = System.currentTimeMillis();
-            DebugLog.writeLog(className, "current time in milliseconds " + currentTimeInMillis);
             if (notifyInMillis < currentTimeInMillis) {
                 notifyInMillis = currentTimeInMillis;
             }
 
-            DebugLog.writeLog(className, "set alarm to be published at " + notifyInMillis);
             AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, notifyInMillis, pPublish);
+            DebugLog.writeLog(className, extras.toString());
         } catch (ParseException e) {
             DebugLog.writeLog(className, "failed to parse date " + e.toString());
         }

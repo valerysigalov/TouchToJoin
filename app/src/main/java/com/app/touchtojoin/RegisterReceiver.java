@@ -31,21 +31,21 @@ class RegisterReceiver {
     public static void registerReceiver(Context context) {
 
         if (!wasRegistered) {
-            DebugLog.writeLog(className, "register calendar events receiver.");
+            DebugLog.writeLog(className, "calendar events");
             IntentFilter eventFilter = new IntentFilter(CalendarContract.ACTION_EVENT_REMINDER);
             eventFilter.addDataScheme("content");
             context.getApplicationContext().registerReceiver(new EventReceiver(), eventFilter);
 
-            DebugLog.writeLog(className, "register call state receiver.");
+            DebugLog.writeLog(className, "call state");
             IntentFilter callFilter = new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
             context.getApplicationContext().registerReceiver(new CallListener(), callFilter);
 
             IntentFilter appFilter = new IntentFilter("com.app.touchtojoin");
 
-            DebugLog.writeLog(className, "register alarm receiver.");
+            DebugLog.writeLog(className, "alarm sent");
             context.getApplicationContext().registerReceiver(new SendAlarm(), appFilter);
 
-            DebugLog.writeLog(className, "register publish receiver.");
+            DebugLog.writeLog(className, "alarm published");
             context.getApplicationContext().registerReceiver(new PublishAlarm(), appFilter);
 
             wasRegistered = true;
