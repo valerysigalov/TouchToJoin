@@ -53,8 +53,8 @@ public class REDIALog extends Activity {
         String pin = extras.getString("pin").trim();
 
         TextView textView = (TextView) findViewById(R.id.message);
-        String message = title + "\n\n" + begin.replaceAll("[^0-9:]", "").trim() +
-                " \u2013 " + end + "\n\n" + number + "x" + pin + "#";
+        String message = title + "\n" + begin.replaceAll("[^0-9:]", "").trim() +
+                " \u2013 " + end + "\n" + number + "x" + pin + "#";
         textView.setText(message);
 
         Button rejoin = (Button) findViewById(R.id.rejoin);

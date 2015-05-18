@@ -19,6 +19,7 @@
 package com.app.touchtojoin;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -59,8 +60,32 @@ public class Preferences extends PreferenceActivity
 
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Preferences.putString(Preferences.this, "log", (String)newValue);
-                preference.setSummary((String)newValue);
+                Preferences.putString(Preferences.this, "log", (String) newValue);
+                preference.setSummary((String) newValue);
+                return true;
+            }
+        });
+
+        Preference call = internalFragment.findPreference("call");
+        call.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                Intent intent = new Intent(Preferences.this, CallBack.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        Preference mail = internalFragment.findPreference("mail");
+        mail.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                Intent intent = new Intent(Preferences.this, Feedback.class);
+                startActivity(intent);
                 return true;
             }
         });

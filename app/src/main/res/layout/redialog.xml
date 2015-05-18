@@ -8,6 +8,7 @@
         android:text="New Text"
         android:id="@+id/message"
         android:textSize="@dimen/abc_text_size_medium_material"
+        android:lineSpacingExtra="10sp"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
@@ -32,7 +33,7 @@
             android:layout_weight="0.1"
             style="@android:style/Widget.DeviceDefault.Light.Button.Borderless.Small"
             android:layout_gravity="right"
-            android:textColor="@android:color/holo_blue_light" />
+            android:textColor="#009688" />
 
         <Button
             android:layout_width="wrap_content"
@@ -42,7 +43,7 @@
             android:layout_weight="0.1"
             style="@android:style/Widget.DeviceDefault.Light.Button.Borderless.Small"
             android:layout_gravity="right"
-            android:textColor="@android:color/holo_blue_light" />
+            android:textColor="#009688" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -5,7 +5,6 @@
         android:title="@string/history"
         android:key="call"
         android:summary="@string/no_call">
-        <intent android:action="com.app.touchtojoin.CallBack"/>
     </PreferenceScreen>
 
     <com.app.touchtojoin.RemindNumberPicker
@@ -41,8 +40,8 @@
 
     <PreferenceScreen
         android:title="@string/feedback"
+        android:key="mail"
         android:summary="@string/email">
-        <intent android:action="com.app.touchtojoin.Feedback"/>
     </PreferenceScreen>
 
 </PreferenceScreen>

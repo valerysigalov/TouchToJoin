@@ -31,13 +31,18 @@ import java.util.Date;
 
 public class CallListener extends BroadcastReceiver {
 
+    private static boolean wasRegistered = false;
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        TelephonyManager telephonyManager =
-                (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
-        CallStateListener callStateListener = new CallStateListener(context);
-        telephonyManager.listen(callStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+        if (!wasRegistered) {
+            TelephonyManager telephonyManager =
+                    (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            CallStateListener callStateListener = new CallStateListener(context);
+            telephonyManager.listen(callStateListener, PhoneStateListener.LISTEN_CALL_STATE);
+            wasRegistered = true;
+        }
     }
 
     private class CallStateListener extends PhoneStateListener {
