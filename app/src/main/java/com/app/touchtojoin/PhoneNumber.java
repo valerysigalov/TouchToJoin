@@ -29,15 +29,23 @@ class PhoneNumber {
     private static final String us_toll_free_codes = "\\(?\\s*(800|888|877|866|855|844)\\s*\\)?\\s*\\-?\\s*";
     private static final String phone_number = "\\(?\\s*[0-9]{3}\\s*\\)?\\s*\\-?\\s*\\(?\\s*[0-9]{4}\\s*\\)?))).*";
     private static final String pin_code = ".*?((\\D|\\s)([0-9]{5,8})(\\D|\\s|$)).*";
+    private static final String pin_code_ex = ".*(Access|Pin|Code|Id|Conference)([\\w\\s:]+?)([0-9\\s-]+)(\\s|#|,?).*";
+    private static final String us_pattern = "(\\(US\\)|\\(USA\\)|\\(?UNITED STATES\\)?)";
 
     public static String findNumber(String text) {
 
+        String subtext = text;
+        Pattern pattern = Pattern.compile(us_pattern, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        if(matcher.find())
+            subtext = text.substring(matcher.start());
+
         String phoneNumber;
         String toll_free_number = us_country_code + us_toll_free_codes + phone_number;
-        phoneNumber = matchNumber(toll_free_number, text);
+        phoneNumber = matchNumber(toll_free_number, subtext);
         if (phoneNumber == null) {
             String us_number = country_code + area_code + phone_number;
-            phoneNumber = matchNumber(us_number, text);
+            phoneNumber = matchNumber(us_number, subtext);
         }
 
         return phoneNumber;
@@ -45,14 +53,16 @@ class PhoneNumber {
 
     public static String findPinCode(String text, String phoneNumber) {
 
-        String pinCode;
-        if (phoneNumber != null) {
-            int index = text.indexOf(phoneNumber);
-            if (index != -1) {
-                text = text.substring(index);
+        String pinCode = matchNumber(pin_code_ex, text);
+        if (pinCode == null) {
+            if (phoneNumber != null) {
+                int index = text.indexOf(phoneNumber);
+                if (index != -1) {
+                    text = text.substring(index);
+                }
             }
+            pinCode = matchNumber(pin_code, text);
         }
-        pinCode = matchNumber(pin_code, text);
 
         return pinCode;
     }

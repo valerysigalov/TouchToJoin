@@ -60,11 +60,12 @@ public class CallListener extends BroadcastReceiver {
 
             switch (state) {
                 case TelephonyManager.CALL_STATE_IDLE:
+                    DebugLog.writeLog(className, "call " + incomingNumber + " finished");
                     if (!incomingNumber.isEmpty()) {
                         String number = Preferences.getString(context, "number", null);
                         if (number != null) {
                             DebugLog.writeLog(className, "compare " + number + " with " + incomingNumber);
-                            if (incomingNumber.equals(number.replaceAll(" |-", ""))) {
+                            if (incomingNumber.equals(number.replaceAll(" |-|\\(|\\)", ""))) {
                                 Bundle extras = Preferences.restoreLastCall(context);
                                 if (extras != null) {
                                     try {
