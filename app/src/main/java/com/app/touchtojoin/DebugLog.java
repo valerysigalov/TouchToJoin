@@ -16,6 +16,24 @@
  * limitations under the License.
  */
 
+/*
+ * Classes' names map:
+ * BR - BootReceiver
+ * CB - CallBack
+ * CL - CallListener
+ * CT - Contacts
+ * ER - EventReceiver
+ * FB - Feedback
+ * JC - JoinCall
+ * PR - Preferences
+ * PA - PublishAlarm
+ * RC - ReadCalendar
+ * RD - REDialog
+ * RR - RegisterReceiver
+ * SD - SendAlarm
+ * SZ - SnoozeAlarm
+ */
+
 package com.app.touchtojoin;
 
 import android.util.Log;
