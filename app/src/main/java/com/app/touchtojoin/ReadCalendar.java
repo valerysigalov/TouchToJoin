@@ -29,7 +29,7 @@ import java.util.Date;
 
 class ReadCalendar {
 
-    private static final String className = "ReadCalendar";
+    private static final String className = "RC";
     private static String savedTime = null;
 
     public static void getEventByTime(Context context, Intent intent) {
@@ -113,7 +113,7 @@ class ReadCalendar {
             extras.putString("title", title.trim());
             extras.putString("number", phoneNumber.trim());
             extras.putString("pin", pinCode.trim());
-            DebugLog.writeLog(className, "send notification - " + extras.toString());
+            DebugLog.writeLog(className, extras.toString());
             notification.putExtras(extras);
             context.sendBroadcast(notification);
         }

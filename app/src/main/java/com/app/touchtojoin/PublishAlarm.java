@@ -37,7 +37,7 @@ public class PublishAlarm extends BroadcastReceiver {
         Notification notification = intent.getParcelableExtra(notificationData);
         Integer id = intent.getIntExtra(notificationID, 0);
 
-        final String className = "PublishAlarm";
+        final String className = "PA";
         DebugLog.writeLog(className, "id=" + id);
         notificationManager.notify(id, notification);
     }

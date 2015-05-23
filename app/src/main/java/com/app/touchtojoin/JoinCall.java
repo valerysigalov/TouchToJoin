@@ -34,20 +34,27 @@ public class JoinCall extends Activity {
         String number = extras.getString("number").trim();
         String pin = extras.getString("pin").trim();
 
-        Preferences.saveLastCall(this, extras);
+        if (CallListener.getActiveCall().equals(number)) {
+            String className = "JC";
+            DebugLog.writeLog(className, "call " + number + " in progress");
+        } else {
 
-        /*
-        number = number + setDelay() + pin;
-        Contacts contacts = new Contacts(this);
-        if (contacts.Exists(title, number) == false) {
-            contacts.Add(title, number);
+            Preferences.saveLastCall(this, extras);
+
+            /*
+            number = number + setDelay() + pin;
+            Contacts contacts = new Contacts(this);
+            if (contacts.Exists(title, number) == false) {
+                contacts.Add(title, number);
+            }
+            */
+
+            Intent join = new Intent(Intent.ACTION_CALL);
+            number = "tel:" + number + Preferences.setDelay(this) + pin + "#";
+            join.setData(Uri.parse(number));
+            join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(join);
         }
-        */
-
-        Intent join = new Intent(Intent.ACTION_CALL);
-        number = "tel:" + number + Preferences.setDelay(this) + pin + "#";
-        join.setData(Uri.parse(number));
-        join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(join);
+        finish();
     }
 }

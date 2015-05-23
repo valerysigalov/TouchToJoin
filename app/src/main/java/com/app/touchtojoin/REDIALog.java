@@ -64,7 +64,7 @@ public class REDIALog extends Activity {
                 Intent join = new Intent(Intent.ACTION_CALL);
                 String number = "tel:" + extras.getString("number").trim() + Preferences.setDelay(context) +
                         extras.getString("pin").trim() + "#";
-                final String className = "REDIALog";
+                final String className = "RD";
                 DebugLog.writeLog(className, number);
                 join.setData(Uri.parse(number));
                 join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

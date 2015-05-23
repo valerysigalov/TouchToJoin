@@ -8,13 +8,12 @@
     <string name="pause_def">6 sec</string>
     <string name="set_snooze">Snooze notifications</string>
     <string name="snooze_def">5 min</string>
-    <string name="set_remind">Notification before upcoming conference call</string>
+    <string name="set_remind">Notify before upcoming conference call</string>
     <string name="remind_def">2 min</string>
     <string name="minutes">min</string>
     <string name="seconds">sec</string>
     <string name="mailto">touch.to.join@gmail.com</string>
     <string name="send">Send mail...</string>
-    <string name="type">message/rfc822</string>
     <string name="subject">user feedback</string>
     <string name="email">Email developers</string>
     <string name="feedback">Feedback</string>
@@ -33,7 +32,7 @@
     <string name="rejoin">Rejoin</string>
     <string name="cancel">Cancel</string>
     <string name="defaults">Restore defaults</string>
-    <string name="log">Application log</string>
+    <string name="log">Debug log</string>
     <string name="enable">Enabled</string>
     <string name="disable">Disabled</string>
     <string-array name="log">

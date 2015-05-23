@@ -30,7 +30,7 @@ import android.preference.PreferenceManager;
 
 public class Preferences extends PreferenceActivity
 {
-    private static final String className = "Preferences";
+    private static final String className = "PR";
     private static InternalFragment internalFragment = null;
 
     @Override
@@ -39,7 +39,6 @@ public class Preferences extends PreferenceActivity
         setTheme(android.R.style.Theme_DeviceDefault_Light_DarkActionBar);
         super.onCreate(savedInstanceState);
 
-        DebugLog.writeLog(className, "register broadcast receivers");
         RegisterReceiver.registerReceiver(Preferences.this);
 
         internalFragment = new InternalFragment();
@@ -103,7 +102,7 @@ public class Preferences extends PreferenceActivity
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String confInfo = sharedPreferences.getString("call",
                 context.getResources().getString(R.string.no_call));
-        DebugLog.writeLog(className, "refresh last call - " + confInfo);
+        DebugLog.writeLog(className, "last call - " + confInfo);
         if (internalFragment != null && internalFragment.findPreference("call") != null)
             internalFragment.findPreference("call").setSummary(confInfo);
     }
@@ -145,7 +144,7 @@ public class Preferences extends PreferenceActivity
 
     public static void saveLastCall(Context context, Bundle callInfo) {
 
-        DebugLog.writeLog(className, "save last call - " + callInfo.toString());
+        DebugLog.writeLog(className, "save call - " + callInfo.toString());
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         String date = callInfo.getString("date");
@@ -214,7 +213,7 @@ public class Preferences extends PreferenceActivity
             DebugLog.writeLog(className, "pin=null");
             return null;
         }
-        DebugLog.writeLog(className, "restore last call - " + callInfo.toString());
+        DebugLog.writeLog(className, "restore call - " + callInfo.toString());
         return callInfo;
     }
 
@@ -233,7 +232,7 @@ public class Preferences extends PreferenceActivity
 
     public static void setDefaults(Context context) {
 
-        DebugLog.writeLog(className, "restore default settings");
+        DebugLog.writeLog(className, "restore defaults");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.clear();

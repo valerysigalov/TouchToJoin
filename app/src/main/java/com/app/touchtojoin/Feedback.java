@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -39,19 +40,20 @@ public class Feedback extends Activity {
 
     private void sendFeedback() {
 
-        Intent intent = new Intent(Intent.ACTION_SEND);
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
         Resources res = getResources();
-        intent.setType(res.getString(R.string.type));
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{res.getString(R.string.mailto)});
+        String subject;
         try {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            String subject = res.getString(R.string.app_title) + " " + pInfo.versionName +
+            subject = res.getString(R.string.app_title) + " " + pInfo.versionName +
                     " " + res.getString(R.string.subject);
-            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         } catch (PackageManager.NameNotFoundException e) {
-            final String className = "Feedback";
+            final String className = "FB";
             DebugLog.writeLog(className, "package not found");
+            subject = res.getString(R.string.app_title) + " " +
+                      res.getString(R.string.subject);
         }
+
         String device = res.getString(R.string.device) +  " " + android.os.Build.MODEL;
         String os = res.getString(R.string.os) +  " " +  Build.VERSION.RELEASE;
         String settings = res.getString(R.string.settings) + " " +
@@ -68,7 +70,12 @@ public class Feedback extends Activity {
         String body = device + ", " + os + ".\n" + settings + ".\n\n" + log +
                 res.getString(R.string.bug) + "\n\n" + res.getString(R.string.suggestion) + "\n\n" +
                 res.getString(R.string.other) + "\n\n";
-        intent.putExtra(Intent.EXTRA_TEXT, body);
+
+        String uriText = "mailto:" + res.getString(R.string.mailto) +
+                         "?subject=" + Uri.encode(subject) +
+                         "&body=" + Uri.encode(body);
+        Uri uri = Uri.parse(uriText);
+        intent.setData(uri);
 
         try {
             startActivity(Intent.createChooser(intent, res.getString(R.string.send)));

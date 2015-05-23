@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 class Contacts {
 
-    private final String className = "Contacts";
+    private final String className = "CT";
     private final Context contactsContext;
 
     Contacts(Context context) {

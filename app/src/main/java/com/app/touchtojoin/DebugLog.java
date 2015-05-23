@@ -26,7 +26,7 @@ class DebugLog {
 
     public static void writeLog(String className, String msg) {
         Log.d("TouchToJoin", className + ": " + msg);
-        DebugLogQueue.enqueue(new Timestamp(System.currentTimeMillis()).toString() + " " + className + ": " + msg);
+        DebugLogQueue.enqueue(new Timestamp(System.currentTimeMillis()).toString().substring(5) + " " + className + ": " + msg);
     }
 
     public static String getLog() {

@@ -41,7 +41,7 @@ public class SendAlarm extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         notificationId = notificationId + 1;
-        final String className = "SendAlarm";
+        final String className = "SD";
 
         Bundle extras = intent.getExtras();
         String date = extras.getString("date");

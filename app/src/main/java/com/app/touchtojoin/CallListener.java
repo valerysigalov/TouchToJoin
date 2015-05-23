@@ -31,6 +31,7 @@ import java.util.Date;
 
 public class CallListener extends BroadcastReceiver {
 
+    private static String activeCall = "";
     private static boolean wasRegistered = false;
 
     @Override
@@ -47,7 +48,7 @@ public class CallListener extends BroadcastReceiver {
 
     private class CallStateListener extends PhoneStateListener {
 
-        private final String className = "CallStateListener";
+        private final String className = "CL";
         private final Context context;
 
         CallStateListener(Context context) {
@@ -60,40 +61,52 @@ public class CallListener extends BroadcastReceiver {
 
             switch (state) {
                 case TelephonyManager.CALL_STATE_IDLE:
-                    DebugLog.writeLog(className, "call " + incomingNumber + " finished");
-                    if (!incomingNumber.isEmpty()) {
-                        String number = Preferences.getString(context, "number", null);
-                        if (number != null) {
-                            DebugLog.writeLog(className, "compare " + number + " with " + incomingNumber);
-                            if (incomingNumber.equals(number.replaceAll(" |-|\\(|\\)", ""))) {
-                                Bundle extras = Preferences.restoreLastCall(context);
-                                if (extras != null) {
-                                    try {
-                                        long currentTimeInMillis = System.currentTimeMillis();
-                                        String parseEndTime = extras.getString("date").trim() + " " +
-                                                extras.getString("end").trim();
-                                        DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-                                        Date endTime = formatter.parse(parseEndTime);
-                                        long endTimeInMillis = endTime.getTime();
-                                        if (endTimeInMillis > currentTimeInMillis) {
-                                            Intent rejoin = new Intent(context, REDIALog.class);
-                                            rejoin.putExtras(extras);
-                                            rejoin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            context.startActivity(rejoin);
-                                        }
-                                    } catch (ParseException e) {
-                                        DebugLog.writeLog(className, "failed to parse time " + e.toString());
+                    if (incomingNumber != null) {
+                        DebugLog.writeLog(className, "call " + incomingNumber + " ended");
+                        if (!activeCall.isEmpty()) {
+                            Bundle extras = Preferences.restoreLastCall(context);
+                            if (extras != null) {
+                                try {
+                                    long currentTimeInMillis = System.currentTimeMillis();
+                                    String parseEndTime = extras.getString("date").trim() + " " +
+                                            extras.getString("end").trim();
+                                    DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+                                    Date endTime = formatter.parse(parseEndTime);
+                                    long endTimeInMillis = endTime.getTime();
+                                    if (endTimeInMillis > currentTimeInMillis) {
+                                        Intent rejoin = new Intent(context, REDIALog.class);
+                                        rejoin.putExtras(extras);
+                                        rejoin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        context.startActivity(rejoin);
                                     }
+                                } catch (ParseException e) {
+                                    DebugLog.writeLog(className, "parse error " + e.toString());
+                                }
+                            }
+                        }
+                    }
+                    activeCall = "";
+                    break;
+                case TelephonyManager.CALL_STATE_RINGING:
+                case TelephonyManager.CALL_STATE_OFFHOOK:
+                    if (incomingNumber != null) {
+                        DebugLog.writeLog(className, "call " + incomingNumber + " started");
+                        if (!incomingNumber.isEmpty()) {
+                            String number = Preferences.getString(context, "number", null);
+                            if (number != null) {
+                                DebugLog.writeLog(className, number + " equals " + incomingNumber);
+                                if (incomingNumber.equals(number.replaceAll(" |-|\\(|\\)", ""))) {
+                                    activeCall = number;
                                 }
                             }
                         }
                     }
                     break;
-                case TelephonyManager.CALL_STATE_OFFHOOK:
-                    break;
-                case TelephonyManager.CALL_STATE_RINGING:
-                    break;
             }
         }
+    }
+
+    public static String getActiveCall() {
+        return activeCall;
     }
 }

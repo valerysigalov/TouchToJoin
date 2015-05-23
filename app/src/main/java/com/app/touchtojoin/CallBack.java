@@ -32,15 +32,19 @@ public class CallBack extends Activity {
 
         Bundle extras = Preferences.restoreLastCall(this);
         if (extras != null) {
-            final String className = "CallBack";
+            final String className = "CB";
             DebugLog.writeLog(className, extras.toString());
             String number = extras.getString("number").trim();
-            String pin = extras.getString("pin").trim();
-            Intent join = new Intent(Intent.ACTION_CALL);
-            number = "tel:" + number + Preferences.setDelay(this) + pin + "#";
-            join.setData(Uri.parse(number));
-            join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(join);
+            if (CallListener.getActiveCall().equals(number)) {
+                DebugLog.writeLog(className, "call " + number + " in progress");
+            } else {
+                String pin = extras.getString("pin").trim();
+                Intent join = new Intent(Intent.ACTION_CALL);
+                number = "tel:" + number + Preferences.setDelay(this) + pin + "#";
+                join.setData(Uri.parse(number));
+                join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(join);
+            }
         }
         finish();
     }
