@@ -25,11 +25,6 @@
         android:summary="@string/pause_def">
     </com.app.touchtojoin.PauseNumberPicker>
 
-    <PreferenceScreen
-        android:title="@string/defaults">
-        <intent android:action="com.app.touchtojoin.Defaults"/>
-    </PreferenceScreen>
-
     <ListPreference
         android:title="@string/log"
         android:key="log"
@@ -37,6 +32,11 @@
         android:entries="@array/log"
         android:entryValues="@array/log">
     </ListPreference >
+
+    <PreferenceScreen
+        android:title="@string/defaults">
+        <intent android:action="com.app.touchtojoin.Defaults"/>
+    </PreferenceScreen>
 
     <PreferenceScreen
         android:title="@string/feedback"

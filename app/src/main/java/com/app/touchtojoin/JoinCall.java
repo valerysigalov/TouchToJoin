@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class JoinCall extends Activity {
 
@@ -34,12 +35,15 @@ public class JoinCall extends Activity {
         String number = extras.getString("number").trim();
         String pin = extras.getString("pin").trim();
 
-        if (CallListener.getActiveCall().equals(number)) {
+        if (CallListener.isCallActive(number)) {
             String className = "JC";
             DebugLog.writeLog(className, "call " + number + " in progress");
+            Toast.makeText(JoinCall.this, getResources().getString(R.string.inprogress),
+                    Toast.LENGTH_LONG).show();
         } else {
 
             Preferences.saveLastCall(this, extras);
+            CallListener.setActiveCall(number);
 
             /*
             number = number + setDelay() + pin;
@@ -55,6 +59,5 @@ public class JoinCall extends Activity {
             join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(join);
         }
-        finish();
     }
 }

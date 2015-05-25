@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class CallBack extends Activity {
 
@@ -35,11 +36,14 @@ public class CallBack extends Activity {
             final String className = "CB";
             DebugLog.writeLog(className, extras.toString());
             String number = extras.getString("number").trim();
-            if (CallListener.getActiveCall().equals(number)) {
+            if (CallListener.isCallActive(number)) {
                 DebugLog.writeLog(className, "call " + number + " in progress");
+                Toast.makeText(CallBack.this, getResources().getString(R.string.inprogress),
+                        Toast.LENGTH_LONG).show();
             } else {
                 String pin = extras.getString("pin").trim();
                 Intent join = new Intent(Intent.ACTION_CALL);
+                CallListener.setActiveCall(number);
                 number = "tel:" + number + Preferences.setDelay(this) + pin + "#";
                 join.setData(Uri.parse(number));
                 join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

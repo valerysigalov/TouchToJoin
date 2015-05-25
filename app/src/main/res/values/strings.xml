@@ -8,7 +8,7 @@
     <string name="pause_def">6 sec</string>
     <string name="set_snooze">Snooze notifications</string>
     <string name="snooze_def">5 min</string>
-    <string name="set_remind">Notify before upcoming conference call</string>
+    <string name="set_remind">Notify before upcoming call</string>
     <string name="remind_def">2 min</string>
     <string name="minutes">min</string>
     <string name="seconds">sec</string>
@@ -35,6 +35,7 @@
     <string name="log">Debug log</string>
     <string name="enable">Enabled</string>
     <string name="disable">Disabled</string>
+    <string name="inprogress">Already joined!</string>
     <string-array name="log">
         <item>@string/disable</item>
         <item>@string/enable</item>

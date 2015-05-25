@@ -69,7 +69,7 @@
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="com.app.touchtojoin.CallBack" />
+                <action android:name="android.intent.action.CALL" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -99,19 +99,20 @@
             android:excludeFromRecents="true"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="com.app.touchtojoin.SnoozeAlarm" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.app.touchtojoin.JoinCall"
+            android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.Transparent"
             android:taskAffinity=""
             android:launchMode="singleTask"
             android:excludeFromRecents="true"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.CALL" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -124,7 +125,7 @@
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="com.app.touchtojoin.REDIALog" />
+                <action android:name="android.intent.action.CALL" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

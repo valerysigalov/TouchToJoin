@@ -22,6 +22,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 
@@ -31,6 +32,7 @@ import java.util.Date;
 
 public class CallListener extends BroadcastReceiver {
 
+    private final static String className = "CL";
     private static String activeCall = "";
     private static boolean wasRegistered = false;
 
@@ -56,57 +58,62 @@ public class CallListener extends BroadcastReceiver {
             this.context = context;
         }
 
+        private void showDialogDelayed(final Bundle extras) {
+
+            Runnable runnable = new Runnable() {
+                public void run() {
+                    Intent intent = new Intent(context, REDIALog.class);
+                    intent.putExtras(extras);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    context.startActivity(intent);
+                }
+            };
+            Handler handler = new Handler();
+            handler.postDelayed(runnable, 500);
+        }
+
         @Override
         public void onCallStateChanged(int state, String incomingNumber) {
 
             switch (state) {
                 case TelephonyManager.CALL_STATE_IDLE:
-                    if (incomingNumber != null) {
-                        DebugLog.writeLog(className, "call " + incomingNumber + " ended");
-                        if (!activeCall.isEmpty()) {
-                            Bundle extras = Preferences.restoreLastCall(context);
-                            if (extras != null) {
-                                try {
-                                    long currentTimeInMillis = System.currentTimeMillis();
-                                    String parseEndTime = extras.getString("date").trim() + " " +
-                                            extras.getString("end").trim();
-                                    DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
-                                    Date endTime = formatter.parse(parseEndTime);
-                                    long endTimeInMillis = endTime.getTime();
-                                    if (endTimeInMillis > currentTimeInMillis) {
-                                        Intent rejoin = new Intent(context, REDIALog.class);
-                                        rejoin.putExtras(extras);
-                                        rejoin.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        context.startActivity(rejoin);
-                                    }
-                                } catch (ParseException e) {
-                                    DebugLog.writeLog(className, "parse error " + e.toString());
+                    if (!activeCall.isEmpty()) {
+                        DebugLog.writeLog(className, "call " + activeCall + " ended");
+                        Bundle extras = Preferences.restoreLastCall(context);
+                        if (extras != null) {
+                            try {
+                                long currentTimeInMillis = System.currentTimeMillis();
+                                String parseEndTime = extras.getString("date").trim() + " " +
+                                        extras.getString("end").trim();
+                                DateFormat formatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
+                                Date endTime = formatter.parse(parseEndTime);
+                                long endTimeInMillis = endTime.getTime();
+                                if (endTimeInMillis > currentTimeInMillis) {
+                                    showDialogDelayed(extras);
                                 }
+                            } catch (ParseException e) {
+                                DebugLog.writeLog(className, "parse error " + e.toString());
                             }
                         }
                     }
                     activeCall = "";
                     break;
-                case TelephonyManager.CALL_STATE_RINGING:
                 case TelephonyManager.CALL_STATE_OFFHOOK:
-                    if (incomingNumber != null) {
-                        DebugLog.writeLog(className, "call " + incomingNumber + " started");
-                        if (!incomingNumber.isEmpty()) {
-                            String number = Preferences.getString(context, "number", null);
-                            if (number != null) {
-                                DebugLog.writeLog(className, number + " equals " + incomingNumber);
-                                if (incomingNumber.equals(number.replaceAll(" |-|\\(|\\)", ""))) {
-                                    activeCall = number;
-                                }
-                            }
-                        }
-                    }
+                    break;
+                case TelephonyManager.CALL_STATE_RINGING:
                     break;
             }
         }
     }
 
-    public static String getActiveCall() {
-        return activeCall;
+    public static boolean isCallActive(String number) {
+        return activeCall.contains(number);
+    }
+
+    public static void setActiveCall(String number) {
+        if (activeCall.isEmpty()) {
+            DebugLog.writeLog(className, "set active call " + number);
+            activeCall = number;
+        }
     }
 }

@@ -81,7 +81,7 @@ public class Feedback extends Activity {
             startActivity(Intent.createChooser(intent, res.getString(R.string.send)));
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(Feedback.this, res.getString(R.string.noclients),
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_LONG).show();
         }
     }
 }

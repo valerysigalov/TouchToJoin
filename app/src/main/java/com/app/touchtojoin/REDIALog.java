@@ -61,10 +61,12 @@ public class REDIALog extends Activity {
         rejoin.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                Intent join = new Intent(Intent.ACTION_CALL);
-                String number = "tel:" + extras.getString("number").trim() + Preferences.setDelay(context) +
-                        extras.getString("pin").trim() + "#";
                 final String className = "RD";
+                Intent join = new Intent(Intent.ACTION_CALL);
+                String number = extras.getString("number").trim();
+                String pin = extras.getString("pin").trim();
+                CallListener.setActiveCall(number);
+                number = "tel:" + number + Preferences.setDelay(context) + pin + "#";
                 DebugLog.writeLog(className, number);
                 join.setData(Uri.parse(number));
                 join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
