@@ -92,6 +92,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.app.touchtojoin.Share"
+            android:theme="@style/Theme.Transparent"
+            android:label="@string/app_title">
+            <intent-filter>
+                <action android:name="com.app.touchtojoin.Share" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.app.touchtojoin.SnoozeAlarm"
             android:theme="@style/Theme.Transparent"
             android:taskAffinity=""
@@ -118,7 +127,7 @@
         </activity>
         <activity
             android:name="com.app.touchtojoin.REDIALog"
-            android:theme="@android:style/Theme.DeviceDefault.Light.Dialog"
+            android:theme="@style/Theme.Dialog"
             android:taskAffinity=""
             android:launchMode="singleTask"
             android:excludeFromRecents="true"
@@ -126,6 +135,16 @@
             android:label="@string/app_title">
             <intent-filter>
                 <action android:name="android.intent.action.CALL" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.touchtojoin.About"
+            android:theme="@style/Theme.Dialog"
+            android:icon="@drawable/ic_launcher"
+            android:label="@string/app_title">
+            <intent-filter>
+                <action android:name="com.app.touchtojoin.About" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

@@ -42,7 +42,7 @@ public class REDIALog extends Activity {
         WindowManager.LayoutParams params = getWindow().getAttributes();
         params.width  = WindowManager.LayoutParams.MATCH_PARENT;
         getWindow().setAttributes(params);
-        setTitle("Disconnected?");
+        setTitle(getResources().getString(R.string.disconnected));
 
         context = this;
         extras = getIntent().getExtras();

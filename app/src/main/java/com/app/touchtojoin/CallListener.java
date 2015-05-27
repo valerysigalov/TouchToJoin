@@ -69,7 +69,7 @@ public class CallListener extends BroadcastReceiver {
                 }
             };
             Handler handler = new Handler();
-            handler.postDelayed(runnable, 500);
+            handler.postDelayed(runnable, 200);
         }
 
         @Override

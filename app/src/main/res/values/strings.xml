@@ -15,7 +15,7 @@
     <string name="mailto">touch.to.join@gmail.com</string>
     <string name="send">Send mail...</string>
     <string name="subject">user feedback</string>
-    <string name="email">Email developers</string>
+    <string name="email">Contact us</string>
     <string name="feedback">Feedback</string>
     <string name="device">Device:</string>
     <string name="os">OS: Android</string>
@@ -35,10 +35,32 @@
     <string name="log">Debug log</string>
     <string name="enable">Enabled</string>
     <string name="disable">Disabled</string>
+    <string name="disconnected">Disconnected?</string>
     <string name="inprogress">Already joined!</string>
     <string-array name="log">
         <item>@string/disable</item>
         <item>@string/enable</item>
     </string-array>
+    <string name="share">Share</string>
+    <string name="tell">Tell about us</string>
+    <string name="about">About</string>
+    <string name="link">https://play.google.com/store/apps/details?id=com.app.touchtojoin</string>
+    <string name="short_description">Touch to Join is a conference calls dialer application</string>
+    <string name="long_description">
+Touch to Join is a dialer app that allows you to focus on conference
+calls (or driving) rather than painfully memorizing the access codes\n
+- if locates the conference calls phone numbers and access codes in your calendars;\n
+- reminds you of the upcoming calls;\n
+- helps you to join the call with one touch;\n
+- and allows you to quickly reconnect if the call gets dropped.\n
+Only basic permissions requested and no information being collected externally.\n\n
+Copyright &#169; 2015 5!\n\n
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.\n</string>
 
 </resources>

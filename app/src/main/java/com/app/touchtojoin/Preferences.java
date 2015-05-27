@@ -21,6 +21,7 @@ package com.app.touchtojoin;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -36,7 +37,11 @@ public class Preferences extends PreferenceActivity
     @Override
     protected void onCreate(final Bundle savedInstanceState)
     {
-        setTheme(android.R.style.Theme_DeviceDefault_Light_DarkActionBar);
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setTheme(android.R.style.Theme_DeviceDefault_Light_DarkActionBar);
+        } else {
+            setTheme(android.R.style.Theme_DeviceDefault);
+        }
         super.onCreate(savedInstanceState);
 
         RegisterReceiver.registerReceiver(Preferences.this);
@@ -84,6 +89,30 @@ public class Preferences extends PreferenceActivity
             public boolean onPreferenceClick(Preference preference) {
 
                 Intent intent = new Intent(Preferences.this, Feedback.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        Preference share = internalFragment.findPreference("share");
+        share.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                Intent intent = new Intent(Preferences.this, Share.class);
+                startActivity(intent);
+                return true;
+            }
+        });
+
+        Preference about = internalFragment.findPreference("about");
+        about.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                Intent intent = new Intent(Preferences.this, About.class);
                 startActivity(intent);
                 return true;
             }

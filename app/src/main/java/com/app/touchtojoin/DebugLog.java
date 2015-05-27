@@ -18,6 +18,7 @@
 
 /*
  * Classes' names map:
+ * AB - About
  * BR - BootReceiver
  * CB - CallBack
  * CL - CallListener

@@ -30,7 +30,8 @@
         android:key="log"
         android:summary="@string/disable"
         android:entries="@array/log"
-        android:entryValues="@array/log">
+        android:entryValues="@array/log"
+        android:defaultValue="@string/disable">
     </ListPreference >
 
     <PreferenceScreen
@@ -42,6 +43,17 @@
         android:title="@string/feedback"
         android:key="mail"
         android:summary="@string/email">
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="@string/share"
+        android:key="share"
+        android:summary="@string/tell">
+    </PreferenceScreen>
+
+    <PreferenceScreen
+        android:title="@string/about"
+        android:key="about">
     </PreferenceScreen>
 
 </PreferenceScreen>

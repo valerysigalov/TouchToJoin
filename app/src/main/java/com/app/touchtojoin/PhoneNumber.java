@@ -30,12 +30,12 @@ class PhoneNumber {
     private static final String phone_number = "\\(?\\s*[0-9]{3}\\s*\\)?\\s*\\-?\\s*\\(?\\s*[0-9]{4}\\s*\\)?))).*";
     private static final String pin_code = ".*?((\\D|\\s)([0-9]{5,8})(\\D|\\s|$)).*";
     private static final String pin_code_ex = ".*(Access|Pin|Code|Id|Conference)([\\w\\s:]+?)([0-9\\s-]+)(\\s|#|,?).*";
-    private static final String us_pattern = "(\\(US\\)|\\(USA\\)|\\(?UNITED STATES\\)?)";
+    private static final String us_pattern = "(\\bUSA\\b|\\bUNITED STATES\\b|\\bUnited States\\b)";
 
     public static String findNumber(String text) {
 
         String subtext = text;
-        Pattern pattern = Pattern.compile(us_pattern, Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile(us_pattern);
         Matcher matcher = pattern.matcher(text);
         if(matcher.find())
             subtext = text.substring(matcher.start());
