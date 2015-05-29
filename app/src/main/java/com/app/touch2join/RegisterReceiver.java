@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.app.touchtojoin;
+package com.app.touch2join;
 
 import android.content.Context;
 import android.content.IntentFilter;
@@ -39,7 +39,7 @@ class RegisterReceiver {
             IntentFilter callFilter = new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
             context.getApplicationContext().registerReceiver(new CallListener(), callFilter);
 
-            IntentFilter appFilter = new IntentFilter("com.app.touchtojoin");
+            IntentFilter appFilter = new IntentFilter("com.app.touch2join");
             context.getApplicationContext().registerReceiver(new SendAlarm(), appFilter);
             context.getApplicationContext().registerReceiver(new PublishAlarm(), appFilter);
 

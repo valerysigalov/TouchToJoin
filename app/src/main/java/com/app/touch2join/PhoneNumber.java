@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.app.touchtojoin;
+package com.app.touch2join;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

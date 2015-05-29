@@ -7,23 +7,23 @@
         android:summary="@string/no_call">
     </PreferenceScreen>
 
-    <com.app.touchtojoin.RemindNumberPicker
+    <com.app.touch2join.RemindNumberPicker
         android:title="@string/set_remind"
         android:key="remind"
         android:summary="@string/remind_def">
-    </com.app.touchtojoin.RemindNumberPicker>
+    </com.app.touch2join.RemindNumberPicker>
 
-    <com.app.touchtojoin.SnoozeNumberPicker
+    <com.app.touch2join.SnoozeNumberPicker
         android:title="@string/set_snooze"
         android:key="snooze"
         android:summary="@string/snooze_def">
-    </com.app.touchtojoin.SnoozeNumberPicker>
+    </com.app.touch2join.SnoozeNumberPicker>
 
-    <com.app.touchtojoin.PauseNumberPicker
+    <com.app.touch2join.PauseNumberPicker
         android:title="@string/set_pause"
         android:key="pause"
         android:summary="@string/pause_def">
-    </com.app.touchtojoin.PauseNumberPicker>
+    </com.app.touch2join.PauseNumberPicker>
 
     <ListPreference
         android:title="@string/log"
@@ -36,19 +36,17 @@
 
     <PreferenceScreen
         android:title="@string/defaults">
-        <intent android:action="com.app.touchtojoin.Defaults"/>
+        <intent android:action="com.app.touch2join.Defaults"/>
     </PreferenceScreen>
 
     <PreferenceScreen
-        android:title="@string/feedback"
-        android:key="mail"
-        android:summary="@string/email">
+        android:title="@string/contact"
+        android:key="mail">
     </PreferenceScreen>
 
     <PreferenceScreen
         android:title="@string/share"
-        android:key="share"
-        android:summary="@string/tell">
+        android:key="share">
     </PreferenceScreen>
 
     <PreferenceScreen

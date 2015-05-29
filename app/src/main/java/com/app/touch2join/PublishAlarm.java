@@ -16,19 +16,29 @@
  * limitations under the License.
  */
 
-package com.app.touchtojoin;
+package com.app.touch2join;
 
 import android.content.BroadcastReceiver;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 
-public class BootReceiver extends BroadcastReceiver {
+public class PublishAlarm extends BroadcastReceiver {
 
-    @Override
+    public static final String notificationID = "notificationID";
+    public static final String notificationData = "notification";
+
     public void onReceive(Context context, Intent intent) {
 
-        final String className = "BR";
-        DebugLog.writeLog(className, "register");
-        RegisterReceiver.registerReceiver(context);
+        NotificationManager notificationManager =
+                (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        Notification notification = intent.getParcelableExtra(notificationData);
+        Integer id = intent.getIntExtra(notificationID, 0);
+
+        final String className = "PA";
+        DebugLog.writeLog(className, "id=" + id);
+        notificationManager.notify(id, notification);
     }
 }

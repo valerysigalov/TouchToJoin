@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package com.app.touchtojoin;
+package com.app.touch2join;
 
 import android.content.Context;
 import android.util.AttributeSet;

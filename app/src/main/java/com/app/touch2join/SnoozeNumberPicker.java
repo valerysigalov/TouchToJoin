@@ -16,21 +16,22 @@
  * limitations under the License.
  */
 
-package com.app.touchtojoin;
+package com.app.touch2join;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.provider.CalendarContract;
+import android.util.AttributeSet;
 
-public class EventReceiver extends BroadcastReceiver {
+class SnoozeNumberPicker extends NumberPickerPreference {
 
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equalsIgnoreCase(CalendarContract.ACTION_EVENT_REMINDER)) {
-            final String className = "ER";
-            DebugLog.writeLog(className, "calendar reminder");
-            ReadCalendar.getEventByTime(context, intent);
-        }
+    public SnoozeNumberPicker(Context context, AttributeSet attrs) {
+
+        super(context, attrs);
+        attrName = "snooze";
+        timeUnit = getContext().getResources().getString(R.string.minutes);
+        minValue = getContext().getResources().getInteger(R.integer.snooze_min);
+        maxValue = getContext().getResources().getInteger(R.integer.snooze_max);
+        defValue = getContext().getResources().getInteger(R.integer.snooze_def);
+        stepValue = getContext().getResources().getInteger(R.integer.snooze_step);
+        onSetInitialValue();
     }
 }

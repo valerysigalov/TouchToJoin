@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_title">Touch to Join</string>
+    <string name="app_title">Touch2Join</string>
     <string name="history">Rejoin last conference call</string>
     <string name="no_call">No saved calls yet</string>
     <string name="set_pause">Pause before dialing access code</string>
@@ -12,11 +12,10 @@
     <string name="remind_def">2 min</string>
     <string name="minutes">min</string>
     <string name="seconds">sec</string>
-    <string name="mailto">touch.to.join@gmail.com</string>
+    <string name="mailto">touch2join@gmail.com</string>
     <string name="send">Send mail...</string>
     <string name="subject">user feedback</string>
-    <string name="email">Contact us</string>
-    <string name="feedback">Feedback</string>
+    <string name="contact">Contact us</string>
     <string name="device">Device:</string>
     <string name="os">OS: Android</string>
     <string name="settings">Settings:</string>
@@ -42,12 +41,12 @@
         <item>@string/enable</item>
     </string-array>
     <string name="share">Share</string>
-    <string name="tell">Tell about us</string>
     <string name="about">About</string>
-    <string name="link">https://play.google.com/store/apps/details?id=com.app.touchtojoin</string>
-    <string name="short_description">Touch to Join is a conference calls dialer application</string>
+    <string name="link">https://play.google.com/store/apps/details?id=com.app.touch2join</string>
+    <string name="short_description">Touch2Join is a dialer app that allows you to focus on conference
+calls (or driving) rather than painfully memorizing the access codes.</string>
     <string name="long_description">
-Touch to Join is a dialer app that allows you to focus on conference
+Touch2Join is a dialer app that allows you to focus on conference
 calls (or driving) rather than painfully memorizing the access codes\n
 - if locates the conference calls phone numbers and access codes in your calendars;\n
 - reminds you of the upcoming calls;\n

@@ -1,4 +1,4 @@
-package com.app.touchtojoin;
+package com.app.touch2join;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.app.touchtojoin" >
+    package="com.app.touch2join" >
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -14,27 +14,27 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_title">
         <receiver
-            android:name="com.app.touchtojoin.SendAlarm"
+            android:name="com.app.touch2join.SendAlarm"
             android:taskAffinity=""
             android:launchMode="singleTask"
             android:excludeFromRecents="true"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="com.app.touchtojoin.SendAlarm" />
+                <action android:name="com.app.touch2join.SendAlarm" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.app.touchtojoin.PublishAlarm"
+            android:name="com.app.touch2join.PublishAlarm"
             android:taskAffinity=""
             android:launchMode="singleTask"
             android:excludeFromRecents="true"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="com.app.touchtojoin.PublishAlarm" />
+                <action android:name="com.app.touch2join.PublishAlarm" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.app.touchtojoin.EventReceiver"
+            android:name="com.app.touch2join.EventReceiver"
             android:label="@string/app_title" >
             <intent-filter>
                 <action android:name="android.intent.action.EVENT_REMINDER" />
@@ -43,13 +43,13 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.app.touchtojoin.CallListener"
+            android:name="com.app.touch2join.CallListener"
             android:label="@string/app_title" >
             <intent-filter>
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.app.touchtojoin.BootReceiver">
+        <receiver android:name="com.app.touch2join.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <category android:name="android.intent.category.HOME" />
@@ -57,7 +57,7 @@
         </receiver>
 
         <activity
-            android:name="com.app.touchtojoin.Preferences"
+            android:name="com.app.touch2join.Preferences"
             android:label="@string/app_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -65,7 +65,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.app.touchtojoin.CallBack"
+            android:name="com.app.touch2join.CallBack"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_title">
             <intent-filter>
@@ -74,46 +74,46 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.app.touchtojoin.Defaults"
+            android:name="com.app.touch2join.Defaults"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="com.app.touchtojoin.Defaults" />
+                <action android:name="com.app.touch2join.Defaults" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.app.touchtojoin.Feedback"
+            android:name="com.app.touch2join.Feedback"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="com.app.touchtojoin.Feedback" />
+                <action android:name="com.app.touch2join.Feedback" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.app.touchtojoin.Share"
+            android:name="com.app.touch2join.Share"
             android:theme="@style/Theme.Transparent"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="com.app.touchtojoin.Share" />
+                <action android:name="com.app.touch2join.Share" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.app.touchtojoin.SnoozeAlarm"
+            android:name="com.app.touch2join.SnoozeAlarm"
             android:theme="@style/Theme.Transparent"
             android:taskAffinity=""
             android:launchMode="singleTask"
             android:excludeFromRecents="true"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="com.app.touchtojoin.SnoozeAlarm" />
+                <action android:name="com.app.touch2join.SnoozeAlarm" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.app.touchtojoin.JoinCall"
+            android:name="com.app.touch2join.JoinCall"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.Transparent"
             android:taskAffinity=""
@@ -126,7 +126,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.app.touchtojoin.REDIALog"
+            android:name="com.app.touch2join.REDIALog"
             android:theme="@style/Theme.Dialog"
             android:taskAffinity=""
             android:launchMode="singleTask"
@@ -139,12 +139,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.app.touchtojoin.About"
+            android:name="com.app.touch2join.About"
             android:theme="@style/Theme.Dialog"
             android:icon="@drawable/ic_launcher"
             android:label="@string/app_title">
             <intent-filter>
-                <action android:name="com.app.touchtojoin.About" />
+                <action android:name="com.app.touch2join.About" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
