@@ -13,8 +13,7 @@
             android:layout_height="wrap_content"
             android:text="New Text"
             android:id="@+id/about"
-            android:textSize="@dimen/abc_text_size_medium_material"
-            android:lineSpacingExtra="10sp" />
+            android:textSize="@dimen/abc_text_size_small_material" />
     </ScrollView>
 
 </LinearLayout>

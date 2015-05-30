@@ -32,19 +32,18 @@
  * RD - REDialog
  * RR - RegisterReceiver
  * SD - SendAlarm
+ * SR - Share
  * SZ - SnoozeAlarm
  */
 
 package com.app.touch2join;
 
-import android.util.Log;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
 class DebugLog {
 
     public static void writeLog(String className, String msg) {
-        Log.d("Touch2Join", className + ": " + msg);
         DebugLogQueue.enqueue(new Timestamp(System.currentTimeMillis()).toString().substring(5) + " " + className + ": " + msg);
     }
 

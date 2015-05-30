@@ -26,11 +26,17 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 public class About extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
+        final String className = "AB";
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about);
         setFinishOnTouchOutside(false);
@@ -43,12 +49,22 @@ public class About extends Activity {
             PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
             version = pInfo.versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            final String className = "AB";
             DebugLog.writeLog(className, "package not found");
         }
         setTitle(res.getString(R.string.about) + " " +
                 res.getString(R.string.app_title) + " " + version);
         TextView textView = (TextView) findViewById(R.id.about);
-        textView.setText(R.string.long_description);
+        InputStream inputStream = res.openRawResource(R.raw.long_description);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder descr = new StringBuilder();
+        String line;
+        try {
+            while ((line = bufferedReader.readLine()) != null) {
+                descr.append(line).append(System.getProperty("line.separator"));
+            }
+        } catch (IOException e) {
+            DebugLog.writeLog(className, e.toString());
+        }
+        textView.setText(descr.toString());
     }
 }

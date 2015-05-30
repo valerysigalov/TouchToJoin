@@ -23,7 +23,13 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
 import android.widget.Toast;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class Share extends Activity {
 
@@ -37,22 +43,37 @@ public class Share extends Activity {
 
     private void shareApp() {
 
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        final String className = "SR";
+        String mailId = "";
+        Intent intent = new Intent(Intent.ACTION_SENDTO,
+                Uri.fromParts("mailto", mailId, null));
         Resources res = getResources();
+        InputStream inputStream = res.openRawResource(R.raw.short_description);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder descr = new StringBuilder();
+        String line;
+        try {
+            while ((line = bufferedReader.readLine()) != null) {
+                descr.append(line).append(System.getProperty("line.separator"));
+            }
+        } catch (IOException e) {
+            DebugLog.writeLog(className, e.toString());
+        }
         String subject = "Check out " + res.getString(R.string.app_title) + "!";
-        String body = res.getString(R.string.short_description) + "\n\n" +
-                res.getString(R.string.link);
-
-        String uriText = "mailto:" +
-                "?subject=" + Uri.encode(subject) +
-                "&body=" + Uri.encode(body);
-        Uri uri = Uri.parse(uriText);
-        intent.setData(uri);
-
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(
+                Intent.EXTRA_TEXT,
+                Html.fromHtml(new StringBuilder()
+                        .append("<p>" + descr.toString() + "</p>")
+                        .append("<a href=" + res.getString(R.string.link) + ">" +
+                                res.getString(R.string.link) + "</a>")
+                        .toString())
+        );
         try {
             startActivity(Intent.createChooser(intent, res.getString(R.string.send)));
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(Share.this, res.getString(R.string.noclients),
                     Toast.LENGTH_LONG).show();
         }
-    }}
+    }
+}

@@ -102,7 +102,7 @@ class NumberPickerPreference extends DialogPreference {
         String[] valueSet = new String[valueSetLen];
 
         for (int index = 0; index < valueSetLen; index++) {
-            valueSet[index] = Integer.toString(minValue+index*stepValue);
+            valueSet[index] = Integer.toString(minValue+index*stepValue) + " " + timeUnit;
         }
         picker.setMinValue(0);
         picker.setMaxValue(valueSetLen-1);
