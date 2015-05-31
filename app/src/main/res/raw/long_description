@@ -1,26 +1,10 @@
-Touch2Join is a dialer app that allows you to focus
-on conference calls (or driving) rather than
-painfully memorizing the access codes
-- if locates the conference calls phone numbers
-  and access codes in your calendars;
+Touch2Join is a dialer app that allows you to focus on conference calls (or driving) rather than painfully memorizing the access codes
+- if locates the conference calls phone numbers and access codes in your calendars;
 - reminds you of the upcoming calls;
 - helps you to join the call with one touch;
-- and allows you to quickly reconnect if the call
-  gets dropped.
-Only basic permissions requested and no
-information being collected externally.
+- and allows you to quickly reconnect if the call gets dropped.
+Only basic permissions requested and no information being collected externally.
 
 Copyright (c) 2015 5!
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT
-WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-INCLUDING BUT NOT LIMITED TO THE
-WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND
-NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
-FORANY CLAIM, DAMAGES OR OTHER LIABILITY,
-WHETHER IN AN ACTION OF CONTRACT, TORT
-OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE
-OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
