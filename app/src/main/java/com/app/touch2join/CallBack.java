@@ -44,7 +44,8 @@ public class CallBack extends Activity {
                 String pin = extras.getString("pin").trim();
                 Intent join = new Intent(Intent.ACTION_CALL);
                 CallListener.setActiveCall(number);
-                number = "tel:" + number + Preferences.setDelay(this) + pin + "#";
+                number = "tel:" + number.replaceAll("\\D", "") + Preferences.setDelay(this) + pin.replaceAll("\\D", "") + "#";
+                DebugLog.writeLog(className, "call back " + number);
                 join.setData(Uri.parse(number));
                 join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(join);

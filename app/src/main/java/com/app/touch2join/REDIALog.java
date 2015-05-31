@@ -66,8 +66,8 @@ public class REDIALog extends Activity {
                 String number = extras.getString("number").trim();
                 String pin = extras.getString("pin").trim();
                 CallListener.setActiveCall(number);
-                number = "tel:" + number + Preferences.setDelay(context) + pin + "#";
-                DebugLog.writeLog(className, number);
+                number = "tel:" + number.replaceAll("\\D", "") + Preferences.setDelay(context) + pin.replaceAll("\\D", "") + "#";
+                DebugLog.writeLog(className, "rejoin call " + number);
                 join.setData(Uri.parse(number));
                 join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(join);

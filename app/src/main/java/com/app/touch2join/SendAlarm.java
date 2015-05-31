@@ -42,6 +42,7 @@ public class SendAlarm extends BroadcastReceiver {
 
         notificationId = notificationId + 1;
         final String className = "SD";
+        final int delayInMillis = 200;
 
         Bundle extras = intent.getExtras();
         String date = extras.getString("date");
@@ -98,14 +99,14 @@ public class SendAlarm extends BroadcastReceiver {
 
             Date beginDate = formatter.parse(parseDate);
             long dateInMillis = beginDate.getTime();
-            long notifyInMillis = dateInMillis - remindMinutes* DateUtils.MINUTE_IN_MILLIS;
+            long notifyInMillis = dateInMillis - remindMinutes*DateUtils.MINUTE_IN_MILLIS;
             long currentTimeInMillis = System.currentTimeMillis();
             if (notifyInMillis < currentTimeInMillis) {
                 notifyInMillis = currentTimeInMillis;
             }
 
             AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
-            alarmManager.set(AlarmManager.RTC_WAKEUP, notifyInMillis, pPublish);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, notifyInMillis+delayInMillis, pPublish);
             DebugLog.writeLog(className, extras.toString());
         } catch (ParseException e) {
             DebugLog.writeLog(className, "failed to parse date " + e.toString());

@@ -26,6 +26,8 @@ import android.widget.Toast;
 
 public class JoinCall extends Activity {
 
+    final String className = "JC";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -36,7 +38,6 @@ public class JoinCall extends Activity {
         String pin = extras.getString("pin").trim();
 
         if (CallListener.isCallActive(number)) {
-            String className = "JC";
             DebugLog.writeLog(className, "call " + number + " in progress");
             Toast.makeText(JoinCall.this, getResources().getString(R.string.inprogress),
                     Toast.LENGTH_LONG).show();
@@ -54,7 +55,8 @@ public class JoinCall extends Activity {
             */
 
             Intent join = new Intent(Intent.ACTION_CALL);
-            number = "tel:" + number + Preferences.setDelay(this) + pin + "#";
+            number = "tel:" + number.replaceAll("\\D", "") + Preferences.setDelay(this) + pin.replaceAll("\\D", "") + "#";
+            DebugLog.writeLog(className, "join call " + number);
             join.setData(Uri.parse(number));
             join.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(join);

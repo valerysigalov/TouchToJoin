@@ -56,6 +56,7 @@ class NumberPickerPreference extends DialogPreference {
 
         picker = new NumberPicker(getContext());
         picker.setLayoutParams(layoutParams);
+        picker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
         FrameLayout dialogView = new FrameLayout(getContext());
         dialogView.addView(picker);
