@@ -29,7 +29,7 @@ class PhoneNumber {
     private static final String us_toll_free_codes = "\\(?\\s*(800|888|877|866|855|844)\\s*\\)?\\s*(?:\\-|\\.?)\\s*";
     private static final String phone_number = "\\(?\\s*[0-9]{3}\\s*\\)?\\s*(?:\\-|\\.?)\\s*\\(?\\s*[0-9]{4}\\s*\\)?))).*";
     private static final String pin_code = ".*?((\\D|\\s)([0-9]{5,8})(\\D|\\s|$)).*";
-    private static final String pin_code_ex = ".*(Access|Pin|Code|Id|Conference)([\\w\\s:]+?)([0-9\\s\\.-]+)(\\s|#|,?).*";
+    private static final String pin_code_ex = ".*(Access|Pin|Code|Id|Conference)(\\W*?)([[0-9]\\s\\.\\)\\(-]+)(#|\\n|$).*";
     private static final String us_pattern = "(\\bUSA\\b|\\bUNITED STATES\\b|\\bUnited States\\b)";
 
     public static String findNumber(String text) {
@@ -58,7 +58,7 @@ class PhoneNumber {
             if (phoneNumber != null) {
                 int index = text.indexOf(phoneNumber);
                 if (index != -1) {
-                    text = text.substring(index);
+                    text = text.substring(index + (phoneNumber.length()-1));
                 }
             }
             pinCode = matchNumber(pin_code, text);
