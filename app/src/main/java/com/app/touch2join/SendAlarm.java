@@ -35,14 +35,14 @@ import java.util.Date;
 
 public class SendAlarm extends BroadcastReceiver {
 
-    private static String lastAlarm = null;
     private static Integer notificationId = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        notificationId = notificationId + 1;
         final String className = "SD";
-        final int delayInMillis = 200;
+        final int delayInMillis = 500;
 
         Bundle extras = intent.getExtras();
         String date = extras.getString("date");
@@ -51,14 +51,6 @@ public class SendAlarm extends BroadcastReceiver {
         String title = extras.getString("title");
         String number = extras.getString("number");
         String pin = extras.getString("pin");
-        String alarm = extras.getString("alarm");
-
-        if (lastAlarm != null && alarm.equals(lastAlarm)) {
-            DebugLog.writeLog(className, "restart notification");
-        } else {
-            notificationId = notificationId + 1;
-        }
-        lastAlarm = alarm;
 
         Intent join = new Intent(context, JoinCall.class);
         join.putExtras(extras);

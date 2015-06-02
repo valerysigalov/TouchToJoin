@@ -30,10 +30,16 @@ import java.util.Date;
 class ReadCalendar {
 
     private static final String className = "RC";
+    private static String savedTime = null;
 
     public static void getEventByTime(Context context, Intent intent) {
 
         String alarmTime = intent.getData().getLastPathSegment();
+
+        if (savedTime != null && alarmTime.equals(savedTime)) {
+            return;
+        }
+        savedTime = alarmTime;
 
         String[] projection = new String[] { CalendarContract.CalendarAlerts.EVENT_LOCATION,
                 CalendarContract.CalendarAlerts.DESCRIPTION,
@@ -107,7 +113,6 @@ class ReadCalendar {
             extras.putString("title", title.trim());
             extras.putString("number", phoneNumber.trim());
             extras.putString("pin", pinCode.trim());
-            extras.putString("alarm", alarmTime);
             DebugLog.writeLog(className, extras.toString());
             notification.putExtras(extras);
             context.sendBroadcast(notification);
