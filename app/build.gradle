@@ -8,8 +8,8 @@ android {
         applicationId "com.app.touch2join"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 6
-        versionName "0.6 B"
+        versionCode 7
+        versionName "0.7 B"
     }
     buildTypes {
         release {
