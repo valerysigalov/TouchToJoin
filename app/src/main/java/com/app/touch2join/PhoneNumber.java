@@ -23,17 +23,20 @@ import java.util.regex.Pattern;
 
 class PhoneNumber {
 
-    private static final String country_code = ".*?(((\\+?\\s*[0-9]{0,3}\\s*(?:\\-|\\.?)\\s*";
-    private static final String us_country_code = ".*?(((\\+\\s*1\\s*(?:\\-|\\.?)\\s*";
-    private static final String area_code = "\\(?\\s*[0-9]{3}\\s*\\)?\\s*(?:\\-|\\.?)\\s*";
-    private static final String us_toll_free_codes = "\\(?\\s*(800|888|877|866|855|844)\\s*\\)?\\s*(?:\\-|\\.?)\\s*";
-    private static final String phone_number = "\\(?\\s*[0-9]{3}\\s*\\)?\\s*(?:\\-|\\.?)\\s*\\(?\\s*[0-9]{2}\\s*\\)?\\s*(?:\\-|\\.?)\\s*\\(?\\s*[0-9]{2}\\s*\\)?))).*";
+    private static final String country_code = ".*?(((\\+?\\s*[0-9]{0,3}\\s*(?:\\-|\\.|/?)\\s*";
+    private static final String us_country_code = ".*?(((\\+\\s*1\\s*(?:\\-|\\.|/?)\\s*";
+    private static final String area_code = "\\(?\\s*[0-9]{3}\\s*\\)?\\s*(?:\\-|\\.|/?)\\s*";
+    private static final String us_toll_free_codes = "\\(?\\s*(800|888|877|866|855|844)\\s*\\)?\\s*(?:\\-|\\.|/?)\\s*";
+    private static final String phone_number = "\\(?\\s*[0-9]{3}\\s*\\)?\\s*(?:\\-|\\.|/?)\\s*\\(?\\s*[0-9]{2}\\s*\\)?\\s*(?:\\-|\\.|/?)\\s*\\(?\\s*[0-9]{2}\\s*\\)?))).*";
     private static final String pin_code = ".*?((\\D|\\s)([0-9]{5,8})(\\D|\\s|$)).*";
     private static final String pin_code_ex = ".*(Access|Pin|Code|Id|Conference)(\\W*?)([[0-9]\\s\\.\\)\\(-]+)(#|\\n|$).*";
     private static final String us_pattern = "(\\bUSA\\b|\\bUNITED STATES\\b|\\bUnited States\\b)";
 
     public static String findNumber(String text) {
 
+        if (text == null) {
+            return null;
+        }
         String subtext = text;
         Pattern pattern = Pattern.compile(us_pattern);
         Matcher matcher = pattern.matcher(text);
@@ -53,6 +56,9 @@ class PhoneNumber {
 
     public static String findPinCode(String text, String phoneNumber) {
 
+        if (text == null) {
+            return null;
+        }
         String pinCode = matchNumber(pin_code_ex, text);
         if (pinCode == null) {
             if (phoneNumber != null) {
@@ -69,10 +75,10 @@ class PhoneNumber {
 
     private static String matchNumber(String number, String text) {
 
-        String phoneNumber = null;
         if (text == null) {
             return null;
         }
+        String phoneNumber = null;
         Pattern pattern = Pattern.compile(number, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(text);
         if(matcher.find())
