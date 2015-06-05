@@ -27,10 +27,11 @@ class PhoneNumber {
     private static final String us_country_code = ".*?(((\\+\\s*1\\s*(?:\\-|\\.|/?)\\s*";
     private static final String area_code = "\\(?\\s*[0-9]{3}\\s*\\)?\\s*(?:\\-|\\.|/?)\\s*";
     private static final String us_toll_free_codes = "\\(?\\s*(800|888|877|866|855|844)\\s*\\)?\\s*(?:\\-|\\.|/?)\\s*";
-    private static final String phone_number = "\\(?\\s*[0-9]{3}\\s*\\)?\\s*(?:\\-|\\.|/?)\\s*\\(?\\s*[0-9]{2}\\s*\\)?\\s*(?:\\-|\\.|/?)\\s*\\(?\\s*[0-9]{2}\\s*\\)?))).*";
+    private static final String phone_number = "\\(?\\s*[0-9]{3}\\s*\\)?\\s*(?:\\-|\\.|/?)\\s*\\(?\\s*[0-9]{2}\\s*\\)?\\s*(?:\\-|\\.|/?)\\s*\\(?\\s*[0-9]{2}\\s*\\)?\\b))).*";
     private static final String pin_code = ".*?((\\D|\\s)([0-9]{5,8})(\\D|\\s|$)).*";
-    private static final String pin_code_ex = ".*(Access|Pin|Code|Id|Conference)(\\W*?)([[0-9]\\s\\.\\)\\(-]+)(#|\\n|$).*";
+    private static final String pin_code_ex = ".*(?<!Leader\\s)(Access|Pin|Code|Id|Conference)(\\W*?)([[0-9]\\s\\.\\)\\(-]+)(#|\\n|$).*";
     private static final String us_pattern = "(\\bUSA\\b|\\bUNITED STATES\\b|\\bUnited States\\b)";
+    private static final String delimeter = "(?:\\s(x|-|/|,|\\s|\\.)\\s)";
 
     public static String findNumber(String text) {
 
@@ -71,6 +72,24 @@ class PhoneNumber {
         }
 
         return pinCode;
+    }
+
+    public static String[] searchLocation(String text) {
+
+        if (text == null) {
+            return null;
+        }
+        String[] access = new String[2];
+        String us_number = country_code + area_code + phone_number;
+        String num_pin = us_number + delimeter + us_number;
+        Pattern pattern = Pattern.compile(num_pin, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(text);
+        if(matcher.find()) {
+            access[0] = matcher.group(3);
+            access[1] = matcher.group(6);
+        }
+
+        return access;
     }
 
     private static String matchNumber(String number, String text) {

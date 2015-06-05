@@ -42,7 +42,7 @@ public class SendAlarm extends BroadcastReceiver {
 
         notificationId = notificationId + 1;
         final String className = "SD";
-        final int delayInMillis = 500;
+        final int delayInMillis = 1000;
 
         Bundle extras = intent.getExtras();
         String date = extras.getString("date");

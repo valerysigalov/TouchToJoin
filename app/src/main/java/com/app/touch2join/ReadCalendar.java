@@ -96,6 +96,16 @@ class ReadCalendar {
                         phoneNumber = PhoneNumber.findNumber(description);
                         pinCode = PhoneNumber.findPinCode(description, phoneNumber);
                     }
+                    if (phoneNumber == null || pinCode == null) {
+                        String location = cursor.getString(cursor.getColumnIndex(
+                                CalendarContract.CalendarAlerts.EVENT_LOCATION));
+                        DebugLog.writeLog(className, "location=" + location);
+                        String[] access = PhoneNumber.searchLocation(location);
+                        if (access[0] != null && access[1] != null) {
+                            phoneNumber = access[0];
+                            pinCode = access[1];
+                        }
+                    }
                 } while (cursor.moveToNext());
             }
             cursor.close();
