@@ -7,9 +7,8 @@ android {
     defaultConfig {
         applicationId "com.app.touch2join"
         minSdkVersion 16
-        targetSdkVersion 21
-        versionCode 9
-        versionName "0.9 B"
+        versionCode 10
+        versionName "1.0 B"
     }
     buildTypes {
         release {

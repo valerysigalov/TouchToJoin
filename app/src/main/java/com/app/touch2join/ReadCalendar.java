@@ -78,17 +78,11 @@ class ReadCalendar {
                             CalendarContract.CalendarAlerts.TITLE));
                     if (title.equals("")) {
                         title = "(No title)";
+                    } else {
+                        phoneNumber = PhoneNumber.findNumber(title);
+                        pinCode = PhoneNumber.findPinCode(title, phoneNumber);
                     }
                     DebugLog.writeLog(className, "title=" + title);
-                    phoneNumber = PhoneNumber.findNumber(title);
-                    pinCode = PhoneNumber.findPinCode(title, phoneNumber);
-                    if (phoneNumber == null || pinCode == null) {
-                        String location = cursor.getString(cursor.getColumnIndex(
-                                CalendarContract.CalendarAlerts.EVENT_LOCATION));
-                        DebugLog.writeLog(className, "location=" + location);
-                        phoneNumber = PhoneNumber.findNumber(location);
-                        pinCode = PhoneNumber.findPinCode(location, phoneNumber);
-                    }
                     if (phoneNumber == null || pinCode == null) {
                         String description = cursor.getString(cursor.getColumnIndex(
                                 CalendarContract.CalendarAlerts.DESCRIPTION));
@@ -100,10 +94,14 @@ class ReadCalendar {
                         String location = cursor.getString(cursor.getColumnIndex(
                                 CalendarContract.CalendarAlerts.EVENT_LOCATION));
                         DebugLog.writeLog(className, "location=" + location);
-                        String[] access = PhoneNumber.searchLocation(location);
-                        if (access[0] != null && access[1] != null) {
-                            phoneNumber = access[0];
-                            pinCode = access[1];
+                        phoneNumber = PhoneNumber.findNumber(location);
+                        pinCode = PhoneNumber.findPinCode(location, phoneNumber);
+                        if (phoneNumber == null || pinCode == null) {
+                            String[] access = PhoneNumber.searchLocation(location);
+                            if (access[0] != null && access[1] != null) {
+                                phoneNumber = access[0];
+                                pinCode = access[1];
+                            }
                         }
                     }
                 } while (cursor.moveToNext());
