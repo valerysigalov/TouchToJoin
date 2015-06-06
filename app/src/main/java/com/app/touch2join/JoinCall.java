@@ -26,8 +26,6 @@ import android.widget.Toast;
 
 public class JoinCall extends Activity {
 
-    final String className = "JC";
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -37,6 +35,7 @@ public class JoinCall extends Activity {
         String number = extras.getString("number").trim();
         String pin = extras.getString("pin").trim();
 
+        String className = "JC";
         if (CallListener.isCallActive(number)) {
             DebugLog.writeLog(className, "call " + number + " in progress");
             Toast.makeText(JoinCall.this, getResources().getString(R.string.inprogress),

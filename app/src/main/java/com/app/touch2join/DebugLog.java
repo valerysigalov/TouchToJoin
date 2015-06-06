@@ -58,7 +58,7 @@ class DebugLog {
         private static final int qSize = 1000;
         private static int fPtr = 0;
         private static int rPtr = 0;
-        private static Object [] qObject = new Object[qSize];
+        private static final Object [] qObject = new Object[qSize];
 
         public static void enqueue(Object obj) {
             if (isFull()) {
@@ -93,16 +93,11 @@ class DebugLog {
             return (diff == -1 || diff == (qSize - 1));
         }
 
-        private static Object dequeue() {
-            Object item;
-            if(isEmpty()) {
-                return null;
-            } else {
-                item = qObject[fPtr];
+        private static void dequeue() {
+            if(!isEmpty()) {
                 qObject[fPtr] = null;
                 fPtr = (fPtr + 1) % qSize;
             }
-            return item;
         }
     }
 }

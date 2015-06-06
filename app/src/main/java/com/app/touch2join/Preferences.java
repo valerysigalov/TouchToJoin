@@ -59,12 +59,12 @@ public class Preferences extends PreferenceActivity
         refreshLastCall(this);
 
         ListPreference enableLog = (ListPreference)internalFragment.findPreference("log");
-        enableLog.setSummary(getString(this, "log", getResources().getString(R.string.disable)));
+        enableLog.setSummary(getLog(this, getResources().getString(R.string.disable)));
         enableLog.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
 
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Preferences.putString(Preferences.this, "log", (String) newValue);
+                Preferences.setLog(Preferences.this, (String) newValue);
                 preference.setSummary((String) newValue);
                 return true;
             }
@@ -136,17 +136,17 @@ public class Preferences extends PreferenceActivity
             internalFragment.findPreference("call").setSummary(confInfo);
     }
 
-    public static String getString(Context context, String key, String defVal) {
+    private static String getLog(Context context, String defVal) {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        return sharedPreferences.getString(key, defVal);
+        return sharedPreferences.getString("log", defVal);
     }
 
-    private static void putString(Context context, String key, String value) {
+    private static void setLog(Context context, String value) {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putString(key, value);
+        edit.putString("log", value);
         edit.commit();
     }
 

@@ -5,7 +5,6 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Text"
         android:id="@+id/message"
         android:textSize="@dimen/abc_text_size_medium_material"
         android:lineSpacingExtra="10sp"

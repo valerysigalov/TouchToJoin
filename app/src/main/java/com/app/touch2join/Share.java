@@ -63,11 +63,8 @@ public class Share extends Activity {
         intent.putExtra(Intent.EXTRA_SUBJECT, subject);
         intent.putExtra(
                 Intent.EXTRA_TEXT,
-                Html.fromHtml(new StringBuilder()
-                        .append("<p>" + descr.toString() + "</p>")
-                        .append("<a href=" + res.getString(R.string.link) + ">" +
-                                res.getString(R.string.link) + "</a>")
-                        .toString())
+                Html.fromHtml("<p>" + descr.toString() + "</p>" + "<a href=" + res.getString(R.string.link) + ">" +
+                        res.getString(R.string.link) + "</a>")
         );
         try {
             startActivity(Intent.createChooser(intent, res.getString(R.string.send)));
