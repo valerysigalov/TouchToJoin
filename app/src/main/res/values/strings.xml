@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Touch to Join</string>
+    <string name="app_title">Touch to Join</string>
+    <string name="pref_config">Touch to Join</string>
+    <string name="pref_config_setting_summary">Touch to Join</string>
+    <string name="pref_config_setting">Touch to Join</string>
+    <string name="apply">Apply</string>
+    <string name="upcoming">Recent and upcoming meetings</string>
+    <string name="date_range">Select the calendar dates range</string>
+    <string name="start_date">Set Start Date</string>
+    <string name="end_date">Set End Date</string>
+    <string name="conf_list">Select the conference from the list</string>
+    <string name="dial">Dial</string>
+    <string name="history">Call history</string>
+    <string name="search">Call search</string>
+    <string name="settings">Settings</string>
+    <string name="feedback">Feedback</string>
+    <string name="help">Help</string>
+    <string name="about">About</string>
+    <string name="delay">Set delay (one unit is two seconds)</string>
+    <string name="snooze">Set snooze alarm time in minutes</string>
+    <string name="history_settings">Set call history log size</string>
+    <string name="filter">Show all events</string>
+    <string name="cancel">Cancel</string>
+
+</resources>

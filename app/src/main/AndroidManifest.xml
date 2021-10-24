@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.app.touchtojoin" >
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_title">
+        <receiver
+            android:name="com.app.touchtojoin.SendAlarm"
+            android:label="@string/app_title">
+            <intent-filter>
+                <action android:name="com.app.touchtojoin" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="com.app.touchtojoin.SnoozeReceiver"
+            android:label="@string/app_title">
+            <intent-filter>
+                <action android:name="com.app.touchtojoin" />
+            </intent-filter>
+        </receiver>
+        <activity
+            android:name="com.app.touchtojoin.SnoozeAlarm"
+            android:theme="@style/Theme.Transparent"
+            android:label="@string/app_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.touchtojoin.JoinActivity"
+            android:theme="@style/Theme.Transparent"
+            android:label="@string/app_title">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.touchtojoin.UpcomingActivity"
+            android:label="@string/app_title"
+            android:theme="@style/Theme.ActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.touchtojoin.HistoryActivity"
+            android:label="@string/app_title"
+            android:theme="@style/Theme.ActionBar">
+        </activity>
+        <activity
+            android:name="com.app.touchtojoin.RangeActivity"
+            android:label="@string/app_title"
+            android:theme="@style/Theme.ActionBar">
+        </activity>
+        <activity
+            android:name="com.app.touchtojoin.SettingsActivity"
+            android:label="@string/app_title"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/Theme.ActionBar">
+        </activity>
+        <receiver
+            android:name="com.app.touchtojoin.EventReceiver"
+            android:label="@string/app_title" >
+            <intent-filter>
+                <action android:name="android.intent.action.EVENT_REMINDER" />
+                <data android:scheme="content"/>
+                <data android:host="com.android.calendar"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".BootReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>
